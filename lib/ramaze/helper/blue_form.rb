@@ -131,7 +131,7 @@ module Ramaze
         # This method also has the alias "text" so feel free to use that one instead of input_text.
         # 
         # @param [String] label The text to display inside the label tag.
-        # @param [String/Symbol] name The name of the text field.
+        # @param [String Symbol] name The name of the text field.
         # @param [String] value The value of the text field.
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
@@ -159,7 +159,7 @@ module Ramaze
         # This method has the following alias: "password".
         #
         # @param [String] label The text to display inside the label tag.
-        # @param [String/Symbol] name The name of the password field.
+        # @param [String Symbol] name The name of the password field.
         # @param [String] value The value of the password field.
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
@@ -200,7 +200,7 @@ module Ramaze
         # This method has the following alias: "checkbox".
         #
         # @param [String] label The text to display inside the label tag.
-        # @param [String/Symbol] name The name of the checkbox.
+        # @param [String Symbol] name The name of the checkbox.
         # @param [Bool] checked Boolean that indicates if the checkbox is checked or not.
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
@@ -222,7 +222,7 @@ module Ramaze
         # This method has the following alias: "radio".
         #
         # @param [String] label The text to display inside the label tag.
-        # @param [String/Symbol] name The name of the radio tag.
+        # @param [String Symbol] name The name of the radio tag.
         # @param [Array] values Array containing the values for each radio tag.
         # @param [Hash] options Any additional HTML attributes along with their values.
         #
@@ -260,7 +260,7 @@ module Ramaze
         # This method has the following alias: "file".
         # 
         # @param [String] label The text to display inside the label tag.
-        # @param [String/Symbol] name The name of the radio tag.
+        # @param [String Symbol] name The name of the radio tag.
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
         def input_file(label, name, args = {})
@@ -280,7 +280,7 @@ module Ramaze
         #
         # This method has the following alias: "hidden".
         #
-        # @param [String/Symbol] name The name of the hidden field tag.
+        # @param [String Symbol] name The name of the hidden field tag.
         # @param [String] value The value of the hidden field
         # @param [Hash] args Any additional HTML attributes along with their values.
         # 
@@ -296,7 +296,7 @@ module Ramaze
         # Generate a text area.
         #
         # @param [String] label The text to display inside the label tag.
-        # @param [String/Symbol] name The name of the textarea.
+        # @param [String Symbol] name The name of the textarea.
         # @param [String] value The value of the textarea.
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
@@ -314,7 +314,7 @@ module Ramaze
         # Generate a select tag along with the option tags and a label.
         # 
         # @param [String] label The text to display inside the label tag.
-        # @param [String/Symbol] name The name of the select tag.
+        # @param [String Symbol] name The name of the select tag.
         # @param [Array] values Array containing the values for each option tag.
         # @param [Hash] options Hash containing additional HTML attributes.
         #

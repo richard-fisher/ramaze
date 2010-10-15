@@ -28,7 +28,9 @@ module Ramaze
 
       trait :flashbox => "<div class='flash' id='flash_%key'>%value</div>"
 
-      # answers with Current.session.flash
+      ##
+      # Return the current value of Current.session.flash
+      #
       def flash
         Current.session.flash
       end
