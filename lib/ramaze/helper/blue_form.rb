@@ -142,7 +142,7 @@ module Ramaze
         #
         def input_text(label, name, value = nil, args = {})
           id           = id_for(name)
-          args         = args.merge(:type => :text, :name => name, :class => 'text', :id => id)
+          args         = args.merge(:type => :text, :name => name, :id => id)
           args[:value] = value unless value.nil?
 
           @g.p do
@@ -165,7 +165,7 @@ module Ramaze
         #
         def input_password(label, name, value = nil, args = {})
           id           = id_for(name)
-          args         = args.merge{:type => :password, :name => name, :class => 'text', :id => id}
+          args         = args.merge(:type => :password, :name => name, :id => id)
           args[:value] = value unless value.nil?
 
           @g.p do
@@ -185,7 +185,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
         def input_submit(value = nil, args = {})
-          args         = args.merge{:type => :submit, :class => 'button submit'}
+          args         = args.merge(:type => :submit)
           args[:value] = value unless value.nil?
 
           @g.p do
@@ -206,7 +206,7 @@ module Ramaze
         #
         def input_checkbox(label, name, checked = false, args = {})
           id = id_for(name)
-          args = {:type => :checkbox, :name => name, :class => 'checkbox', :id => id}
+          args = {:type => :checkbox, :name => name, :id => id}
           args[:checked] = 'checked' if checked
 
           @g.p do
@@ -265,7 +265,7 @@ module Ramaze
         #
         def input_file(label, name, args = {})
           id   = id_for(name)
-          args = args.merge{:type => :file, :name => name, :class => 'file', :id => id}
+          args = args.merge(:type => :file, :name => name, :id => id)
 
           @g.p do
             label_for(id, label, name)
@@ -285,7 +285,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # 
         def input_hidden(name, value = nil, args = {})
-          args         = args.merge{:type => :hidden, :name => name}
+          args         = args.merge(:type => :hidden, :name => name)
           args[:value] = value.to_s unless value.nil?
 
           @g.input(args)
@@ -302,7 +302,7 @@ module Ramaze
         #
         def textarea(label, name, value = nil, args = {})
           id   = id_for(name)
-          args = args.merge{:name => name, :id => id}
+          args = args.merge(:name => name, :id => id)
 
           @g.p do
             label_for(id, label, name)

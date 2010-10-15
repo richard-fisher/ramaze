@@ -66,7 +66,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-username">Username</label>
-      <input type="text" name="username" class="text" id="form-username" value="mrfoo" />
+      <input type="text" name="username" id="form-username" value="mrfoo" />
     </p>
   </fieldset>
 </form>
@@ -82,7 +82,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-username">Username</label>
-      <input type="text" name="username" class="text" id="form-username" />
+      <input type="text" name="username" id="form-username" />
     </p>
   </fieldset>
 </form>
@@ -98,7 +98,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-username">Username</label>
-      <input size="10" type="text" name="username" class="text" id="form-username" />
+      <input size="10" type="text" name="username" id="form-username" />
     </p>
   </fieldset>
 </form>
@@ -114,10 +114,27 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-password">Password</label>
-      <input type="password" name="password" class="text" id="form-password" />
+      <input type="password" name="password" id="form-password" />
     </p>
   </fieldset>
 </form>
+    FORM
+  end
+  
+  it 'makes form with input_password(label, name, value, hash)' do
+    out = form(:method => :get) do |f|
+      f.input_password 'Password', :password, 'super-secret-password', :class => 'password_class'
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <fieldset>
+    <p>
+      <label for="form-password">Password</label>
+      <input class="password_class" type="password" name="password" id="form-password" value="super-secret-password" />
+    </p>
+  </fieldset>
+</form>   
     FORM
   end
 
@@ -129,7 +146,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <fieldset>
     <p>
-      <input type="submit" class="button submit" />
+      <input type="submit" />
     </p>
   </fieldset>
 </form>
@@ -144,7 +161,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <fieldset>
     <p>
-      <input type="submit" class="button submit" value="Send" />
+      <input type="submit" value="Send" />
     </p>
   </fieldset>
 </form>
@@ -160,7 +177,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-assigned">Assigned</label>
-      <input type="checkbox" name="assigned" class="checkbox" id="form-assigned" />
+      <input type="checkbox" name="assigned" id="form-assigned" />
     </p>
   </fieldset>
 </form>
@@ -176,7 +193,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-assigned">Assigned</label>
-      <input type="checkbox" name="assigned" class="checkbox" id="form-assigned" />
+      <input type="checkbox" name="assigned" id="form-assigned" />
     </p>
   </fieldset>
 </form>
@@ -192,7 +209,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-assigned">Assigned</label>
-      <input type="checkbox" name="assigned" class="checkbox" id="form-assigned" checked="checked" />
+      <input type="checkbox" name="assigned" id="form-assigned" checked="checked" />
     </p>
   </fieldset>
 </form>
@@ -208,7 +225,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-assigned">Assigned</label>
-      <input type="checkbox" name="assigned" class="checkbox" id="form-assigned" />
+      <input type="checkbox" name="assigned" id="form-assigned" />
     </p>
   </fieldset>
 </form>
@@ -256,7 +273,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-avatar">Avatar</label>
-      <input type="file" name="avatar" class="file" id="form-avatar" />
+      <input type="file" name="avatar" id="form-avatar" />
     </p>
   </fieldset>
 </form>
@@ -404,7 +421,7 @@ describe BF = Ramaze::Helper::BlueForm do
   <fieldset>
     <p>
       <label for="form-username">Username <span class="error">May not be empty</span></label>
-      <input type="text" name="username" class="text" id="form-username" />
+      <input type="text" name="username" id="form-username" />
     </p>
   </fieldset>
 </form>
