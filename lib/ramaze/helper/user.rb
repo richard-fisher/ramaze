@@ -94,7 +94,7 @@ module Ramaze
     #   end
     #
     # @author manveru
-    # @todo convert the examples into real examples with specs
+    # TODO:  convert the examples into real examples with specs
     module UserHelper
       # Using this as key in request.env
       RAMAZE_HELPER_USER = 'ramaze.helper.user'.freeze

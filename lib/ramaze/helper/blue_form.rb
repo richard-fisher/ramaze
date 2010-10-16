@@ -54,7 +54,7 @@ module Ramaze
       end
 
       ##
-      # @todo Describe the form_errors method since I (Yorick) am not too sure what it does.
+      # TODO:  Describe the form_errors method since I (Yorick) am not too sure what it does.
       #
       def form_errors
         if respond_to?(:flash)
@@ -98,7 +98,7 @@ module Ramaze
         # Generate the form output.
         #
         # @param [Hash] form_errors Hash containing all form errors (if any).
-        # @todo Imrpove the docs of this method since I (Yorick) am not entirely sure what it does.
+        # TODO:  Imrpove the docs of this method since I (Yorick) am not entirely sure what it does.
         #
         def build(form_errors = {})
           @form_errors = form_errors
@@ -118,9 +118,9 @@ module Ramaze
         # @param [String] text The text to display inside the legend tag.
         # @example
         # 
-        # form(:method => :post) do |f|
-        #   f.legend 'Ramaze rocks!'
-        # end
+        #   form(:method => :post) do |f|
+        #     f.legend 'Ramaze rocks!'
+        #   end
         #
         def legend(text)
           @g.legend(text)

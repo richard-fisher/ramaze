@@ -246,7 +246,6 @@ lib/ramaze/helper/cache.rb
 lib/ramaze/helper/disqus.rb
 lib/ramaze/helper/erector.rb
 lib/ramaze/helper/flash.rb
-lib/ramaze/helper/form.rb
 lib/ramaze/helper/formatting.rb
 lib/ramaze/helper/gestalt.rb
 lib/ramaze/helper/gravatar.rb
@@ -257,12 +256,10 @@ lib/ramaze/helper/link.rb
 lib/ramaze/helper/localize.rb
 lib/ramaze/helper/markaby.rb
 lib/ramaze/helper/maruku.rb
-lib/ramaze/helper/nitroform.rb
 lib/ramaze/helper/paginate.rb
 lib/ramaze/helper/remarkably.rb
 lib/ramaze/helper/request_accessor.rb
 lib/ramaze/helper/send_file.rb
-lib/ramaze/helper/sequel_form.rb
 lib/ramaze/helper/simple_captcha.rb
 lib/ramaze/helper/stack.rb
 lib/ramaze/helper/tagz.rb

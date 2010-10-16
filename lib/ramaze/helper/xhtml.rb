@@ -81,13 +81,14 @@ module Ramaze
       #   # Simple isn't it?
       #   js 'jquery'
       #
-      #   # Now with extra options
-      #   js 'jquery', 
+      #   # Let's change the directory to "some_other_directory"
+      #   js 'jquery', :prefix => 'some_other_directory'
       #
       # @param [String] name The name of the Javascript file that should be loaded.
       # @param [Hash] options Hash that can contain a :prefix key that defines the directory in which the JS file
       # is located. By default this key is set to "js".
       # @return [String]
+      # TODO:  The js() method 2nd argument is a hash but only supports the :prefix key. Perhaps changing this hash into a string would be better - Yorick
       # 
       def js(name, options={})
         if name =~ /^http/ # consider it external full url

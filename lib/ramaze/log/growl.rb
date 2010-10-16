@@ -6,8 +6,12 @@ require 'ruby-growl'
 module Ramaze
   module Logger
 
-    # Informer for the growl notification system on OSX.
-
+    ##
+    # Informer for the Growl notification system
+    # Growl lets Mac OS X applications unintrusively tell you when things happen.
+    #
+    # Growl can be downloaded from the following website: http://growl.info/
+    #
     class Growl < ::Growl
 
       trait :defaults => {
@@ -18,15 +22,22 @@ module Ramaze
         :default_notifies => %w[error warn info]
       }
 
+      ##
       # Takes the options from the default trait for merging.
-
+      #
+      # @param [Hash] options A hash containing extra options to use when initializing the Growl logger.
+      #
       def initialize(options = {})
         options = class_trait[:defaults].merge(options).values_at(:host, :name, :all_notifies, :default_notifies, :password)
         super(*options)
       end
 
-      # integration to Logging
-
+      ##
+      # Integration to Logging
+      #
+      # @param [String] tag
+      # @param [Hash] args
+      #
       def log(tag, *args)
         notify(tag.to_s, Time.now.strftime("%X"), args.join("\n")[0..100])
       rescue Errno::EMSGSIZE
