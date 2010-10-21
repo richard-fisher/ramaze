@@ -162,7 +162,6 @@ examples/helpers/cache.rb
 examples/helpers/form_with_sequel.rb
 examples/helpers/httpdigest.rb
 examples/helpers/identity.rb
-examples/helpers/nitro_form.rb
 examples/helpers/paginate.rb
 examples/helpers/rest.rb
 examples/helpers/simple_captcha.rb
@@ -412,7 +411,6 @@ spec/ramaze/helper/bench.rb
 spec/ramaze/helper/blue_form.rb
 spec/ramaze/helper/cache.rb
 spec/ramaze/helper/flash.rb
-spec/ramaze/helper/form.rb
 spec/ramaze/helper/formatting.rb
 spec/ramaze/helper/gestalt.rb
 spec/ramaze/helper/gravatar.rb
@@ -424,7 +422,6 @@ spec/ramaze/helper/localize.rb
 spec/ramaze/helper/maruku.rb
 spec/ramaze/helper/paginate.rb
 spec/ramaze/helper/request_accessor.rb
-spec/ramaze/helper/sequel_form.rb
 spec/ramaze/helper/simple_captcha.rb
 spec/ramaze/helper/stack.rb
 spec/ramaze/helper/user.rb

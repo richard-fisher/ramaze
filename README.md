@@ -56,9 +56,23 @@ Ramaze offers following features at the moment:
 
 
 * Templates
+
   * [Erubis](http://rubyforge.org/projects/erubis)
 
     Erubis is a fast, secure, and very extensible implementation of eRuby.
+    
+  * Ezamar
+
+    A simple homage to [Nitro](http://nitroproject.org)s templating, is shipped
+    together with Ramaze.
+  
+  * Etanni
+  
+    A very basic template engine also shipped with Ramaze.
+
+  * [Erector](http://erector.rubyforge.org/)
+
+    Erector is a Builder-like view framework, inspired by Markaby but overcoming some of its flaws. In Erector all views are objects, not template files, which allows the full power of object-oriented programming in views.
 
   * [Haml](http://haml.hamptoncatlin.com/)
 
@@ -68,24 +82,21 @@ Ramaze offers following features at the moment:
 
     Liquid's syntax and parse model are inspired by Django templates, as well
     as PHP's smarty.
+    
+  * [Markaby](http://code.whytheluckystiff.net/markaby/)
+
+    Markaby means Markup as Ruby.
 
   * [Remarkably](http://rubyforge.org/projects/remarkably)
 
     Remarkably is a very tiny Markaby-like XML builder
 
-  * [Markaby](http://code.whytheluckystiff.net/markaby/)
-
-    Markaby means Markup as Ruby.
-
   * [Sass](http://haml.hamptoncatlin.com/docs/sass)
 
     Sass is a meta-language on top of CSS that‘s used to describe the style of
     a document cleanly and structurally, with more power than flat CSS allows.
-
-  * Ezamar
-
-    A simple homage to [Nitro](http://nitroproject.org)s templating, is shipped
-    together with Ramaze.
+    
+  * And many, many more!
 
 * Cache
   * Hash
