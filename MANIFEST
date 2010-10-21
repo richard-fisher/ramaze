@@ -159,7 +159,6 @@ examples/basic/linking.rb
 examples/basic/partial.rb
 examples/basic/simple.rb
 examples/helpers/cache.rb
-examples/helpers/form_with_sequel.rb
 examples/helpers/httpdigest.rb
 examples/helpers/identity.rb
 examples/helpers/paginate.rb
@@ -448,11 +447,11 @@ spec/ramaze/struct.rb
 spec/ramaze/template/ramaze/external.test
 spec/ramaze/view.rb
 spec/ramaze/view/erector.rb
-spec/ramaze/view/erector/external.erector
-spec/ramaze/view/erector/invoke_helper_method.erector
+spec/ramaze/view/erector/external_view.erector
+spec/ramaze/view/erector/index.erector
 spec/ramaze/view/erector/layout.erector
-spec/ramaze/view/erector/strict_xhtml.erector
-spec/ramaze/view/erector/sum.erector
+spec/ramaze/view/erector/tables.erector
+spec/ramaze/view/erector/view.erector
 spec/ramaze/view/erubis.rb
 spec/ramaze/view/erubis/external.rhtml
 spec/ramaze/view/erubis/sum.rhtml

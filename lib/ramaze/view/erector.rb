@@ -16,10 +16,15 @@ module Ramaze
     # the HTML it produces will either be stored in the @content instance variable (if it's a view) or sent to the browser if it's a layout.
     # The @content variable can be displayed by calling the rawtext() method and passing the variable as it's parameter.
     #
+    # Using helper methods, such as the render_* methods is also possible although slightly different than you're used to. Due to the way
+    # the Erector adapter works it isn't possible to directly call a helper method. As a workaround you can access these methods from the 
+    # @controller instance variable. Don't forget to render the output of these helpers using rawtext(). Feel free to submit any patches if you
+    # think you have a better solution so that developers don't have to use the @controller instance variable.
+    #
     # @example
     # 
     #   # This is the code for the layout
-    #   class Default < Ramaze::View::Erector::Widget
+    #   class Default < Erector::Widget
     #     html do
     #       head do
     #         title 'Erector Layout'
@@ -33,9 +38,16 @@ module Ramaze
     #   end   
     #
     #   # And here's the view
-    #   class Index < Ramaze::View::Erector::Widget
+    #   class Index < Erector::Widget
     #     def content 
     #       h2 'This is the view'
+    #     end
+    #   end
+    #
+    #   # Render an extra view
+    #   class ExtraView < Erector::Widget
+    #     def content
+    #       rawtext @controller.render_view :some_extra_view
     #     end
     #   end
     #
@@ -43,7 +55,7 @@ module Ramaze
     # @license Ruby License
     #
     module Erector
-      # Include the Erector gem. By doing this Erector views can extend Ramaze::View::Erector without
+      # Include the Erector gem. By doing this Erector views can extend the Erector gem without
       # causing any namespace errors.
       include ::Erector
       
@@ -72,6 +84,10 @@ module Ramaze
         klass    = File.basename action.view, '.erector'
         klass    = klass.camel_case
         view_obj = self.const_get(klass)
+        
+        # Synchronize the methods of action.instance with the view. These methods can be accessed
+        # by calling @controller.METHOD
+        action.variables[:controller] = action.instance
 
         # Now that we have all the data we can start rendering the HTML.
         # Note that we pass the action.variables hash to the new() method. This is done to give the view access to all existing 

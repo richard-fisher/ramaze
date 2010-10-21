@@ -1,6 +1,6 @@
-class View < Erector::Widget
+class View < Erector::Widget  
   def content
     h2 'Hello, view!'
-    render_view :external_view
+    rawtext @controller.render_view :external_view
   end
 end
