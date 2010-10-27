@@ -1,6 +1,11 @@
 #          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+# Ignore this test on Mac OS X
+if RUBY_PLATFORM.include? 'darwin'
+  abort "Localmemcache doesn't work on Mac OS X and thus this test will be ignored."
+end
+
 require File.expand_path('../../../../spec/helper', __FILE__)
 spec_require 'localmemcache'
 

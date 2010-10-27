@@ -38,7 +38,6 @@ DEVELOPMENT_DEPENDENCIES = {
   "less"                    => {:version => "1.2.21"},
   "liquid"                  => {:version => "2.0.0"},
   "locale"                  => {:version => "2.0.5"},
-  "localmemcache"           => {:version => "0.4.4"},
   "lokar"                   => {:version => "0.1.0"},
   "maruku"                  => {:version => "0.6.0"},
   "memcache-client"         => {:version => "1.8.1", :lib => 'memcache'},
@@ -57,6 +56,11 @@ DEVELOPMENT_DEPENDENCIES = {
   "tagz"                    => {:version => "7.2.3"},
   "tenjin"                  => {:version => "0.6.1"},
 }
+
+# Localmemcache doesn't work properly on OS X so we should ignore it
+if !RUBY_PLATFORM.include? 'darwin'
+  DEVELOPMENT_DEPENDENCIES['localmemcache'] = {:version => "0.4.4"}
+end
 
 GEMSPEC = Gem::Specification.new{|s|
   s.name         = 'ramaze'
