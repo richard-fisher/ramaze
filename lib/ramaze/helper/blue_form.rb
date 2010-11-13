@@ -4,35 +4,78 @@ require 'ramaze/gestalt'
 module Ramaze
   module Helper
     ##
+    # == Introduction
+    # 
     # The BlueForm helper tries to be an even better way to build forms programmatically.
     # By using a simple block you can quickly create all the required elements for your form.
-    # 
-    # When using the form helper as a block in your templates it's important to remember that the
-    # result is returned and not displayed in the browser. This means you'll have to output the results
-    # yourself. When using Etanni this would result in something like the following:
     #
-    # #{
-    #   form(:method => :post) do |f| do
-    #     f.input_text 'Text label', :textname, 'Chunky bacon!'
-    #   end
-    # }
+    # Since November 2010 the BlueForm helper works different. You can now specify an object as the first
+    # parameter of the form() method. This object will be used to retrieve the values of each field.
+    # This means that you can directly pass a database result object to the form and no longer have
+    # to manually specify values. However, you can still specify your own values if you want.
+    #
+    # Old behaviour:
+    #
+    #  form(:method => :post) do |f|
+    #    f.input_text 'Username', :username, 'Chuck Norris'
+    #  end
+    #
+    # New behaviour:
+    #
+    #  # @data is an object that contains an instance variable named "username".
+    #  # This variable contains the value "Chuck Norris".
+    #  form(@data, :method => :post) do |f|
+    #    f.input_text 'Username', :username
+    #  end
+    #
+    # == Form Data
+    #
+    # As stated earlier it's possible to pass an object to the form() method. What kind of object this is,
+    # a database result object or an OpenStruct object doesn't matter as long as the attributes can be accessed
+    # outside of the object (this can be done using attr_readers). This makes it extremely easy to directly pass
+    # a result object from your favourite ORM. Example:
+    #
+    #  @data = User[1]
+    #
+    #  form(@data, :method => :post) do |f|
+    #    f.input_text 'Username', :username
+    #  end
+    #
+    # If you don't want to use an object you can simply set the first parameter to nil.
+    #
+    # == HTML Output
+    # 
+    # The form helper uses Gestalt, Ramaze's custom HTML builder that works somewhat like Erector.
+    # The output is very minimalistic, elements such as legends and fieldsets have to be added manually.
+    # Each combination of a label and input element will be wrapped in <p> tags.
+    #
+    # When using the form helper as a block in your templates it's important to remember that the
+    # result is returned and not displayed in the browser directly. When using Etanni this would result in
+    # something like the following:
+    #
+    #  #{
+    #    form(@result, :method => :post) do |f| do
+    #      f.input_text 'Text label', :textname, 'Chunky bacon!'
+    #    end
+    #  }
     # 
     # @example
     #
-    #   form(:method => :post) do |f|
-    #     f.input_text 'This is the label of the text input', :name, 'The value goes in here'
-    #   end
+    #  form(@data, :method => :post) do |f|
+    #    f.input_text 'Username', :username
+    #  end
     #
     module BlueForm
       ##
       # The form method generates the basic structure of the form. It should be called
       # using a block and it's return value should be manually sent to the browser (since it does not echo the value).
       #
+      # @param [Object] form_values Object containing the values for each form field.
       # @param [Hash] options Hash containing any additional form attributes such as the method, action, enctype and so on.
       # @param [Block] block Block containing the elements of the form such as password fields, textareas and so on. 
       #
-      def form(options = {}, &block)
-        form = Form.new(options)
+      def form(form_values, options = {}, &block)
+        form = Form.new(form_values, options)
         form.build(form_errors, &block)
         form
       end
@@ -54,7 +97,7 @@ module Ramaze
       end
 
       ##
-      # TODO:  Describe the form_errors method since I (Yorick) am not too sure what it does.
+      # Display all form errors.
       #
       def form_errors
         if respond_to?(:flash)
@@ -82,32 +125,33 @@ module Ramaze
       #
       class Form
         attr_reader :g
+        attr_reader :form_values
 
         ##
         # Constructor method that generates an instance of the Form class.
         #
+        # @param [Object] form_values Object containing the values for each form field.
         # @param [Hash] options A hash containing any additional form attributes.
         # @return [Object] An instance of the Form class.
         #
-        def initialize(options)
-          @form_args = options.dup
-          @g = Gestalt.new
+        def initialize(form_values, options)
+          @form_values  = form_values
+          @form_args    = options.dup
+          @g            = Gestalt.new
         end
 
         ##
-        # Generate the form output.
+        # Builds the form by generating the opening/closing tags and executing
+        # the methods in the block.
         #
         # @param [Hash] form_errors Hash containing all form errors (if any).
-        # TODO:  Imrpove the docs of this method since I (Yorick) am not entirely sure what it does.
         #
         def build(form_errors = {})
           @form_errors = form_errors
 
           @g.form(@form_args) do
             if block_given?
-              @g.fieldset do
-                yield self
-              end
+              yield self
             end
           end
         end
@@ -132,18 +176,21 @@ module Ramaze
         # 
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the text field.
-        # @param [String] value The value of the text field.
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
         #   form(:method => :post) do |f|
-        #     f.input_text 'Username', :username, 'Yorick Peterse', :id => 'str_username', :style => 'border: 1px solid pink;'
+        #     f.input_text 'Username', :username, :id => 'str_username', :style => 'border: 1px solid pink;'
         #   end
         #
-        def input_text(label, name, value = nil, args = {})
-          id           = id_for(name)
-          args         = args.merge(:type => :text, :name => name, :id => id)
-          args[:value] = value unless value.nil?
+        def input_text(label, name, args = {})
+          # The ID can come from 2 places, id_for and the args hash
+          id   = args[:id] ? args[:id] : id_for(name)
+          args = args.merge(:type => :text, :name => name, :id => id)
+
+          if !args[:value] and @form_values.respond_to?(name)
+            args[:value] = @form_values.send(name)
+          end
 
           @g.p do
             label_for(id, label, name)
@@ -155,19 +202,21 @@ module Ramaze
         ##
         # Generate an input tag with a type of "password" along with a label.
         # Password fields are pretty much the same as text fields except that the content of these fields is replaced with dots.
-        #
         # This method has the following alias: "password".
         #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the password field.
-        # @param [String] value The value of the password field.
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
-        def input_password(label, name, value = nil, args = {})
-          id           = id_for(name)
-          args         = args.merge(:type => :password, :name => name, :id => id)
-          args[:value] = value unless value.nil?
-
+        def input_password(label, name, args = {})
+          # The ID can come from 2 places, id_for and the args hash
+          id   = args[:id] ? args[:id] : id_for(name)
+          args = args.merge(:type => :password, :name => name, :id => id)
+          
+          if !args[:value] and @form_values.respond_to?(name)
+            args[:value] = @form_values.send(name)
+          end
+          
           @g.p do
             label_for(id, label, name)
             @g.input(args)
@@ -178,8 +227,6 @@ module Ramaze
         ##
         # Generate a submit tag (without a label). A submit tag is a button that once it's clicked
         # will send the form data to the server.
-        #
-        # This method has the following alias: "submit".
         #
         # @param [String] value The text to display in the button.
         # @param [Hash] args Any additional HTML attributes along with their values.
@@ -195,9 +242,9 @@ module Ramaze
         alias submit input_submit
 
         ##
-        # Generate an input tag with a type of "checkbox".
-        #
-        # This method has the following alias: "checkbox".
+        # Generate an input tag with a type of "checkbox". This method will also
+        # generate a hidden field with the same name as the checkbox to ensure
+        # that the data is always submitted.
         #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the checkbox.
@@ -205,66 +252,82 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
         def input_checkbox(label, name, checked = false, args = {})
-          id = id_for(name)
-          args = {:type => :checkbox, :name => name, :id => id}
-          args[:checked] = 'checked' if checked
+          id = args[:id] ? args[:id] : id_for(name)
+
+          # Get the default value for the checkbox used for the hidden field.
+          if args[:default]
+            default = args[:default]
+            args.delete(:default)
+          else
+            default = 0
+          end
+
+          # Parse the additional arguments
+          args            = args.merge(:type => :checkbox, :name => name, :id => id)
+          args[:checked]  = 'checked' if checked
+          
+          if !args[:value] and @form_values.respond_to?(name)
+            args[:value] = @form_values.send(name)
+          end
 
           @g.p do
             label_for(id, label, name)
+            self.input_hidden(name, default)
             @g.input(args)
           end
         end
         alias checkbox input_checkbox
 
         ##
-        # Generate an input tag with a type of "radio".
+        # Generate an input tag with a type of "radio". This method will also
+        # generate a hidden field with the same name as the radio button to ensure
+        # that the data is always submitted.
         #
-        # This method has the following alias: "radio".
+        # Please note that you can no longer use an array or hash to generate multiple
+        # radio buttons. This method has been removed since <select> tags are better
+        # for that type of behaviour.
         #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the radio tag.
-        # @param [Array] values Array containing the values for each radio tag.
-        # @param [Hash] options Any additional HTML attributes along with their values.
+        # @param [Bool] checked Boolean that indicates if the checkbox is checked or not.
+        # @param [Hash] args Any additional HTML attributes along with their values.
         #
-        def input_radio(label, name, values, options = {})
-          has_checked, checked = options.key?(:checked), options[:checked]
+        def input_radio(label, name, checked, args = {})
+          id = args[:id] ? args[:id] : id_for(name)
+
+          # Get the default value for the radio used for the hidden field.
+          if args[:default]
+            default = args[:default]
+            args.delete(:default)
+          else
+            default = 0
+          end
+
+          # Parse the additional arguments
+          args            = args.merge(:type => :radio, :name => name, :id => id)
+          args[:checked]  = 'checked' if checked
+          
+          if !args[:value] and @form_values.respond_to?(name)
+            args[:value] = @form_values.send(name)
+          end
 
           @g.p do
-            values.each_with_index do |(value, o_name), index|
-              o_name ||= value
-              id = id_for("#{name}-#{index}")
-
-              o_args = {:type => :radio, :value => value, :id => id, :name => name}
-              o_args[:checked] = 'checked' if has_checked && value == checked
-
-              if error = @form_errors.delete(name.to_s)
-                @g.label(:for => id){
-                  @g.span(:class => :error){ error }
-                  @g.input(o_args)
-                  @g.out << o_name
-                }
-              else
-                @g.label(:for => id){
-                  @g.input(o_args)
-                  @g.out << o_name
-                }
-              end
-            end
+            label_for(id, label, name)
+            self.input_hidden(name, default)
+            @g.input(args)
           end
         end
         alias radio input_radio
 
         ##
         # Generate a field for uploading files.
-        #
-        # This method has the following alias: "file".
         # 
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the radio tag.
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
         def input_file(label, name, args = {})
-          id   = id_for(name)
+          id   = args[:id] ? args[:id] : id_for(name)
           args = args.merge(:type => :file, :name => name, :id => id)
 
           @g.p do
@@ -275,18 +338,21 @@ module Ramaze
         alias file input_file
 
         ##
-        # Generate a hidden field. Hidden fields are essentially the same as text fields except that they aren't displayed
-        # in the browser.
-        #
-        # This method has the following alias: "hidden".
+        # Generate a hidden field. Hidden fields are essentially the same as text fields
+        # except that they aren't displayed in the browser.
         #
         # @param [String Symbol] name The name of the hidden field tag.
         # @param [String] value The value of the hidden field
         # @param [Hash] args Any additional HTML attributes along with their values.
         # 
         def input_hidden(name, value = nil, args = {})
-          args         = args.merge(:type => :hidden, :name => name)
-          args[:value] = value.to_s unless value.nil?
+          args = args.merge(:type => :hidden, :name => name)
+          
+          if !value and @form_values.respond_to?(name)
+            args[:value] = @form_values.send(name)
+          else
+            args[:value] = value
+          end
 
           @g.input(args)
         end
@@ -297,11 +363,19 @@ module Ramaze
         #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the textarea.
-        # @param [String] value The value of the textarea.
         # @param [Hash] args Any additional HTML attributes along with their values.
         #
-        def textarea(label, name, value = nil, args = {})
-          id   = id_for(name)
+        def textarea(label, name, args = {})
+          id = args[:id] ? args[:id] : id_for(name)
+          
+          # Get the value of the textarea
+          if !args[:value] and @form_values.respond_to?(name)
+            value = @form_values.send(name)
+          else
+            value = args[:value]
+            args.delete(:value)
+          end
+          
           args = args.merge(:name => name, :id => id)
 
           @g.p do
@@ -315,19 +389,28 @@ module Ramaze
         # 
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the select tag.
-        # @param [Array] values Array containing the values for each option tag.
-        # @param [Hash] options Hash containing additional HTML attributes.
+        # @param [Hash] args Hash containing additional HTML attributes.
         #
-        def select(label, name, values, options = {})
-          id             = id_for(name)
-          multiple, size = options.values_at(:multiple, :size)
+        def select(label, name, args = {})
+          id              = args[:id] ? args[:id] : id_for(name)
+          multiple, size  = args.values_at(:multiple, :size)
 
-          args = {:id => id}
           args[:multiple] = 'multiple' if multiple
-          args[:size] = (size || multiple || 1).to_i
-          args[:name] = multiple ? "#{name}[]" : name
+          args[:size]     = (size || multiple || 1).to_i
+          args[:name]     = multiple ? "#{name}[]" : name
+          args            = args.merge(:id => id)
+          
+          # Get all the values
+          if !args[:values] and @form_values.respond_to?(name)
+            values = @form_values.send(name)
+          else
+            values = args[:values]
+            args.delete(:values)
+          end
 
-          has_selected, selected = options.key?(:selected), options[:selected]
+          # Retrieve the selected value
+          has_selected, selected = args.key?(:selected), args[:selected]
+          args.delete(:selected)
 
           @g.p do
             label_for(id, label, name)
@@ -344,6 +427,8 @@ module Ramaze
 
         ##
         # Method used for converting the results of the BlueForm helper to a string
+        #
+        # @return [String] The form output
         #
         def to_s
           @g.to_s
@@ -369,7 +454,8 @@ module Ramaze
         ##
         # Generate a value for an ID tag based on the field's name.
         #
-        # @param [String] field_name The name of the field.
+        # @param  [String] field_name The name of the field.
+        # @return [String] The ID for the specified field name.
         #
         def id_for(field_name)
           if name = @form_args[:name]
