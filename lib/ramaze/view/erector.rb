@@ -18,7 +18,7 @@ module Ramaze
     #
     # Using helper methods, such as the render_* methods is also possible although slightly different than you're used to. Due to the way
     # the Erector adapter works it isn't possible to directly call a helper method. As a workaround you can access these methods from the 
-    # @controller instance variable. Don't forget to render the output of these helpers using rawtext(). Feel free to submit any patches if you
+    # "@controller" instance variable. Don't forget to render the output of these helpers using rawtext(). Feel free to submit any patches if you
     # think you have a better solution so that developers don't have to use the @controller instance variable.
     #
     # @example
@@ -52,7 +52,6 @@ module Ramaze
     #   end
     #
     # @author  Yorick Peterse
-    # @license Ruby License
     #
     module Erector
       # Include the Erector gem. By doing this Erector views can extend the Erector gem without

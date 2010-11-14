@@ -97,7 +97,11 @@ module Ramaze
       end
 
       ##
-      # Display all form errors.
+      # Display all form errors. Form errors can be retrieved from two locations. The flashdata
+      # and from an instance variable called "form_errors". The latter will be used when sessions
+      # are disabled or the flash() method can't be used.
+      #
+      # @return [Array] All form errors.
       #
       def form_errors
         if respond_to?(:flash)
@@ -113,8 +117,10 @@ module Ramaze
       # @param [Object] obj An object of a model that contains form errors.
       #
       def form_errors_from_model(obj)
-        obj.errors.each do |key, value|
-          form_error(key.to_s, value.first % key)
+        if obj.respond_to?(:errors)
+          obj.errors.each do |key, value|
+            form_error(key.to_s, value.first % key)
+          end
         end
       end
 
@@ -162,12 +168,28 @@ module Ramaze
         # @param [String] text The text to display inside the legend tag.
         # @example
         # 
-        #   form(:method => :post) do |f|
+        #   form(@data, :method => :post) do |f|
         #     f.legend 'Ramaze rocks!'
         #   end
         #
         def legend(text)
           @g.legend(text)
+        end
+        
+        ##
+        # Generate a fieldset tag.
+        #
+        # @param [Block] &block The form elements to display inside the fieldset.
+        # @example
+        #  
+        #  form(@data, :method => :post) do |f|
+        #    f.fieldset do
+        #      f.legend 'Hello, world!'
+        #    end
+        #  end
+        #
+        def fieldset(&block)
+          @g.fieldset(block)
         end
 
         ##
@@ -179,8 +201,8 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
-        #   form(:method => :post) do |f|
-        #     f.input_text 'Username', :username, :id => 'str_username', :style => 'border: 1px solid pink;'
+        #   form(@data, :method => :post) do |f|
+        #     f.input_text 'Username', :username
         #   end
         #
         def input_text(label, name, args = {})
@@ -207,6 +229,11 @@ module Ramaze
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the password field.
         # @param [Hash] args Any additional HTML attributes along with their values.
+        # @example
+        # 
+        #  form(@data, :method => :post) do |f|
+        #    f.input_password 'My password', :password
+        #  end
         #
         def input_password(label, name, args = {})
           # The ID can come from 2 places, id_for and the args hash
@@ -230,6 +257,11 @@ module Ramaze
         #
         # @param [String] value The text to display in the button.
         # @param [Hash] args Any additional HTML attributes along with their values.
+        # @example
+        #
+        #  form(@data, :method => :post) do |f|
+        #    f.input_submit 'Save'
+        #  end
         #
         def input_submit(value = nil, args = {})
           args         = args.merge(:type => :submit)
@@ -246,10 +278,18 @@ module Ramaze
         # generate a hidden field with the same name as the checkbox to ensure
         # that the data is always submitted.
         #
+        # If you don't want a label (when displaying multiple radio buttons), simply set
+        # the first parameter to nil.
+        #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the checkbox.
         # @param [Bool] checked Boolean that indicates if the checkbox is checked or not.
         # @param [Hash] args Any additional HTML attributes along with their values.
+        # @example
+        #
+        #  form(@data, :method => :post) do |f|
+        #    f.input_checkbox 'Remember me', :remember_user
+        #  end
         #
         def input_checkbox(label, name, checked = false, args = {})
           id = args[:id] ? args[:id] : id_for(name)
@@ -271,7 +311,7 @@ module Ramaze
           end
 
           @g.p do
-            label_for(id, label, name)
+            label_for(id, label, name) unless label.nil?
             self.input_hidden(name, default)
             @g.input(args)
           end
@@ -287,10 +327,19 @@ module Ramaze
         # radio buttons. This method has been removed since <select> tags are better
         # for that type of behaviour.
         #
+        # If you don't want a label (when displaying multiple radio buttons), simply set
+        # the first parameter to nil.
+        #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the radio tag.
         # @param [Bool] checked Boolean that indicates if the checkbox is checked or not.
         # @param [Hash] args Any additional HTML attributes along with their values.
+        # @example
+        # 
+        #  form(@data, :method => :post) do |f|
+        #    f.input_radio 'Gender', :gender
+        #  end
+        #
         #
         def input_radio(label, name, checked, args = {})
           id = args[:id] ? args[:id] : id_for(name)
@@ -312,7 +361,7 @@ module Ramaze
           end
 
           @g.p do
-            label_for(id, label, name)
+            label_for(id, label, name) unless label.nil?
             self.input_hidden(name, default)
             @g.input(args)
           end
@@ -325,6 +374,11 @@ module Ramaze
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the radio tag.
         # @param [Hash] args Any additional HTML attributes along with their values.
+        # @example
+        #
+        #  form(@data, :method => :post) do |f|
+        #    f.input_file 'Image', :image
+        #  end
         #
         def input_file(label, name, args = {})
           id   = args[:id] ? args[:id] : id_for(name)
@@ -344,6 +398,11 @@ module Ramaze
         # @param [String Symbol] name The name of the hidden field tag.
         # @param [String] value The value of the hidden field
         # @param [Hash] args Any additional HTML attributes along with their values.
+        # @example
+        #
+        #  form(@data, :method => :post) do |f|
+        #    f.input_hidden :user_id
+        #  end
         # 
         def input_hidden(name, value = nil, args = {})
           args = args.merge(:type => :hidden, :name => name)
@@ -364,6 +423,11 @@ module Ramaze
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the textarea.
         # @param [Hash] args Any additional HTML attributes along with their values.
+        # @example
+        #
+        #  form(@data, :method => :post) do |f|
+        #    f.textarea 'Description', :description
+        #  end
         #
         def textarea(label, name, args = {})
           id = args[:id] ? args[:id] : id_for(name)
@@ -390,6 +454,11 @@ module Ramaze
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the select tag.
         # @param [Hash] args Hash containing additional HTML attributes.
+        # @example
+        #
+        #  form(@data, :method => :post) do |f|
+        #    f.select 'Country', :country_list
+        #  end
         #
         def select(label, name, args = {})
           id              = args[:id] ? args[:id] : id_for(name)
