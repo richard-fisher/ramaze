@@ -10,14 +10,13 @@ require 'ramaze/helper/csrf'
 # - Yorick Peterse
 #
 class SpecHelperCSRF < Ramaze::Controller
+  
   engine :none
   helper :csrf
   
   before_all do
-    if request.env['REQUEST_METHOD'] == 'POST'
-      if validate_csrf_token(request.params['csrf_token']) != true
-        respond("The specified CSRF token is incorrect.", 401)
-      end
+    csrf_protection :check_post, :protect_me do
+      respond("The specified CSRF token is incorrect.", 401)
     end
   end
 
@@ -55,6 +54,9 @@ end
 describe Ramaze::Helper::CSRF do
   behaves_like :rack_test
   
+  # ------------------------------------------------
+  # General validation
+  
   it 'Generate a new CSRF token' do
     got = get '/'
     
@@ -68,6 +70,9 @@ describe Ramaze::Helper::CSRF do
     got.status.should.equal 200
     got.body.length.should.equal 128
   end
+  
+  # ------------------------------------------------
+  # Validate the token expiration
   
   it 'Check if the token is regenerated (it shouldn\'t)' do
     got = get '/dont_regenerate'
@@ -83,18 +88,22 @@ describe Ramaze::Helper::CSRF do
     $old_token.should.not.equal $new_token
   end
   
-  it 'Send an invalid POST request' do
-    got = post '/check_post', :name => "Yorick Peterse"
-    
-    got.status.should.equal 401
-    got.body.should.equal "The specified CSRF token is incorrect."
-  end
+  # ------------------------------------------------
+  # Validate all HTTP requests (GET, POST, etc)     
   
-  it 'Send a valid POST request' do
-    got = post '/check_post', :csrf_token => $new_token
+  it 'Validate all HTTP requests (GET, POST, etc)' do
+    methods = [:get, :post, :put, :delete]
     
-    got.status.should.equal 200
-    got.body.should.equal "POST allowed."
+    methods.each do |method|
+      got_invalid = self.send(method, '/check_post', :name => "Yorick Peterse")
+      got_valid   = self.send(method, '/check_post', :csrf_token => $new_token)
+
+      got_invalid.status.should.equal 401
+      got_invalid.body.should.equal "The specified CSRF token is incorrect."
+      
+      got_valid.status.should.equal 200
+      got_valid.body.should.equal "POST allowed."
+    end
   end
   
 end

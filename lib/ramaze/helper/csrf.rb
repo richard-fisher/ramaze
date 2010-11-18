@@ -6,9 +6,9 @@ module Ramaze
     ##
     # A relatively basic yet useful helper that can be used to protect your application
     # from CSRF attacks/exploits. Note that this helper merely generates the required data,
-    # you still need to manually add the token to each form and validate the token yourself.
+    # and provides several methods. You still need to manually add the token to each form.
     #
-    # The reason for this is because this is quite simple. Ramaze is ment as a framework that
+    # The reason for this is because this is quite simple. Ramaze is meant as a framework that
     # works with any given helper, ORM, template engine and so on. If we were to automatically
     # load this helper and include (a perhaps more advanced) CSRF system that would mean that
     # every form helper, official or third-party, would have to support that specific system.
@@ -30,39 +30,38 @@ module Ramaze
     #
     #  class BaseController < Ramaze::Controller
     #    before_all do
-    #      if request.env['REQUEST_METHOD'] == 'POST'
-    #        # ...
+    #      csrf_protection :save do
+    #        # ....
     #      end
     #    end
     #  end
     #
-    # This example introduces an extra if/end block that checks if the current request method
-    # is a POST method. Whenever a user requests a controller that either extends BaseController
-    # or has it's own before_all block Ramaze will check if the current request method matches "post".
+    # This example introduces an extra block that validates the current request.
+    # Whenever a user requests a controller that either extends BaseController or has it's own
+    # before_all block Ramaze will check if the current request data contains a CSRF token.
     # Of course an if/end isn't very useful if it doesn't do anything, let's add some code.
     #
     #  class BaseController < Ramaze::Controller
     #    before_all do
-    #      if request.env['REQUEST_METHOD'] == 'POST'
-    #        if validate_csrf_token(request.params['csrf_token']) != true
-    #          puts "The request is invalid"
-    #        end
+    #      csrf_protection :save do
+    #        puts "Hello, unsafe data!"
     #      end
     #    end
     #  end
     #
-    # The code above will check if the current request method matches "post". If this is the case
-    # it will also use the validate_csrf_token() method to check if the token stored in "csrf_token"
-    # is valid. If this isn't the case a message will be shown in the console. As you can see it's
-    # really easy to add CSRF protection using only a few lines of code. If you're lazy (and you probably are)
-    # you can simply copy-paste the example below and adapt it to your needs.
+    # The code above checks if the current method is "save" (or any other of the provided methods)
+    # and checks if an CSRF token is supplied if the method matches. Protected methods require
+    # a token in ALL HTTP requests (GET, POST, etc). While this may seem weird since GET is generally
+    # used for safe actions it actually makes sence. Ramaze stores both the POST and GET parameters in
+    # the request.params hash. While this makes it easy to work with POST/GET data this also makes it
+    # easier to spoof POST requests using a GET request, thus this helper protects ALL request methods.
+    #
+    # If you're a lazy person you can copy-paste the example below and adapt it to your needs.
     #
     #  class BaseController < Ramaze::Controller
     #    before_all do
-    #      if request.env['REQUEST_METHOD'] == 'POST'
-    #        if validate_csrf_token(request.params['csrf_token']) != true
-    #          respond "The specified CSRF token is incorrect.", 401
-    #        end
+    #      csrf_protection :save do
+    #        respond("The supplied CSRF token is invalid.", 401)
     #      end
     #    end
     #  end
@@ -70,6 +69,35 @@ module Ramaze
     # @author Yorick Peterse
     #
     module CSRF
+      
+      ##
+      # Method that can be used to protect the specified methods against CSRF exploits.
+      # Each protected method will require the token to be stored in a field called "csrf_token".
+      # This method will then validate that token against the current token in the session.
+      #
+      # @author Yorick Peterse
+      # @param  [Strings/Symbol] *methods Methods that will be protected/unprotected.
+      # @param  [Block] Block that will be executed if the token is invalid.
+      # @example
+      #
+      #  # Protect "create" and "save" against CSRF exploits
+      #  before_all do
+      #    csrf_protection :create, :save do
+      #      respond("GET TO DA CHOPPA!", 401)
+      #    end
+      #  end
+      #
+      def csrf_protection *methods, &block
+        # Only protect the specified methods
+        if methods.include?(action.name) or methods.include?(action.name.to_sym)
+          # THINK: For now the field name is hard-coded to "csrf_token". While
+          # this is perfectly fine in most cases it might be a good idea
+          # to allow developers to change the name of this field (for whatever the reason).
+          if validate_csrf_token(request.params['csrf_token']) != true
+            yield
+          end
+        end
+      end
       
       ##
       # Generate a new token and create the session array that will be used to validate the client.
@@ -141,6 +169,7 @@ module Ramaze
           self.generate_csrf_token
         end
         
+        # Land ho!
         return session[:_csrf][:token]
       end
       
@@ -161,12 +190,13 @@ module Ramaze
       #
       #  before_all do
       #    if validate_csrf_token(request.params['csrf_token']) != true
-      #      respond "Invalid CSRF token", 401
+      #      respond("Invalid CSRF token", 401)
       #    end
       #  end
       #
       def validate_csrf_token input_token
-        # Check if the CSRF data has been generated
+        # Check if the CSRF data has been generated and generate it if this
+        # hasn't been done already (usually on the first request).
         if !session[:_csrf] or session[:_csrf].empty?
           self.generate_csrf_token
         end
@@ -181,7 +211,7 @@ module Ramaze
         token_time  = session[:_csrf][:time]
         
         # Mirror mirror on the wall, who's the most secure of them all?
-        results = Array.new
+        results     = Array.new
         results.push( session[:_csrf][:token] == input_token )
         results.push( (now  - token_time) <= session[:_csrf][:ttl] )
         results.push( host  == request.env['REMOTE_HOST'] )
