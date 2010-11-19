@@ -10,13 +10,13 @@ module Ramaze
     # By using a simple block you can quickly create all the required elements for your form.
     #
     # Since November 2010 the BlueForm helper works different. You can now specify an object as the first
-    # parameter of the form() method. This object will be used to retrieve the values of each field.
+    # parameter of the form_for() method. This object will be used to retrieve the values of each field.
     # This means that you can directly pass a database result object to the form and no longer have
     # to manually specify values. However, you can still specify your own values if you want.
     #
     # Old behaviour:
     #
-    #  form(:method => :post) do |f|
+    #  form_for(:method => :post) do |f|
     #    f.input_text 'Username', :username, 'Chuck Norris'
     #  end
     #
@@ -24,20 +24,20 @@ module Ramaze
     #
     #  # @data is an object that contains an instance variable named "username".
     #  # This variable contains the value "Chuck Norris".
-    #  form(@data, :method => :post) do |f|
+    #  form_for(@data, :method => :post) do |f|
     #    f.input_text 'Username', :username
     #  end
     #
     # == Form Data
     #
-    # As stated earlier it's possible to pass an object to the form() method. What kind of object this is,
+    # As stated earlier it's possible to pass an object to the form_for() method. What kind of object this is,
     # a database result object or an OpenStruct object doesn't matter as long as the attributes can be accessed
     # outside of the object (this can be done using attr_readers). This makes it extremely easy to directly pass
     # a result object from your favourite ORM. Example:
     #
     #  @data = User[1]
     #
-    #  form(@data, :method => :post) do |f|
+    #  form_for(@data, :method => :post) do |f|
     #    f.input_text 'Username', :username
     #  end
     #
@@ -54,14 +54,14 @@ module Ramaze
     # something like the following:
     #
     #  #{
-    #    form(@result, :method => :post) do |f| do
+    #    form_for(@result, :method => :post) do |f| do
     #      f.input_text 'Text label', :textname, 'Chunky bacon!'
     #    end
     #  }
     # 
     # @example
     #
-    #  form(@data, :method => :post) do |f|
+    #  form_for(@data, :method => :post) do |f|
     #    f.input_text 'Username', :username
     #  end
     #
@@ -74,7 +74,7 @@ module Ramaze
       # @param [Hash] options Hash containing any additional form attributes such as the method, action, enctype and so on.
       # @param [Block] block Block containing the elements of the form such as password fields, textareas and so on. 
       #
-      def form(form_values, options = {}, &block)
+      def form_for(form_values, options = {}, &block)
         form = Form.new(form_values, options)
         form.build(form_errors, &block)
         form
@@ -168,7 +168,7 @@ module Ramaze
         # @param [String] text The text to display inside the legend tag.
         # @example
         # 
-        #   form(@data, :method => :post) do |f|
+        #   form_for(@data, :method => :post) do |f|
         #     f.legend 'Ramaze rocks!'
         #   end
         #
@@ -182,7 +182,7 @@ module Ramaze
         # @param [Block] &block The form elements to display inside the fieldset.
         # @example
         #  
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.fieldset do
         #      f.legend 'Hello, world!'
         #    end
@@ -201,7 +201,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
-        #   form(@data, :method => :post) do |f|
+        #   form_for(@data, :method => :post) do |f|
         #     f.input_text 'Username', :username
         #   end
         #
@@ -231,7 +231,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         # 
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.input_password 'My password', :password
         #  end
         #
@@ -259,7 +259,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.input_submit 'Save'
         #  end
         #
@@ -287,7 +287,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.input_checkbox 'Remember me', :remember_user
         #  end
         #
@@ -336,7 +336,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         # 
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.input_radio 'Gender', :gender
         #  end
         #
@@ -376,7 +376,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.input_file 'Image', :image
         #  end
         #
@@ -400,7 +400,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.input_hidden :user_id
         #  end
         # 
@@ -425,7 +425,7 @@ module Ramaze
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.textarea 'Description', :description
         #  end
         #
@@ -456,7 +456,7 @@ module Ramaze
         # @param [Hash] args Hash containing additional HTML attributes.
         # @example
         #
-        #  form(@data, :method => :post) do |f|
+        #  form_for(@data, :method => :post) do |f|
         #    f.select 'Country', :country_list
         #  end
         #
