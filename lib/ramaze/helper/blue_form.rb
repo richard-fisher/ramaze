@@ -278,12 +278,29 @@ module Ramaze
         # generate a hidden field with the same name as the checkbox to ensure
         # that the data is always submitted.
         #
-        # If you don't want a label (when displaying multiple radio buttons), simply set
-        # the first parameter to nil.
+        # If you want to have multiple checkboxes you can either use an array or a hash.
+        # In the case of an array the values will also be used as text for each checkbox.
+        # When using a hash the key will be displayed and the value will be the value of the
+        # checkbox. Example:
+        #
+        #  @data = Class.new
+        #    attr_reader :gender_arr
+        #    attr_reader :gender_hash
+        #
+        #    def initialize
+        #      @gender_arr  = ['male', 'female']
+        #      @gender_hash = {"Male" => "male", "Female" => "female"}
+        #    end
+        #  end.new
+        #
+        #  form_for(@data, :method => :post) do |f|
+        #    f.input_checkbox "Gender", :gender_arr
+        #    f.input_checkbox "Gender", :gender_hash
+        #  end
         #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the checkbox.
-        # @param [Bool] checked Boolean that indicates if the checkbox is checked or not.
+        # @param [String] checked String that indicates if (and which) checkbox should be checked.
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
         #
@@ -291,8 +308,8 @@ module Ramaze
         #    f.input_checkbox 'Remember me', :remember_user
         #  end
         #
-        def input_checkbox(label, name, checked = false, args = {})
-          id = args[:id] ? args[:id] : id_for(name)
+        def input_checkbox(label, name, checked = nil, args = {})
+          id = args[:id] ? args[:id] : "#{id_for(name)}_0"
 
           # Get the default value for the checkbox used for the hidden field.
           if args[:default]
@@ -302,18 +319,77 @@ module Ramaze
             default = 0
           end
 
-          # Parse the additional arguments
-          args            = args.merge(:type => :checkbox, :name => name, :id => id)
-          args[:checked]  = 'checked' if checked
-          
-          if !args[:value] and @form_values.respond_to?(name)
-            args[:value] = @form_values.send(name)
+          # Get the checkbox value from either the args hash or from
+          # the form object (as specified in the form_for() method).
+          if !args[:values] and @form_values.respond_to?(name)
+            args[:values] = @form_values.send(name)
           end
+          
+          # That class for each element wrapper (a span tag) can be customized
+          # using :span_class => "a_class".
+          if args[:span_class]
+            span_class = args[:span_class]
+            args.delete(:span_class)
+          else
+            span_class = "checkbox_wrap"
+          end
+          
+          # Get the type from the args hash instead of pre-defining it. Doing so means we can use
+          # this method for the input_radio method.
+          if !args[:type]
+            args[:type] = :checkbox
+          end
+          
+          # Create a checkbox for each value
+          if !args[:values].empty?
+            @g.p do
+              # Let's create the label and the hidden field
+              label_for(id, label, name)
+              self.input_hidden(name, default)
+              
+              # Loop through all the values. Each checkbox will have an ID of "form-NAME-INDEX".
+              # Each name will be NAME followed by [] to indicate it's an array (since multiple values are possible).
+              args[:values].each_with_index do |value, index|
+                id            = args[:id] ? args[:id] : "#{id_for(name)}_#{index}"
+                
+                if args[:type] == :checkbox
+                  checkbox_name = "#{name}[]"
+                else
+                  checkbox_name = name
+                end
+                
+                # Copy all additional attributes and their values except the values array.
+                opts = args.clone 
+                opts.delete(:values)
 
-          @g.p do
-            label_for(id, label, name) unless label.nil?
-            self.input_hidden(name, default)
-            @g.input(args)
+                # Get the value and text to display for each checkbox
+                if value.class == Array
+                  checkbox_text  = value[0]
+                  checkbox_value = value[1]
+                else
+                  checkbox_text = checkbox_value = value
+                end
+
+                # Let's see if the current item is checked
+                if checkbox_value === checked
+                  opts[:checked] = 'checked'
+                end
+
+                # And we're done, easy wasn't it?
+                opts = opts.merge(:name => checkbox_name, :id => id, :value => checkbox_value)
+
+                # Generate the following HTML:
+                #
+                # <span class="#{span_class}">
+                #   <input type="checkbox" name="#{checkbox_name}" id="#{id}" value="#{value}" /> #{value}
+                # </span>
+                #
+                @g.span :class => span_class do
+                  @g.input(opts)
+                  " #{checkbox_text}"
+                end
+              end
+            end
           end
         end
         alias checkbox input_checkbox
@@ -323,48 +399,44 @@ module Ramaze
         # generate a hidden field with the same name as the radio button to ensure
         # that the data is always submitted.
         #
-        # Please note that you can no longer use an array or hash to generate multiple
-        # radio buttons. This method has been removed since <select> tags are better
-        # for that type of behaviour.
+        # If you want to generate multiple radio buttons you can use an array just like
+        # you can with checkboxes. Example:
         #
-        # If you don't want a label (when displaying multiple radio buttons), simply set
-        # the first parameter to nil.
+        #  @data = Class.new
+        #    attr_reader :gender_arr
+        #    attr_reader :gender_hash
+        #
+        #    def initialize
+        #      @gender_arr  = ['male', 'female']
+        #      @gender_hash = {"Male" => "male", "Female" => "female"}
+        #    end
+        #  end.new
+        #
+        #  form_for(@data, :method => :post) do |f|
+        #    f.input_radio "Gender", :gender_arr
+        #    f.input_radio "Gender", :gender_hash
+        #  end
         #
         # @param [String] label The text to display inside the label tag.
-        # @param [String Symbol] name The name of the radio tag.
-        # @param [Bool] checked Boolean that indicates if the checkbox is checked or not.
+        # @param [String Symbol] name The name of the radio button.
+        # @param [String] checked String that indicates if (and which) radio button should be checked.
         # @param [Hash] args Any additional HTML attributes along with their values.
+        # @see input_checkbox()
         # @example
         # 
         #  form_for(@data, :method => :post) do |f|
         #    f.input_radio 'Gender', :gender
         #  end
         #
-        #
-        def input_radio(label, name, checked, args = {})
-          id = args[:id] ? args[:id] : id_for(name)
-
-          # Get the default value for the radio used for the hidden field.
-          if args[:default]
-            default = args[:default]
-            args.delete(:default)
-          else
-            default = 0
-          end
-
-          # Parse the additional arguments
-          args            = args.merge(:type => :radio, :name => name, :id => id)
-          args[:checked]  = 'checked' if checked
+        def input_radio(label, name, checked = nil, args = {})
+          # Force a type of "radio"
+          args[:type] = :radio
           
-          if !args[:value] and @form_values.respond_to?(name)
-            args[:value] = @form_values.send(name)
+          if !args[:span_class]
+            args[:span_class] = "radio_wrap"
           end
-
-          @g.p do
-            label_for(id, label, name) unless label.nil?
-            self.input_hidden(name, default)
-            @g.input(args)
-          end
+          
+          self.input_checkbox(label, name, checked, args)
         end
         alias radio input_radio
 
@@ -528,9 +600,9 @@ module Ramaze
         #
         def id_for(field_name)
           if name = @form_args[:name]
-            "#{name}-#{field_name}".downcase.gsub(/_/, '-')
+            "#{name}_#{field_name}".downcase.gsub(/-/, '_')
           else
-            "form-#{field_name}".downcase.gsub(/_/, '-')
+            "form_#{field_name}".downcase.gsub(/-/, '_')
           end
         end
       end

@@ -11,6 +11,7 @@ describe BF = Ramaze::Helper::BlueForm do
     attr_reader :username
     attr_reader :password
     attr_reader :assigned
+    attr_reader :assigned_hash
     attr_reader :message
     attr_reader :servers_hash
     attr_reader :servers_array
@@ -18,14 +19,15 @@ describe BF = Ramaze::Helper::BlueForm do
     def initialize
       @username     = 'mrfoo'
       @password     = 'super-secret-password'
-      @assigned     = 'bacon'
+      @assigned     = ['bacon', 'steak']
+      @assigned_hash= {'Bacon' => 'bacon', 'Steak' => 'steak'}
       @message      = 'Hello, textarea!'
       @servers_hash = {
         :webrick => 'WEBrick',
         :mongrel => 'Mongrel',
         :thin    => 'Thin',
       }
-      @servers_array = ['WEBrick', 'Mongrel', 'Thin']
+      @servers_array  = ['WEBrick', 'Mongrel', 'Thin']
     end
   end.new
 
@@ -97,8 +99,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-username">Username</label>
-    <input type="text" name="username" id="form-username" value="mrfoo" />
+    <label for="form_username">Username</label>
+    <input type="text" name="username" id="form_username" value="mrfoo" />
   </p>
 </form>
     FORM
@@ -112,8 +114,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-username">Username</label>
-    <input type="text" name="username" id="form-username" value="mrboo" />
+    <label for="form_username">Username</label>
+    <input type="text" name="username" id="form_username" value="mrboo" />
   </p>
 </form>
     FORM
@@ -145,8 +147,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-password">Password</label>
-    <input type="password" name="password" id="form-password" />
+    <label for="form_password">Password</label>
+    <input type="password" name="password" id="form_password" />
   </p>
 </form>
     FORM
@@ -160,8 +162,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-password">Password</label>
-    <input class="password_class" type="password" name="password" id="form-password" value="super-secret-password" />
+    <label for="form_password">Password</label>
+    <input class="password_class" type="password" name="password" id="form_password" value="super-secret-password" />
   </p>
 </form>   
     FORM
@@ -203,103 +205,181 @@ describe BF = Ramaze::Helper::BlueForm do
   
   it 'Make a form with input_checkbox(label, name)' do
     out = form_for(@data, :method => :get) do |f|
-      f.input_checkbox 'Assigned', :assigned, true
+      f.input_checkbox 'Assigned', :assigned
     end
-    
+
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-assigned">Assigned</label>
+    <label for="form_assigned_0">Assigned</label>
     <input type="hidden" name="assigned" value="0" />
-    <input type="checkbox" name="assigned" id="form-assigned" checked="checked" value="bacon" />
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" value="bacon" /> bacon</span>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="steak" /> steak</span>
   </p>
 </form>
     FORM
   end
 
-  it 'Make a form with input_checkbox(label, name, checked = false)' do
+  it 'Make a form with input_checkbox(label, name, checked)' do
     out = form_for(@data, :method => :get) do |f|
-      f.input_checkbox 'Assigned', :assigned, false
+      f.input_checkbox 'Assigned', :assigned, 'bacon'
     end
     
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-assigned">Assigned</label>
+    <label for="form_assigned_0">Assigned</label>
     <input type="hidden" name="assigned" value="0" />
-    <input type="checkbox" name="assigned" id="form-assigned" value="bacon" />
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" checked="checked" value="bacon" /> bacon</span>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="steak" /> steak</span>
   </p>
 </form>
     FORM
   end
 
-  it 'Make a form with input_checkbox(label, name, checked = true)' do
+  it 'Make a form with input_checkbox(label, name, checked, values, default)' do
     out = form_for(@data, :method => :get) do |f|
-      f.input_checkbox 'Assigned', :assigned, true, :value => 'boo', :default => 'ramaze'
+      f.input_checkbox 'Assigned', :assigned, 'boo', :values => ['boo'], :default => 'ramaze'
     end
 
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-assigned">Assigned</label>
+    <label for="form_assigned_0">Assigned</label>
     <input type="hidden" name="assigned" value="ramaze" />
-    <input type="checkbox" name="assigned" id="form-assigned" checked="checked" value="boo" />
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" checked="checked" value="boo" /> boo</span>
   </p>
 </form>
     FORM
   end
   
   # ------------------------------------------------
+  # Checkboxes using a hash
+  
+  it 'Make a form with input_checkbox(label, name) using a hash' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_checkbox 'Assigned', :assigned_hash
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_hash_0">Assigned</label>
+    <input type="hidden" name="assigned_hash" value="0" />
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned_hash[]" id="form_assigned_hash_0" value="bacon" /> Bacon</span>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned_hash[]" id="form_assigned_hash_1" value="steak" /> Steak</span>
+  </p>
+</form>
+    FORM
+  end
+
+  it 'Make a form with input_checkbox(label, name, checked) using a hash' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_checkbox 'Assigned', :assigned_hash, 'bacon'
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_hash_0">Assigned</label>
+    <input type="hidden" name="assigned_hash" value="0" />
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned_hash[]" id="form_assigned_hash_0" checked="checked" value="bacon" /> Bacon</span>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned_hash[]" id="form_assigned_hash_1" value="steak" /> Steak</span>
+  </p>
+</form>
+    FORM
+  end
+
+  # ------------------------------------------------
   # Radio buttons
   
   it 'Make a form with input_radio(label, name)' do
     out = form_for(@data, :method => :get) do |f|
-      f.input_radio 'Assigned', :assigned, true
+      f.input_radio 'Assigned', :assigned
     end
     
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-assigned">Assigned</label>
+    <label for="form_assigned_0">Assigned</label>
     <input type="hidden" name="assigned" value="0" />
-    <input type="radio" name="assigned" id="form-assigned" checked="checked" value="bacon" />
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" value="bacon" /> bacon</span>
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_1" value="steak" /> steak</span>
   </p>
 </form>
     FORM
   end
 
-  it 'Make a form with input_radio(label, name, checked = false)' do
+  it 'Make a form with input_radio(label, name, checked)' do
     out = form_for(@data, :method => :get) do |f|
-      f.input_radio 'Assigned', :assigned, false
+      f.input_radio 'Assigned', :assigned, 'bacon'
     end
-    
+
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-assigned">Assigned</label>
+    <label for="form_assigned_0">Assigned</label>
     <input type="hidden" name="assigned" value="0" />
-    <input type="radio" name="assigned" id="form-assigned" value="bacon" />
-  </p>
-</form>
-    FORM
-  end
-
-  it 'Make a form with input_radio(label, name, checked = true)' do
-    out = form_for(@data, :method => :get) do |f|
-      f.input_radio 'Assigned', :assigned, true, :value => 'boo', :default => 'ramaze'
-    end
-
-    assert(<<-FORM, out)
-<form method="get">
-  <p>
-    <label for="form-assigned">Assigned</label>
-    <input type="hidden" name="assigned" value="ramaze" />
-    <input type="radio" name="assigned" id="form-assigned" checked="checked" value="boo" />
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" checked="checked" value="bacon" /> bacon</span>
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_1" value="steak" /> steak</span>
   </p>
 </form>
     FORM
   end
   
+  it 'Make a form with input_radio(label, name, checked, values, default)' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_radio 'Assigned', :assigned, 'boo', :values => ['boo'], :default => 'ramaze'
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_0">Assigned</label>
+    <input type="hidden" name="assigned" value="ramaze" />
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" checked="checked" value="boo" /> boo</span>
+  </p>
+</form>
+    FORM
+  end
+  
+  # ------------------------------------------------
+  # Radio buttons using a hash
+  
+  it 'Make a form with input_radio(label, name) using a hash' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_radio 'Assigned', :assigned_hash
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_hash_0">Assigned</label>
+    <input type="hidden" name="assigned_hash" value="0" />
+    <span class="radio_wrap"><input type="radio" name="assigned_hash" id="form_assigned_hash_0" value="bacon" /> Bacon</span>
+    <span class="radio_wrap"><input type="radio" name="assigned_hash" id="form_assigned_hash_1" value="steak" /> Steak</span>
+  </p>
+</form>
+    FORM
+  end
+
+  it 'Make a form with input_radio(label, name, checked) using a hash' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_radio 'Assigned', :assigned_hash, 'bacon'
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_hash_0">Assigned</label>
+    <input type="hidden" name="assigned_hash" value="0" />
+    <span class="radio_wrap"><input type="radio" name="assigned_hash" id="form_assigned_hash_0" checked="checked" value="bacon" /> Bacon</span>
+    <span class="radio_wrap"><input type="radio" name="assigned_hash" id="form_assigned_hash_1" value="steak" /> Steak</span>
+  </p>
+</form>
+    FORM
+  end
+
   # ------------------------------------------------
   # File uploading
   
@@ -311,8 +391,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-file">File</label>
-    <input type="file" name="file" id="form-file" />
+    <label for="form_file">File</label>
+    <input type="file" name="file" id="form_file" />
   </p>
 </form>
     FORM
@@ -371,8 +451,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-message">Message</label>
-    <textarea name="message" id="form-message">Hello, textarea!</textarea>
+    <label for="form_message">Message</label>
+    <textarea name="message" id="form_message">Hello, textarea!</textarea>
   </p>
 </form>
     FORM
@@ -386,8 +466,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-message">Message</label>
-    <textarea name="message" id="form-message">stuff</textarea>
+    <label for="form_message">Message</label>
+    <textarea name="message" id="form_message">stuff</textarea>
   </p>
 </form>
     FORM
@@ -404,8 +484,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-servers-hash">Server</label>
-    <select id="form-servers-hash" size="1" name="servers_hash">
+    <label for="form_servers_hash">Server</label>
+    <select id="form_servers_hash" size="1" name="servers_hash">
       <option value="webrick">WEBrick</option>
       <option value="mongrel">Mongrel</option>
       <option value="thin">Thin</option>
@@ -423,8 +503,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-servers-hash">Server</label>
-    <select id="form-servers-hash" size="1" name="servers_hash">
+    <label for="form_servers_hash">Server</label>
+    <select id="form_servers_hash" size="1" name="servers_hash">
       <option value="webrick">WEBrick</option>
       <option value="mongrel" selected="selected">Mongrel</option>
       <option value="thin">Thin</option>
@@ -442,8 +522,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-servers-array">Server</label>
-    <select id="form-servers-array" size="1" name="servers_array">
+    <label for="form_servers_array">Server</label>
+    <select id="form_servers_array" size="1" name="servers_array">
       <option value="WEBrick">WEBrick</option>
       <option value="Mongrel">Mongrel</option>
       <option value="Thin">Thin</option>
@@ -461,8 +541,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-servers-array">Server</label>
-    <select id="form-servers-array" size="1" name="servers_array">
+    <label for="form_servers_array">Server</label>
+    <select id="form_servers_array" size="1" name="servers_array">
       <option value="WEBrick">WEBrick</option>
       <option value="Mongrel" selected="selected">Mongrel</option>
       <option value="Thin">Thin</option>
@@ -483,8 +563,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-people-hash">People</label>
-    <select id="form-people-hash" size="1" name="people_hash">
+    <label for="form_people_hash">People</label>
+    <select id="form_people_hash" size="1" name="people_hash">
       <option value="chuck">Chuck</option>
       <option value="bob">Bob</option>
     </select>
@@ -501,8 +581,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-people-hash">People</label>
-    <select id="form-people-hash" size="1" name="people_hash">
+    <label for="form_people_hash">People</label>
+    <select id="form_people_hash" size="1" name="people_hash">
       <option value="chuck" selected="selected">Chuck</option>
       <option value="bob">Bob</option>
     </select>
@@ -519,8 +599,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-people-array">People</label>
-    <select id="form-people-array" size="1" name="people_array">
+    <label for="form_people_array">People</label>
+    <select id="form_people_array" size="1" name="people_array">
       <option value="Chuck">Chuck</option>
       <option value="Bob">Bob</option>
     </select>
@@ -537,8 +617,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-people-array">People</label>
-    <select id="form-people-array" size="1" name="people_array">
+    <label for="form_people_array">People</label>
+    <select id="form_people_array" size="1" name="people_array">
       <option value="Chuck" selected="selected">Chuck</option>
       <option value="Bob">Bob</option>
     </select>
@@ -559,8 +639,8 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <label for="form-username">Username <span class="error">May not be empty</span></label>
-    <input type="text" name="username" id="form-username" value="mrfoo" />
+    <label for="form_username">Username <span class="error">May not be empty</span></label>
+    <input type="text" name="username" id="form_username" value="mrfoo" />
   </p>
 </form>
     FORM
