@@ -340,6 +340,11 @@ module Ramaze
             args[:type] = :checkbox
           end
           
+          # Convert the values to an array if it's something we can't use in a loop (e.g. a string).
+          if args[:values].class != Hash and args[:values].class != Array
+            args[:values] = [args[:values]]
+          end
+          
           # Create a checkbox for each value
           if !args[:values].empty?
             @g.p do
