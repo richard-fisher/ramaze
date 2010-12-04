@@ -159,13 +159,7 @@ module Ramaze
       #  end
       #
       def get_csrf_token
-        # First we need to validate if the current CSRF token hasn't expired.
-        # If it has we'll need to re-generate the token.
-        now        = Time.new.to_i
-        token_time = session[:_csrf][:time]
-        
-        # And we're done
-        if !self.validate_csrf_token(session[:_csrf][:token])
+        if !session[:_csrf] or !self.validate_csrf_token(session[:_csrf][:token])
           self.generate_csrf_token
         end
         
