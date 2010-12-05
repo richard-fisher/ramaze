@@ -97,9 +97,8 @@ module Ramaze
       end
 
       ##
-      # Display all form errors. Form errors can be retrieved from two locations. The flashdata
-      # and from an instance variable called "form_errors". The latter will be used when sessions
-      # are disabled or the flash() method can't be used.
+      # Returns the hash containing all existing errors and allows other methods to set
+      # new errors by using this method as if it were a hash.
       #
       # @return [Array] All form errors.
       #
@@ -119,7 +118,11 @@ module Ramaze
       def form_errors_from_model(obj)
         if obj.respond_to?(:errors)
           obj.errors.each do |key, value|
-            form_error(key.to_s, value.first % key)
+            if value.respond_to?(:first)
+              value = value.first
+            end
+            
+            form_error(key.to_s, value % key)
           end
         end
       end

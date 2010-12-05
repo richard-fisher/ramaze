@@ -15,6 +15,7 @@ describe BF = Ramaze::Helper::BlueForm do
     attr_reader :message
     attr_reader :servers_hash
     attr_reader :servers_array
+    attr_accessor :errors
     
     def initialize
       @username     = 'mrfoo'
@@ -646,5 +647,22 @@ describe BF = Ramaze::Helper::BlueForm do
     FORM
   end
 
+  it 'Retrieve all errors messages from the model' do
+    @data.errors = {:username => "May not be empty"}
+    form_errors_from_model(@data)
+    
+    out = form_for(@data, :method => :get) do |f|
+      f.input_text 'Username', :username
+    end
+    
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_username">Username <span class="error">May not be empty</span></label>
+    <input type="text" name="username" id="form_username" value="mrfoo" />
+  </p>
+</form>
+    FORM
+  end
 
 end
