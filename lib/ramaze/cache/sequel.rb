@@ -44,16 +44,14 @@ module Ramaze
       #
       class Table < ::Sequel::Model(:ramaze_cache)
         plugin :schema
-        plugin :serialization
-
-        serialize_attributes :marshal, :value
+        plugin :serialization, :marshal, :value
 
         # Define the schema for this model
         set_schema do
           primary_key :id
           
-          String :key, :null => false, :unique => true
-          String :value
+          String :key,   :null => false, :unique => true
+          String :value, :text => true
           
           Time :expires
         end
@@ -146,14 +144,14 @@ module Ramaze
         key     = namespaced(key)
         ttl     = options[:ttl] rescue nil
         expires = Time.now + ttl if !ttl.nil?
-        record  = @store.where(:key => key)
-        
+        record  = @store[:key => key]
+
         # Figure out if the record is new or already exists
-        if record.empty?
+        if !record
           record = @store.create(:key => key, :value => value, :expires => expires)
           record.value
         else
-          record = @store[:key => key].update(:value => value, :expires => expires)
+          record = record.update(:value => value, :expires => expires)
           record.value
         end
       end
