@@ -376,7 +376,7 @@ module Ramaze
                 end
 
                 # Let's see if the current item is checked
-                if checkbox_value === checked
+                if checkbox_value == checked
                   opts[:checked] = 'checked'
                 end
 
