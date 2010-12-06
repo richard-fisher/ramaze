@@ -156,8 +156,18 @@ module Ramaze
         # @param [Hash] form_errors Hash containing all form errors (if any).
         #
         def build(form_errors = {})
-          @form_errors = form_errors
-
+          # Convert all the keys in form_errors to strings and
+          # retrieve the correct values in case
+          @form_errors = {}
+          
+          form_errors.each do |key, value|
+            if value.respond_to?(:first)
+              value = value.first
+            end
+            
+            @form_errors[key.to_s] = value
+          end
+          
           @g.form(@form_args) do
             if block_given?
               yield self
