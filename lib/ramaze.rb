@@ -66,7 +66,7 @@ module Ramaze
     m.use Rack::ShowStatus
     m.use Rack::RouteExceptions
     m.use Rack::ConditionalGet
-    m.use Rack::ETag
+    m.use Rack::ETag, 'public'
     m.use Rack::Head
     m.use Ramaze::Reloader
     m.run Ramaze::AppMap
