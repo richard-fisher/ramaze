@@ -555,7 +555,7 @@ module Ramaze
           multiple, size  = args.values_at(:multiple, :size)
 
           args[:multiple] = 'multiple' if multiple
-          args[:size]     = (size || multiple || 1).to_i
+          args[:size]     = (size || 1).to_i
           args[:name]     = multiple ? "#{name}[]" : name
           args            = args.merge(:id => id)
           
