@@ -553,11 +553,6 @@ module Ramaze
         def select(label, name, args = {})
           id              = args[:id] ? args[:id] : id_for(name)
           multiple, size  = args.values_at(:multiple, :size)
-
-          args[:multiple] = 'multiple' if multiple
-          args[:size]     = (size || 1).to_i
-          args[:name]     = multiple ? "#{name}[]" : name
-          args            = args.merge(:id => id)
           
           # Get all the values
           if !args[:values] and @form_values.respond_to?(name)
@@ -566,6 +561,11 @@ module Ramaze
             values = args[:values]
             args.delete(:values)
           end
+          
+          args[:multiple] = 'multiple' if multiple
+          args[:size]     = (size || values.count || 1).to_i
+          args[:name]     = multiple ? "#{name}[]" : name
+          args            = args.merge(:id => id)
 
           # Retrieve the selected value
           has_selected, selected = args.key?(:selected), args[:selected]
