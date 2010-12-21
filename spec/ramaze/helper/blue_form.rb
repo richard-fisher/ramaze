@@ -486,7 +486,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_servers_hash">Server</label>
-    <select id="form_servers_hash" size="1" name="servers_hash">
+    <select id="form_servers_hash" size="3" name="servers_hash">
       <option value="webrick">WEBrick</option>
       <option value="mongrel">Mongrel</option>
       <option value="thin">Thin</option>
@@ -505,7 +505,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_servers_hash">Server</label>
-    <select id="form_servers_hash" size="1" name="servers_hash">
+    <select id="form_servers_hash" size="3" name="servers_hash">
       <option value="webrick">WEBrick</option>
       <option value="mongrel" selected="selected">Mongrel</option>
       <option value="thin">Thin</option>
@@ -524,7 +524,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_servers_array">Server</label>
-    <select id="form_servers_array" size="1" name="servers_array">
+    <select id="form_servers_array" size="3" name="servers_array">
       <option value="WEBrick">WEBrick</option>
       <option value="Mongrel">Mongrel</option>
       <option value="Thin">Thin</option>
@@ -543,7 +543,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_servers_array">Server</label>
-    <select id="form_servers_array" size="1" name="servers_array">
+    <select id="form_servers_array" size="3" name="servers_array">
       <option value="WEBrick">WEBrick</option>
       <option value="Mongrel" selected="selected">Mongrel</option>
       <option value="Thin">Thin</option>
@@ -565,7 +565,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_people_hash">People</label>
-    <select id="form_people_hash" size="1" name="people_hash">
+    <select id="form_people_hash" size="2" name="people_hash">
       <option value="chuck">Chuck</option>
       <option value="bob">Bob</option>
     </select>
@@ -583,7 +583,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_people_hash">People</label>
-    <select id="form_people_hash" size="1" name="people_hash">
+    <select id="form_people_hash" size="2" name="people_hash">
       <option value="chuck" selected="selected">Chuck</option>
       <option value="bob">Bob</option>
     </select>
@@ -601,7 +601,7 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_people_array">People</label>
-    <select id="form_people_array" size="1" name="people_array">
+    <select id="form_people_array" size="2" name="people_array">
       <option value="Chuck">Chuck</option>
       <option value="Bob">Bob</option>
     </select>
@@ -619,9 +619,66 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_people_array">People</label>
-    <select id="form_people_array" size="1" name="people_array">
+    <select id="form_people_array" size="2" name="people_array">
       <option value="Chuck" selected="selected">Chuck</option>
       <option value="Bob">Bob</option>
+    </select>
+  </p>
+</form>
+    FORM
+  end
+  
+  it 'Make a form with multiple select(label, name) from a hash' do
+    out = form_for(@data, :method => :get) do |f|
+      f.select 'Server', :servers_hash, :multiple => :multiple
+    end
+    
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_servers_hash">Server</label>
+    <select id="form_servers_hash" size="3" name="servers_hash[]" multiple="multiple">
+      <option value="webrick">WEBrick</option>
+      <option value="mongrel">Mongrel</option>
+      <option value="thin">Thin</option>
+    </select>
+  </p>
+</form>
+    FORM
+  end
+  
+  it 'Make a form with multiple select(label, name, selected) from a hash' do
+    out = form_for(@data, :method => :get) do |f|
+      f.select 'Server', :servers_hash, :multiple => :multiple, :selected => :webrick
+    end
+    
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_servers_hash">Server</label>
+    <select id="form_servers_hash" size="3" name="servers_hash[]" multiple="multiple">
+      <option value="webrick" selected="selected">WEBrick</option>
+      <option value="mongrel">Mongrel</option>
+      <option value="thin">Thin</option>
+    </select>
+  </p>
+</form>
+    FORM
+  end
+  
+  it 'Make a form with multiple select(label, name, selected) from a hash' do
+    out = form_for(@data, :method => :get) do |f|
+      f.select 'Server', :servers_hash, :multiple => :multiple, :selected => [:webrick, :mongrel]
+    end
+    
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_servers_hash">Server</label>
+    <select id="form_servers_hash" size="3" name="servers_hash[]" multiple="multiple">
+      <option value="webrick" selected="selected">WEBrick</option>
+      <option value="mongrel" selected="selected">Mongrel</option>
+      <option value="thin">Thin</option>
     </select>
   </p>
 </form>

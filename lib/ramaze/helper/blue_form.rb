@@ -569,6 +569,7 @@ module Ramaze
 
           # Retrieve the selected value
           has_selected, selected = args.key?(:selected), args[:selected]
+                        selected = [selected] if !selected.is_a?(Array)
           args.delete(:selected)
 
           @g.p do
@@ -577,7 +578,11 @@ module Ramaze
               values.each do |value, o_name|
                 o_name ||= value
                 o_args = {:value => value}
-                o_args[:selected] = 'selected' if has_selected && value == selected
+                
+                if has_selected and selected.include?(value)
+                  o_args[:selected] = 'selected'
+                end
+                
                 @g.option(o_args){ o_name }
               end
             end
