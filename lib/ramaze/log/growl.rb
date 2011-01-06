@@ -14,7 +14,8 @@ module Ramaze
     #
     class Growl < ::Growl
       include Innate::Traited
-
+      include Logging
+      
       trait :defaults => {
         :name             => 'walrus'   ,
         :host             => 'localhost',
