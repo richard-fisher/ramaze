@@ -17,7 +17,7 @@ module Ramaze
         content_type ||= Rack::Mime.mime_type(::File.extname(filename))
         content_disposition ||= File.basename(filename)
 
-        response.body = ::File.readlines(filename, 'rb')
+        response.body = ::File.open(filename, 'rb')
         response['Content-Length'] = ::File.size(filename).to_s
         response['Content-Type'] = content_type
         response['Content-Disposition'] = content_disposition
