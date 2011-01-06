@@ -13,12 +13,13 @@ module Ramaze
     # Growl can be downloaded from the following website: http://growl.info/
     #
     class Growl < ::Growl
+      include Innate::Traited
 
       trait :defaults => {
-        :name => 'walrus',
-        :host => 'localhost',
-        :password => 'walrus',
-        :all_notifies => %w[error warn debug info dev],
+        :name             => 'walrus'   ,
+        :host             => 'localhost',
+        :password         => 'walrus'   ,
+        :all_notifies     => %w[error warn debug info dev],
         :default_notifies => %w[error warn info]
       }
 
@@ -39,9 +40,11 @@ module Ramaze
       # @param [Hash] args
       #
       def log(tag, *args)
-        notify(tag.to_s, Time.now.strftime("%X"), args.join("\n")[0..100])
-      rescue Errno::EMSGSIZE
-        # Send size was to big (not really), ignore
+        begin
+          notify(tag.to_s, Time.now.strftime("%X"), args.join("\n")[0..100])
+        rescue Errno::EMSGSIZE
+          # Send size was to big (not really), ignore
+        end
       end
     end
 
