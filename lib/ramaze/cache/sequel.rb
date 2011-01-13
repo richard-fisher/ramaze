@@ -104,8 +104,12 @@ module Ramaze
       # @param [String] *keys A set of keys that define which row has to be deleted.
       #
       def cache_delete(*keys)
-        record = @store[:key => namespaced(key)]
-        record.delete if record
+        if keys
+          keys.each do |key|
+            record = @store[:key => namespaced(key)]
+            record.delete if record  
+          end
+        end
       end
 
       ##

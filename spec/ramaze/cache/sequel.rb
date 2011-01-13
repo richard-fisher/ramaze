@@ -27,7 +27,7 @@ describe Ramaze::Cache::Sequel do
     cache.fetch(:hello).should == nil
   end
 
-  should 'Dlete two key/value pairs at once' do
+  should 'Delete two key/value pairs at once' do
     cache.store(:hello, hello).should.equal hello
     cache.store(:ramaze, 'ramaze').should.equal 'ramaze'
     cache.delete(:hello, :ramaze)
@@ -36,9 +36,9 @@ describe Ramaze::Cache::Sequel do
   end
 
   should 'Store some data with a TTL' do
-    cache.store(:hello, @hello, :ttl => 0.2)
+    cache.store(:hello, @hello, :ttl => 1)
     cache.fetch(:hello).should.equal @hello
-    sleep 0.3
+    sleep 2
     cache.fetch(:hello).should.equal nil
   end
 
