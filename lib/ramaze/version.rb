@@ -1,3 +1,3 @@
 module Ramaze
-  VERSION = "2010.06.18"
+  VERSION = "2011.01"
 end

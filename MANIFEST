@@ -3,6 +3,7 @@
 MANIFEST
 README.md
 Rakefile
+TODO.md
 benchmark/bench_templates/bench.rb
 benchmark/bench_templates/view/large.erb
 benchmark/bench_templates/view/large.haml
