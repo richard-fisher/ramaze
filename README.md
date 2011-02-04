@@ -22,161 +22,89 @@ web-frameworks, this was made obsolete by the introduction of rack, which
 provides this feature at a better level without trying to enforce any structural
 layout of the resulting framework.
 
+## Quick Example
 
-# Features Overview
+While Ramaze applications are usually spread across multiple directories for controllers,
+models and views one can quite easily create a very basic application in just a single file:
+
+    require 'ramaze'
+    
+    class MyController < Ramaze::Controller
+      map '/'
+      
+      def index
+        "Hello, Ramaze!"
+      end
+    end  
+    
+    Ramaze.start
+
+Once this is saved in a file (you can also run this from IRB) simply execute it using the
+Ruby binary:
+
+    $ ruby hello_ramaze.rb
+
+This starts a WEBRick server listening on localhost:7000.
+
+## Features Overview
 
 Ramaze offers following features at the moment:
 
-* Adapters
+### Adapters
 
-   Ramaze takes advantage of the rack library to provide a common way of
-   handling different ways to serve its content.
-
-   Rack supports at the moment:
-
-    * [Mongrel](http://mongrel.rubyforge.org/)
-
-      Mongrel is a fast HTTP library and server for Ruby that is intended for
-      hosting Ruby web applications of any kind using plain HTTP rather than
-      FastCGI or SCGI.
-
-    * [WEBrick](http://www.webrick.org/)
-
-      WEBrick is a Ruby library program to build HTTP servers.
-
-    * CGI
-
-      CGI is the Common Gateway Interface and is one of the most basic ways
-      to integrate into Webservers like Apache or Lighttpd.
-
-    * FCGI
-
-      Improvment of CGI as it doesn't start up a new connection to Ramaze on
-      every request.
-
-
-* Templates
-
-  * [Erubis](http://rubyforge.org/projects/erubis)
-
-    Erubis is a fast, secure, and very extensible implementation of eRuby.
-    
-  * Ezamar
-
-    A simple homage to [Nitro](http://nitroproject.org)s templating, is shipped
-    together with Ramaze.
+Ramaze takes advantage of the Rack library to provide a common way of
+handling different ways to serve its content. A few of the supported Rack adapters are:
   
-  * Etanni
-  
-    A very basic template engine also shipped with Ramaze.
+* Mongrel
+* WEBrick
+* FCGI
+* LiteSpeed
+* Thin
 
-  * [Erector](http://erector.rubyforge.org/)
+### Templates
 
-    Erector is a Builder-like view framework, inspired by Markaby but overcoming some of its flaws. In Erector all views are objects, not template files, which allows the full power of object-oriented programming in views.
+Ramaze can in theory support any template engine as long as there's an adapter for it. To
+make your life easier Ramaze ships with adapters for the following template engines:
 
-  * [Haml](http://haml.hamptoncatlin.com/)
+* [Erubis](http://rubyforge.org/projects/erubis)
+* Etanni (small engine created for Ramaze)
+* [Erector](http://erector.rubyforge.org/)
+* [Haml](http://haml.hamptoncatlin.com/)
+* [Liquid](http://home.leetsoft.com/liquid)
+* [Markaby](http://code.whytheluckystiff.net/markaby/)
+* [Remarkably](http://rubyforge.org/projects/remarkably)
+* [Sass](http://haml.hamptoncatlin.com/docs/sass)
 
-    Haml takes your gross, ugly templates and replaces them with veritable Haiku.
+### Cache
 
-  * [Liquid](http://home.leetsoft.com/liquid)
+* Hash
+* YAML::Store
+* LocalMemCache
+* MemCache
+* Sequel
 
-    Liquid's syntax and parse model are inspired by Django templates, as well
-    as PHP's smarty.
-    
-  * [Markaby](http://code.whytheluckystiff.net/markaby/)
+### Helpers
 
-    Markaby means Markup as Ruby.
+Helpers are modules that can be included in your controllers or other classes to make it easier
+to work with certain classes or systems without having to write the same boilerplate code over
+and over again. Ramaze has a lot of helpers, the following helpers are loaded by default:
 
-  * [Remarkably](http://rubyforge.org/projects/remarkably)
+* CGI: Shortcuts for escape/unescape of the CGI module.
+* File: Helps you serving files from your Controller.
+* Flash: Store a couple of values for one request associated with a session.
+* Link: Easier linking to the various parts of your applications Controllers and Actions.
+* Redirect: Easy redirection.
 
-    Remarkably is a very tiny Markaby-like XML builder
+Other helpers worth mentioning are:
 
-  * [Sass](http://haml.hamptoncatlin.com/docs/sass)
+* CSRF helper: protect your forms from CSRF attacks using a single method.
+* BlueForm: makes working with forms fun again.
+* User: easy authentication using a database model.
+* Identity: makes it easy to work with OpenID systems.
 
-    Sass is a meta-language on top of CSS that‘s used to describe the style of
-    a document cleanly and structurally, with more power than flat CSS allows.
-    
-  * And many, many more!
+In total Ramaze itself has 29 helpers!
 
-* Cache
-  * Hash
-  * YAML::Store
-  * MemCache
-
-* Helper
-  * Active by default
-    * CGI
-
-      Shortcuts for escape/unescape of the CGI module.
-
-    * File
-
-      Helps you serving files from your Controller.
-
-    * Flash
-
-      Store a couple of values for one request associated with a session.
-
-    * Link
-
-      Easier linking to the various parts of your applications Controllers and
-      Actions.
-
-    * Redirect
-
-      Easy redirection.
-
-  * Optional
-    * Aspect
-
-      Allows you to wrap different Actions on your Controller with code.
-
-    * Auth
-
-      Simple way to add basic authentication.
-
-    * Cache
-
-      Easy caching Actions and values.
-
-    * Identity
-
-      For ease of use of the OpenID authentication mechanism.
-
-    * Inform
-
-      Wrapping the functionality of Ramazes logging facilities.
-
-    * Nitroform
-
-      Hooks up on nitros form builder to help you creating forms from Og
-      objects.
-
-    * OpenID
-
-      Authentication via OpenID made easy.
-
-    * Pager
-
-      Displays a collection of entitities in multiple pages.
-
-    * Partial
-
-      Renders so-called partials.
-
-    * Stack
-
-      Allows you to use a call/answer mechanism for things like redirection to the
-      site a user entered login-forms from.
-
-* Various
-  * Sessions
-  * Global configuration system
-  * Simple request/response handling
-  * Custom sophisticated Error-handling
-
-
-# Basic Principles
+## Basic Principles
 
 There are some basic principles that Ramaze tries to follow:
 
@@ -235,99 +163,98 @@ There are some basic principles that Ramaze tries to follow:
   The specs are checked every time a new patch is pushed into the repository,
   deciding whether the changes the patch applies are valid and don't break the framework.
 
+## Installation
 
-# Installation
+### RubyGems
 
-## RubyGems
+The simplest way of installing Ramaze is via the gem.
 
-  The simplest way of installing Ramaze is via the gem.
+[Rubygems](http://rubygems.org) is the package manager for ruby apps and
+libraries and provides you with the last tagged version of Ramaze.
 
-  [Rubygems](http://rubygems.org) is the package manager for ruby apps and
-  libraries and provides you with the last tagged version of Ramaze.
+    $ gem install ramaze
 
-      $ gem install ramaze
+Versions are made as we see fit and get an announcement out (usually that's
+the major obstacle as there is a lot to announce).
 
-  Versions are made as we see fit and get an announcement out (usually that's
-  the major obstacle as there is a lot to announce).
+### Git
 
-## Git
+To get the latest and sweetest, you can just pull from the repository and run
+Ramaze that way.
 
-  To get the latest and sweetest, you can just pull from the repository and run
-  Ramaze that way.
+    $ git clone git://github.com/ramaze/ramaze.git
 
-      $ git clone git://github.com/Ramaze/ramaze.git
+Please read the `man git` or `git help` for more information about updating
+and creating your own patches.
+This is at the moment the premier way to use Ramaze, since it is the way I
+use it.
 
-  Please read the `man git` or `git help` for more information about updating
-  and creating your own patches.
-  This is at the moment the premier way to use Ramaze, since it is the way I
-  use it.
+Some hints for the usage of Git.
 
-  Some hints for the usage of Git.
+* Use `require 'ramaze'` from everywhere
 
-  * use `require 'ramaze'` from everywhere
+  Simply add the path to your repository to the RUBYLIB environment variable.
+  If you are using bash you can simply put following line into your .bashrc:
 
-    Simply add the path to your repository to the RUBYLIB environment variable.
-    If you are using bash you can simply put following line into your .bashrc:
+      $ export RUBYLIB="$HOME/path/to/repo/lib/"
 
-        $ export RUBYLIB="$HOME/path/to/repo/lib/"
+  Of course you should put the real path instead, you can also add multiple
+  paths, or create your personal `site_ruby`:
 
-    Of course you should put the real path instead, you can also add multiple
-    paths, or create your personal `site_ruby`:
+      $ export RUBYLIB="$HOME/ruby/ramaze/lib:$HOME/.site_ruby:$HOME/ruby/bacon/lib"
 
-        $ export RUBYLIB="$HOME/ruby/ramaze/lib:$HOME/.site_ruby:$HOME/ruby/bacon/lib"
+* Use `require 'ramaze'` system wide from everywhere
 
-  * use `require 'ramaze'` system wide from everywhere
+  add a file to your `site_ruby` directory named 'ramaze.rb'
+  the content should be: `require '/path/to/git/repo/ramaze/lib/ramaze'`
 
-    add a file to your `site_ruby` directory named 'ramaze.rb'
-    the content should be: `require '/path/to/git/repo/ramaze/lib/ramaze'`
+* Pull the latest version
 
-  * Pull the latest version
+      $ git pull
 
-        $ git pull
+* Reset the repo to original state (if you screw up something)
 
-  * Reset the repo to original state (if you screw up something)
+      $ git reset --hard # resets the whole repo
 
-        $ git reset --hard # resets the whole repo
+* Revert changes to (for example) lib/ramaze.rb only
 
-  * Revert changes to (for example) lib/ramaze.rb only
+      $ git checkout master lib/ramaze.rb
 
-        $ git checkout master lib/ramaze.rb
+* Add and commit all changes.
 
-  * Add and commit all changes.
+      $ git commit -a
 
-        $ git commit -a
+* Adding only specific changes.
 
-  * Adding only specific changes.
+      # Add hunks you want to commit to the staging area (index)
+      $ git add -p
 
-        # Add hunks you want to commit to the staging area (index)
-        $ git add -p
+* Commit the changes into the history of your repository
 
-  * Commit the changes into the history of your repository
+      # Create a commit from the hunks added
+      $ git commit
 
-        # Create a commit from the hunks added
-        $ git commit
+* output your patches into a bundle ready to be mailed (compress it before
+  sending to make sure it arrives in the way you sent it)
 
-  * output your patches into a bundle ready to be mailed (compress it before
-    sending to make sure it arrives in the way you sent it)
+  At the end of this process you will have a tar.bz2 for all your changes
+  that you can mail to ramaze@googlegroups.com
 
-    At the end of this process you will have a tar.bz2 for all your changes
-    that you can mail to ramaze@googlegroups.com
+      # make sure you are on latest revision to avoid conflicts
+      $ git pull
 
-        # make sure you are on latest revision to avoid conflicts
-        $ git pull
+      # create 00xx-blah.patch files against the remote repo
+      $ git format-patch origin/HEAD
 
-        # create 00xx-blah.patch files against the remote repo
-        $ git format-patch origin/HEAD
+      # From here on you can use either git-send-email or go the manual route
+      $ tar -cjf ramaze_bundle.tar.bz2 *.patch
 
-        # From here on you can use either git-send-email or go the manual route
-        $ tar -cjf ramaze_bundle.tar.bz2 *.patch
-
-## Direct Download
+### Direct Download
 
   You can alternatively download the latest source code in a tarball from
-  [here](http://github.com/Ramaze/ramaze/tarball/master).
+  [here](https://github.com/ramaze/ramaze/tarball/master).
 
-# Getting Started
+## Getting Started
 
 Now that you have a vague idea of what you're about to get into you might just
 want to get a way to get up and running ASAP.
@@ -347,9 +274,7 @@ Some places to get started are:
 - Run and read the test cases.
 - Look at the examples and run/modify them.
 
-
-
-# A couple of Examples
+## A couple of Examples
 
 There are some examples for your instant pleasure inside the examples-directory
 in the Ramaze-distribution.
@@ -365,7 +290,6 @@ Or:
 For more information about the usage of ramaze try:
 
     $ ramaze --help
-
 
 Examples include:
 
@@ -388,8 +312,7 @@ Examples include:
 
 * Many more fully functional examples can be found in the examples folder.
 
-
-# How to find Help
+## How to find Help
 
 For help you can:
 
@@ -397,8 +320,7 @@ For help you can:
 
 - Join the Mailinglist at http://groups.google.com/group/ramaze
 
-
-# And thanks to...
+## And thanks to...
 
 There are a large number of people who made Ramaze possible by their ongoing
 efforts in the world of open source and by encouraging and helping me.
