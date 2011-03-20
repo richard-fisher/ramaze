@@ -30,7 +30,7 @@ $ ramaze create yourproject
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<innate>, [">= 2010.03"])
+      s.add_runtime_dependency(%q<innate>, [">= 2011.01"])
       s.add_development_dependency(%q<abstract>, ["= 1.0.0"])
       s.add_development_dependency(%q<addressable>, ["= 2.1.1"])
       s.add_development_dependency(%q<bacon>, ["= 1.1.0"])
@@ -63,7 +63,7 @@ $ ramaze create yourproject
       s.add_development_dependency(%q<tenjin>, ["= 0.6.1"])
       s.add_development_dependency(%q<localmemcache>, ["= 0.4.4"])
     else
-      s.add_dependency(%q<innate>, [">= 2010.03"])
+      s.add_dependency(%q<innate>, [">= 2011.01"])
       s.add_dependency(%q<abstract>, ["= 1.0.0"])
       s.add_dependency(%q<addressable>, ["= 2.1.1"])
       s.add_dependency(%q<bacon>, ["= 1.1.0"])
@@ -97,7 +97,7 @@ $ ramaze create yourproject
       s.add_dependency(%q<localmemcache>, ["= 0.4.4"])
     end
   else
-    s.add_dependency(%q<innate>, [">= 2010.03"])
+    s.add_dependency(%q<innate>, [">= 2011.01"])
     s.add_dependency(%q<abstract>, ["= 1.0.0"])
     s.add_dependency(%q<addressable>, ["= 2.1.1"])
     s.add_dependency(%q<bacon>, ["= 1.1.0"])
