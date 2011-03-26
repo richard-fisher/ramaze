@@ -75,7 +75,7 @@ describe BF = Ramaze::Helper::BlueForm do
 
   it 'Make a form with a fieldset and a legend' do
     out = form_for(@data, :method => :get) do |f|
-      f.g.fieldset do
+      f.fieldset do
         f.legend('The Form')
       end
     end

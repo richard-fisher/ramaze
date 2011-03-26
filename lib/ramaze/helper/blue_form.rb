@@ -202,7 +202,7 @@ module Ramaze
         #  end
         #
         def fieldset(&block)
-          @g.fieldset(block)
+          @g.fieldset(&block)
         end
 
         ##
