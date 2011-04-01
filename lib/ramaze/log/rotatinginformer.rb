@@ -118,7 +118,6 @@ module Ramaze
       # @param [Array] messages An array of messages to log.
       #
       def log tag, *messages
-
         return unless @log_levels.include?(tag)
 
         # Update current log
@@ -167,6 +166,16 @@ module Ramaze
       #
       def closed?
         @out.respond_to?(:closed?) && @out.closed?
+      end
+
+      ##
+      # Method that is called by Rack::CommonLogger when logging data to a file.
+      #
+      # @author Yorick Peterse
+      # @param  [String] message The data that has to be logged.
+      #
+      def write message
+        log(:info, message)
       end
 
       private
