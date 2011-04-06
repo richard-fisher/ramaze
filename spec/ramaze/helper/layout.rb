@@ -22,17 +22,15 @@ class LayoutHelperTwo < Ramaze::Controller
   def not_laid_out; end
 end
 
-class LayoutHelper < Ramaze::Controller
+class LayoutHelperThree < Ramaze::Controller
   map '/three'
-  set_layout_except 'default' => [:not_laid_out1, :not_laid_out2]
+  set_layout 'default' => [:laid_out1], 'alternative' => [:laid_out2]
+  set_layout 'default' => [:laid_out3]
 
   def laid_out1; end
   def laid_out2; end
-
-  def not_laid_out1; end
-  def not_laid_out2; end
+  def laid_out3; end
 end
-
 
 describe Ramaze::Helper::Layout do
   behaves_like :rack_test
@@ -61,19 +59,18 @@ describe Ramaze::Helper::Layout do
     last_response.body.should.not.match /laid out/
   end
 
-  it 'lays out all actions except a blacklist' do
+  it 'Define a set of method specific layouts' do
     get '/three/laid_out1'
-    last_response.status.should == 200
+    last_response.status.should === 200
     last_response.body.should.match /laid out/
+
     get '/three/laid_out2'
-    last_response.status.should == 200
+    last_response.status.should === 200
+    last_response.body.should.match /alternative/
+
+    get '/three/laid_out3'
+    last_response.status.should === 200
     last_response.body.should.match /laid out/
-    get '/three/not_laid_out1'
-    last_response.status.should == 200
-    last_response.body.should.not.match /laid out/
-    get '/three/not_laid_out2'
-    last_response.status.should == 200
-    last_response.body.should.not.match /laid out/
   end
 
 end
