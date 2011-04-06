@@ -86,9 +86,9 @@ module Ramaze
           # Extract the layout to use
           if hash_or_layout.respond_to?(:to_hash)
             # Invert the method/layout hash and save them so they don't get lost
-            hash_or_layout.to_hash.each do |layout, methods|
+            hash_or_layout.to_hash.each do |layout, layout_methods|
               # Dirty but it works
-              methods.each do |m|
+              layout_methods.each do |m|
                 @_ramaze_layouts[m.to_s] = layout.to_s
               end
             end
