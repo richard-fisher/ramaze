@@ -7,7 +7,7 @@ module Ramaze
     # flexibility. The latter however is still a bit of a pain when dealing with many
     # custom layouts in a single controller. Meet the Layout helper. This helper provides
     # a single method (since April 2011, it used to provide more) called "set_layout".
-    # This method allows you to specify a number of layouts and the methods for which 
+    # This method allows you to specify a number of layouts and the methods for which
     # these layouts should be used.
     #
     # == Examples
@@ -21,7 +21,7 @@ module Ramaze
     #
     #  set_layout 'default' => [:index]
     #
-    # Woah! What just happened? It's quite easy actually, we merely defined that the 
+    # Woah! What just happened? It's quite easy actually, we merely defined that the
     # layout called "default" should be used for the index method *only*. Pretty sweet
     # huh? It gets even better:
     #
@@ -32,7 +32,7 @@ module Ramaze
     # should be used. In this case the layout "default" will be used for index() and edit()
     # but the layout "alternative" will be used for add() and process().
     #
-    # Last but not least, multiple calls to set_layout will no longer override any 
+    # Last but not least, multiple calls to set_layout will no longer override any
     # existing settings *unless* you actually specify the same method with a different
     # layout. This is possible because the set_layout method stores all these details in
     # an instance variable called "_ramaze_layouts".
@@ -57,7 +57,7 @@ module Ramaze
 
       module SingletonMethods
         ##
-        # The set_layout method allows you to specify a number of methods and their 
+        # The set_layout method allows you to specify a number of methods and their
         # layout. This allows you to use layout A for methods 1, 2 and 3 but layout B for
         # method 4.
         #
@@ -72,14 +72,17 @@ module Ramaze
         #  # This is also perfectly fine
         #  set_layout 'default'
         #
+        # @param  [String, Symbol, #to_hash] hash_or_layout
+        #   In case it's a String or Symbol it will directly be used as the
+        #   layout.
+        #   When setting a Hash this hash should have it's keys set to the
+        #   layouts and it's values to an array of methods that use the
+        #   specific layout. For more information see the examples.
+        #
         # @author Yorick Peterse
         # @author Michael Fellinger
         # @author Pistos
-        # @param  [Hash/String] hash_or_layout Can either be a string or a hash. In case 
-        #  it's a string it will directly be used as the layout. When setting a hash this
-        #  hash should have it's keys set to the layouts and it's values to an array of
-        #  methods that use the specific layout. For more information see the examples.
-        #
+        # @since 2011-04-07
         def set_layout(hash_or_layout)
           @_ramaze_layouts ||= {}
 
@@ -87,38 +90,22 @@ module Ramaze
           if hash_or_layout.respond_to?(:to_hash)
             # Invert the method/layout hash and save them so they don't get lost
             hash_or_layout.to_hash.each do |layout, layout_methods|
-              # Dirty but it works
-              layout_methods.each do |m|
-                @_ramaze_layouts[m.to_s] = layout.to_s
+              layout_methods.each do |layout_method|
+                @_ramaze_layouts[layout_method.to_s] = layout.to_s
               end
             end
 
-            # Only use the layout for the current method
-            layout do |path|
-              path = path.to_s
-
-              if @_ramaze_layouts.key?(path)
-                @_ramaze_layouts[path]
-              end
-            end
-
+            layout{|path| @_ramaze_layouts[path.to_s] }
           else
-            # This is pretty easy isn't it?
-            layout do |path|
-              hash_or_layout
-            end
+            layout{|path| hash_or_layout }
           end
         end
 
-        # People might get confused when all of a sudden set_layout_except is gone. This
-        # warning should clear things up for them. This method can be removed a release
-        # after (or later) this modified helper has been introduced.
+        # @deprecated because it's not longer useful
         def set_layout_except(hash_or_layout)
           Ramaze.deprecated('set_layout_except', 'set_layout')
         end
-
       end
     end
-
   end
 end
