@@ -92,7 +92,6 @@ module Ramaze
       m.use Rack::ETag, 'public'
     end
 
-    m.use Rack::ETag
     m.use Rack::Head
     m.run Ramaze::AppMap
   end
