@@ -28,14 +28,19 @@ module Ramaze
     #
     class Sequel
       include Cache::API
+      include Innate::Traited
 
-      # Default options
-      @options = {
-        :connection       => ::Sequel.sqlite,
-        :display_warnings => false,
-        :table            => 'ramaze_cache',
-        :ttl              => nil
-      }.freeze
+      # The default Sequel connection to use
+      trait :connection => nil
+
+      # Whether or not warnings should be displayed
+      trait :display_warnings => false
+
+      # The name of the default database table to use
+      trait :table => 'ramaze_cache'
+
+      # The default TTL to use
+      trait :ttl => nil
 
       ##
       # Executed after #initialize and before any other method.
@@ -54,10 +59,9 @@ module Ramaze
         @namespace = [hostname, username, appname, cachename].compact.join(':')
 
         # Create the table if it's not there yet
-        unless self.class.options[:connection].table_exists?(
-          self.class.options[:table])
-          self.class.options[:connection].create_table(
-            self.class.options[:table]) do
+        if !trait[:connection].table_exists?(trait[:table])
+          trait[:connection].create_table(
+            trait[:table]) do
             primary_key :id
             String :key  , :null => false, :unique => true
             String :value, :text => true
@@ -65,7 +69,7 @@ module Ramaze
           end
         end
 
-        @dataset = self.class.options[:connection][self.class.options[:table].to_sym]
+        @dataset = trait[:connection][trait[:table].to_sym]
       end
 
       ##
@@ -168,10 +172,10 @@ module Ramaze
         nkey = namespaced(key)
 
         # Get the time after which the cache should be expired
-        if self.class.options[:ttl]
-          ttl = self.class.options[:ttl]
+        if trait[:ttl]
+          ttl = trait[:ttl]
         else
-          ttl = options.fetch(:ttl, nil)
+          ttl = Ramaze::Cache::Sequel.trait[:ttl]
         end
  
         expires = Time.now + ttl if ttl
@@ -232,7 +236,7 @@ module Ramaze
             ::Marshal.load(value)
           rescue
             # Log the error?
-            if self.class.options.fetch(:display_warnings, false)
+            if trait[:display_warnings] === true
               Ramaze::Log::warn("Failed to deserialize #{value.inspect}")
             end
 
@@ -265,7 +269,7 @@ module Ramaze
         begin
           [::Marshal.dump(value)].pack('m')
         rescue
-          if self.class.options.fetch(:display_warnings, false)
+          if trait[:display_warnings] === true
             Ramaze::Log::warn("Failed to serialize #{value.inspect}")
           end
 
@@ -291,8 +295,10 @@ module Ramaze
       #  #
       #  Ramaze.options.cache.session = Ramaze::Cache::Sequel.using(
       #    :connection => Sequel.mysql(
-      #      :host=>'localhost', :user=>'user',
-      #      :password=>'password', :database=>'blog'
+      #      :host     =>'localhost', 
+      #      :user     =>'user',
+      #      :password =>'password', 
+      #      :database =>'blog'
       #    ),
       #    :table => :blog_sessions
       #  )
@@ -321,15 +327,16 @@ module Ramaze
       #  just remain uncached.
       # @return [Object]
       #
-      def self.using(options)
+      def self.using(options = {})
+        # Create a new instance of the cache and merge the given options with the default
+        # ones set as traits.
         Class.new(self) do
-          @options = superclass.options.merge(options)
-
-          @options.select! do |key, value|
-            superclass.options.has_key?(key)
-          end
-
-          @options.freeze
+          options = options.merge({
+            :connection       => Ramaze::Cache::Sequel.trait[:connection],
+            :table            => Ramaze::Cache::Sequel.trait[:table],
+            :ttl              => Ramaze::Cache::Sequel.trait[:ttl],
+            :display_warnings => Ramaze::Cache::Sequel.trait[:display_warnings]
+          })
         end
       end
     end
