@@ -135,7 +135,6 @@ module Ramaze
       # @return [Object]
       #
       def cache_fetch(key, default = nil)
-        time = Time.now
         nkey = namespaced(key)
 
         # Delete expired rows
@@ -221,7 +220,7 @@ module Ramaze
       
       ##
       # Deserialize method, adapted from Sequels serialize plugin
-      # This method will try to deserialize a value using YAML
+      # This method will try to deserialize a value using Marshal.load
       #
       # @author Lars Olsson
       # @since  18-04-2011
@@ -258,7 +257,7 @@ module Ramaze
 
       ##
       # Serialize method, adapted from Sequels serialize plugin
-      # This method will try to serialize a value using YAML
+      # This method will try to serialize a value using Marshal.dump
       #
       # @author Lars Olsson
       # @since  18-04-2011
