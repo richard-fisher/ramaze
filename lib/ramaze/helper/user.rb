@@ -112,7 +112,7 @@ module Ramaze
         return found if found
 
         model, callback = ancestral_trait.values_at(:user_model, :user_callback)
-        model ||= ::User
+        model ||= ::User unless callback
         env[RAMAZE_HELPER_USER] = Wrapper.new(model, callback)
       end
 
