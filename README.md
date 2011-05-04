@@ -1,5 +1,5 @@
-          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
- All files in this distribution are subject to the terms of the Ruby license.
+    Copyright (c) 2009 - 2011 Michael Fellinger m.fellinger@gmail.com
+    All files in this distribution are subject to the terms of the Ruby license.
 
 # About Ramaze
 
