@@ -48,4 +48,11 @@ describe Ramaze::Cache::Sequel do
     cache.clear
     cache.fetch(:hello).should.equal nil
   end
+
+  should 'use a custom set of options' do
+    klass = Ramaze::Cache::Sequel.using(:answer => 42)
+
+    klass.options[:answer].should     === 42
+    klass.new.options[:answer].should === 42
+  end
 end

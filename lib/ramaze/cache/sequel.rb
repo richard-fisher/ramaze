@@ -30,17 +30,95 @@ module Ramaze
       include Cache::API
       include Innate::Traited
 
-      # The default Sequel connection to use
-      trait :connection => nil
+      # Hash containing the default options
+      trait :default => {
+        # The default Sequel connection to use
+        :connection => nil,
 
-      # Whether or not warnings should be displayed
-      trait :display_warnings => false
+        # Whether or not warnings should be displayed
+        :display_warnings => false,
 
-      # The name of the default database table to use
-      trait :table => 'ramaze_cache'
+        # The name of the default database table to use
+        :table => 'ramaze_cache',
 
-      # The default TTL to use
-      trait :ttl => nil
+        # The default TTL to use
+        :ttl => nil
+      }
+
+      # Hash containing all the default options merged with the user specified ones
+      attr_accessor :options
+
+      class << self
+        attr_accessor :options
+
+        ##
+        # This method returns a subclass of Ramaze::Cache::Sequel with the provided options 
+        # set. This is necessary because Ramaze expects a class and not an instance of a 
+        # class for its cache option.
+        #
+        # You can provide any parameters you want, but those not used by the cache will not 
+        # get stored. No parameters are mandatory. Any missing parameters will be replaced 
+        # by default values.
+        #
+        # @example
+        #  ##
+        #  # This will create a mysql session cache in the blog
+        #  # database in the table blog_sessions
+        #  # Please note that the permissions on the database must
+        #  # be set up correctly before you can just create a new table
+        #  #
+        #  Ramaze.options.cache.session = Ramaze::Cache::Sequel.using(
+        #    :connection => Sequel.mysql(
+        #      :host     =>'localhost', 
+        #      :user     =>'user',
+        #      :password =>'password', 
+        #      :database =>'blog'
+        #    ),
+        #    :table => :blog_sessions
+        #  )
+        #
+        # @author Lars Olsson
+        # @since  18-04-2011
+        # @param  [Object] options A hash containing the options to use
+        # @option options [Object] :connection a Sequel database object (Sequel::Database)
+        #  You can use any parameters that Sequel supports for this object. If this option
+        #  is left unset, a Sqlite memory database will be used.
+        # @option options [String] :table The table name you want to use for the cache.
+        #  Can be either a String or a Symbol. If this option is left unset, a table called
+        #  ramaze_cache will be used.
+        # @option options [Fixnum] :ttl Setting this value will override Ramaze's default 
+        #  setting for when a particular cache item will be invalidated. By default this
+        #  setting is not used and the cache uses the values provided by Ramaze, but if you 
+        #  want to use this setting it should be set to an integer representing the number 
+        #  of seconds before a cache item becomes invalidated.
+        # @option options [TrueClass] :display_warnings When this option is set to true, 
+        #  failure to serialiaze or deserialize cache items will produce a warning in the 
+        #  Ramaze log. This option is set to false by default. Please note that certain 
+        #  objects (for instance Procs) cannot be serialized by ruby and therefore cannot be 
+        #  cached by this cache class. Setting this option to true is a good way to find out 
+        #  if the stuff you are trying to cache is affected by this. Failure to 
+        #  serialize/deserialize a cache item will never raise an exception, the item will 
+        #  just remain uncached.
+        # @return [Object]
+        #
+        def using(options = {})
+          merged = Ramaze::Cache::Sequel.trait[:default].merge(options)
+          Class.new(self) { @options = merged }
+        end
+      end
+
+      ##
+      # Creates a new instance of the cache class.
+      #
+      # @author Michael Fellinger
+      # @since  04-05-2011
+      # @param  [Hash] options A hash with custom options, see Ramaze::Cache::Sequel.using
+      #  for all available options.
+      #
+      def initialize(options = {})
+        self.class.options ||= Ramaze::Cache::Sequel.trait[:default].merge(options)
+        @options             = options.merge(self.class.options)
+      end
 
       ##
       # Executed after #initialize and before any other method.
@@ -59,9 +137,9 @@ module Ramaze
         @namespace = [hostname, username, appname, cachename].compact.join(':')
 
         # Create the table if it's not there yet
-        if !trait[:connection].table_exists?(trait[:table])
-          trait[:connection].create_table(
-            trait[:table]) do
+        if !options[:connection].table_exists?(options[:table])
+          options[:connection].create_table(
+            options[:table]) do
             primary_key :id
             String :key  , :null => false, :unique => true
             String :value, :text => true
@@ -69,7 +147,7 @@ module Ramaze
           end
         end
 
-        @dataset = trait[:connection][trait[:table].to_sym]
+        @dataset = options[:connection][options[:table].to_sym]
       end
 
       ##
@@ -171,10 +249,10 @@ module Ramaze
         nkey = namespaced(key)
 
         # Get the time after which the cache should be expired
-        if trait[:ttl]
-          ttl = trait[:ttl]
+        if options[:ttl]
+          ttl = options[:ttl]
         else
-          ttl = Ramaze::Cache::Sequel.trait[:ttl]
+          ttl = Ramaze::Cache::Sequel.options[:ttl]
         end
  
         expires = Time.now + ttl if ttl
@@ -235,24 +313,13 @@ module Ramaze
             ::Marshal.load(value)
           rescue
             # Log the error?
-            if trait[:display_warnings] === true
+            if options[:display_warnings] === true
               Ramaze::Log::warn("Failed to deserialize #{value.inspect}")
             end
 
             return nil            
           end
         end
-      end
-
-      ##
-      # Returns options for the current cache
-      #
-      # @author Lars Olsson
-      # @since  18-04-2011
-      # @return [Object]
-      #
-      def self.options
-        return @options
       end
 
       ##
@@ -268,77 +335,13 @@ module Ramaze
         begin
           [::Marshal.dump(value)].pack('m')
         rescue
-          if trait[:display_warnings] === true
+          if options[:display_warnings] === true
             Ramaze::Log::warn("Failed to serialize #{value.inspect}")
           end
 
           return nil
         end
       end
-
-      ##
-      # This method returns a subclass of Ramaze::Cache::Sequel with the provided options 
-      # set. This is necessary because Ramaze expects a class and not an instance of a 
-      # class for its cache option.
-      #
-      # You can provide any parameters you want, but those not used by the cache will not 
-      # get stored. No parameters are mandatory. Any missing parameters will be replaced 
-      # by default values.
-      #
-      # @example
-      #  ##
-      #  # This will create a mysql session cache in the blog
-      #  # database in the table blog_sessions
-      #  # Please note that the permissions on the database must
-      #  # be set up correctly before you can just create a new table
-      #  #
-      #  Ramaze.options.cache.session = Ramaze::Cache::Sequel.using(
-      #    :connection => Sequel.mysql(
-      #      :host     =>'localhost', 
-      #      :user     =>'user',
-      #      :password =>'password', 
-      #      :database =>'blog'
-      #    ),
-      #    :table => :blog_sessions
-      #  )
-      #
-      # @author Lars Olsson
-      # @since  18-04-2011
-      # @param  [Object] options A hash containing the options to use
-      # @option options [Object] :connection a Sequel database object (Sequel::Database)
-      #  You can use any parameters that Sequel supports for this object. If this option
-      #  is left unset, a Sqlite memory database will be used.
-      # @option options [String] :table The table name you want to use for the cache.
-      #  Can be either a String or a Symbol. If this option is left unset, a table called
-      #  ramaze_cache will be used.
-      # @option options [Fixnum] :ttl Setting this value will override Ramaze's default 
-      #  setting for when a particular cache item will be invalidated. By default this
-      #  setting is not used and the cache uses the values provided by Ramaze, but if you 
-      #  want to use this setting it should be set to an integer representing the number 
-      #  of seconds before a cache item becomes invalidated.
-      # @option options [TrueClass] :display_warnings When this option is set to true, 
-      #  failure to serialiaze or deserialize cache items will produce a warning in the 
-      #  Ramaze log. This option is set to false by default. Please note that certain 
-      #  objects (for instance Procs) cannot be serialized by ruby and therefore cannot be 
-      #  cached by this cache class. Setting this option to true is a good way to find out 
-      #  if the stuff you are trying to cache is affected by this. Failure to 
-      #  serialize/deserialize a cache item will never raise an exception, the item will 
-      #  just remain uncached.
-      # @return [Object]
-      #
-      def self.using(options = {})
-        # Create a new instance of the cache and merge the given options with the default
-        # ones set as traits.
-        Class.new(self) do
-          options = options.merge({
-            :connection       => Ramaze::Cache::Sequel.trait[:connection],
-            :table            => Ramaze::Cache::Sequel.trait[:table],
-            :ttl              => Ramaze::Cache::Sequel.trait[:ttl],
-            :display_warnings => Ramaze::Cache::Sequel.trait[:display_warnings]
-          })
-        end
-      end
-    end
-
-  end
-end
+    end # Sequel
+  end # Cache
+end # Ramaze

@@ -47,6 +47,9 @@ module Ramaze
         :servers => ['localhost:11211']
       }
 
+      # Hash containing all the default options merged with the user specified ones
+      attr_accessor :options
+
       class << self
         attr_accessor :options
 
@@ -76,12 +79,18 @@ module Ramaze
         #
         def using(options = {})
           merged = Ramaze::Cache::MemCache.trait[:default].merge(options)
-          Class.new(self){ @options = merged }
+          Class.new(self) { @options = merged }
         end
       end
 
-      attr_accessor :options
-
+      ##
+      # Creates a new instance of the cache class.
+      #
+      # @author Michael Fellinger
+      # @since  04-05-2011
+      # @param  [Hash] options A hash with custom options, see Ramaze::Cache::MemCache.using
+      #  for all available options.
+      #
       def initialize(options = {})
         self.class.options ||= Ramaze::Cache::MemCache.trait[:default].merge(options)
         @options             = options.merge(self.class.options)
