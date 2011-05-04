@@ -83,9 +83,8 @@ module Ramaze
       attr_reader :options
 
       def initialize(options = {})
-        if !self.class.options.nil?
-          @options = options.merge(self.class.options)
-        end
+        self.class.options ||= Ramaze::Cache::MemCacheBackport.trait[:default].merge(options)
+        @options             = options.merge(self.class.options)
       end
 
       ##
