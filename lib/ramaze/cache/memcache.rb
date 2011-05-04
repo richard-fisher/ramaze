@@ -141,7 +141,7 @@ module Ramaze
       # @return [Mixed]
       #
       def cache_fetch(key, default = nil)
-        value = @client[key]
+        value = @client.get(key)
 
         if value.nil?
           return default
