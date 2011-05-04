@@ -35,7 +35,7 @@ module Ramaze
       # The maximum Time To Live that can be used in Memcache
       MAX_TTL = 2592000
 
-      # Hash containing the default configuration options to use for Dalli 
+      # Hash containing the default configuration options to use for Dalli
       trait :default => {
         # The default TTL for each item
         :expires_in => 604800,
@@ -47,37 +47,43 @@ module Ramaze
         :servers => ['localhost:11211']
       }
 
-      ##
-      # This method will create a subclass of Ramaze::Cache::MemCache with all the
-      # custom options set. All options set in this method will be sent to Dalli as well.
-      #
-      # Using this method allows you to use different memcache settings for various parts 
-      # of Ramaze. For example, you might want to use servers A and B for storing the 
-      # sessions but server C for only views. Most of the way this method works was
-      # inspired by Ramaze::Cache::Sequel which was contributed by Lars Olsson.
-      #
-      # @example
-      #  Ramaze::Cache.options.session = Ramaze::Cache::MemCache.using(
-      #    :compression => false,
-      #    :username    => 'ramaze',
-      #    :password    => 'ramaze123',
-      #    :servers     => ['othermachine.com:12345'] # Overwrites the default server  
-      #  )
-      #
-      # @author Yorick Peterse
-      # @since  04-05-2011
-      # @param  [Hash] options A hash containing all configuration options to use for
-      #  Dalli. For more information on all the available options you can read the README
-      #  in their repository. This repository can be found here: 
-      #  https://github.com/mperham/dalli
-      #
-      def self.using(options = {})
-        #merged = Ramaze::Cache::MemCache.trait[:default].merge(options)
-        #klass  = Class.new(self) do
-        #  @options = merged
-        #end
+      class << self
+        attr_reader :options
 
-        #return klass
+        ##
+        # This method will create a subclass of Ramaze::Cache::MemCache with all the
+        # custom options set. All options set in this method will be sent to Dalli as well.
+        #
+        # Using this method allows you to use different memcache settings for various parts
+        # of Ramaze. For example, you might want to use servers A and B for storing the
+        # sessions but server C for only views. Most of the way this method works was
+        # inspired by Ramaze::Cache::Sequel which was contributed by Lars Olsson.
+        #
+        # @example
+        #  Ramaze::Cache.options.session = Ramaze::Cache::MemCache.using(
+        #    :compression => false,
+        #    :username    => 'ramaze',
+        #    :password    => 'ramaze123',
+        #    :servers     => ['othermachine.com:12345'] # Overwrites the default server
+        #  )
+        #
+        # @author Yorick Peterse
+        # @since  04-05-2011
+        # @param  [Hash] options A hash containing all configuration options to use for
+        #  Dalli. For more information on all the available options you can read the README
+        #  in their repository. This repository can be found here:
+        #  https://github.com/mperham/dalli
+        #
+        def using(options = {})
+          merged = Ramaze::Cache::MemCache.trait[:default].merge(options)
+          Class.new(self){ @options = merged }
+        end
+      end
+
+      attr_reader :options
+
+      def initialize(options = {})
+        @options = options.merge(self.class.options)
       end
 
       ##
@@ -92,13 +98,12 @@ module Ramaze
       #
       def cache_setup(hostname, username, appname, cachename)
         # Validate the maximum TTL
-        if @options[:expires_in] > MAX_TTL
+        if options[:expires_in] > MAX_TTL
           raise(ArgumentError, "The maximum TTL of Memcache is 30 days")
         end
 
-        @options[:namespace] = [hostname, username, appname, cachename].compact.join('-')
-        servers              = @options.delete(:servers)
-        @client              = ::Dalli::Client.new(servers, @options)
+        options[:namespace] = [hostname, username, appname, cachename].compact.join('-')
+        @client = ::Dalli::Client.new(options[:servers], options)
       end
 
       ##

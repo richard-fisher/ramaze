@@ -59,6 +59,8 @@ describe Ramaze::Cache::MemCache do
   end
 
   should 'use a custom set of options' do
-    # Test the method Ramaze::Cache::MemCache.using() here    
+    klass = Ramaze::Cache::MemCache.using(answer: 42)
+    klass.options[:answer].should == 42
+    klass.new.options[:answer].should == 42
   end
 end
