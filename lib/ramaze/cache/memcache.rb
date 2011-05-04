@@ -83,7 +83,9 @@ module Ramaze
       attr_reader :options
 
       def initialize(options = {})
-        @options = options.merge(self.class.options)
+        if !self.class.options.nil?
+          @options = options.merge(self.class.options)
+        end
       end
 
       ##
