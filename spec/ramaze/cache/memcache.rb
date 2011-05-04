@@ -2,15 +2,15 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
+require 'dalli'
 
 spec_precondition 'memcached is running' do
-  require 'memcache'
-  cache = MemCache.new(['localhost:11211'])
+  cache = Dalli::Client.new('localhost:11211')
   cache.set('active', true)
 end
 
 describe Ramaze::Cache::MemCache do
-  Ramaze.options.cache.names = [:one, :two]
+  Ramaze.options.cache.names   = [:one, :two]
   Ramaze.options.cache.default = Ramaze::Cache::MemCache
   Ramaze.setup_dependencies
 
@@ -56,5 +56,9 @@ describe Ramaze::Cache::MemCache do
     cache.fetch(:hello).should == @hello
     cache.clear
     cache.fetch(:hello).should == nil
+  end
+
+  should 'use a custom set of options' do
+    # Test the method Ramaze::Cache::MemCache.using() here    
   end
 end

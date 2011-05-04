@@ -6,7 +6,6 @@ require 'innate/cache'
 module Ramaze
   Cache = Innate::Cache
 
-  # TODO: Describe what this class does and how it can be used.
   class Cache
     autoload :LRU,           'ramaze/cache/lru'
     autoload :LocalMemCache, 'ramaze/cache/localmemcache'
