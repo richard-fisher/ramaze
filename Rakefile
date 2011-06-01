@@ -76,7 +76,6 @@ GEMSPEC = Gem::Specification.new{|s|
   s.require_path = 'lib'
   s.bindir       = "bin"
   s.executables  = ["ramaze"]
-  s.rubyforge_project = "ramaze"
   s.required_rubygems_version = '>= 1.3.5'
 
   s.post_install_message = <<MESSAGE.strip
