@@ -40,7 +40,7 @@ DEVELOPMENT_DEPENDENCIES = {
   "locale"                  => {:version => "2.0.5"},
   "lokar"                   => {:version => "0.1.0"},
   "maruku"                  => {:version => "0.6.0"},
-  "memcache-client"         => {:version => "1.8.1", :lib => 'memcache'},
+  "dalli"                   => {:version => "1.0.4"},
   "mustache"                => {:version => "0.9.2"},
   "mutter"                  => {:version => "0.5.3"},
   "nagoro"                  => {:version => "2009.05"},
