@@ -71,7 +71,6 @@ GEMSPEC = Gem::Specification.new{|s|
   s.homepage     = 'http://ramaze.net'
   s.version      = PROJECT_VERSION
   s.files        = `git ls-files`.split("\n").sort
-  s.has_rdoc     = true
   s.executables  = ["ramaze"]
   s.required_rubygems_version = '>= 1.3.5'
 
