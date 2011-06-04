@@ -69,12 +69,9 @@ GEMSPEC = Gem::Specification.new{|s|
   s.description  = s.summary
   s.email        = 'm.fellinger@gmail.com'
   s.homepage     = 'http://ramaze.net'
-  s.platform     = Gem::Platform::RUBY
   s.version      = PROJECT_VERSION
   s.files        = `git ls-files`.split("\n").sort
   s.has_rdoc     = true
-  s.require_path = 'lib'
-  s.bindir       = "bin"
   s.executables  = ["ramaze"]
   s.required_rubygems_version = '>= 1.3.5'
 
