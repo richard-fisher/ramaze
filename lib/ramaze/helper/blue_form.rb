@@ -7,12 +7,14 @@ module Ramaze
     # == Introduction
     #
     # The BlueForm helper tries to be an even better way to build forms programmatically.
-    # By using a simple block you can quickly create all the required elements for your form.
+    # By using a simple block you can quickly create all the required elements for your 
+    # form.
     #
-    # Since November 2010 the BlueForm helper works different. You can now specify an object as the first
-    # parameter of the form_for() method. This object will be used to retrieve the values of each field.
-    # This means that you can directly pass a database result object to the form and no longer have
-    # to manually specify values. However, you can still specify your own values if you want.
+    # Since November 2010 the BlueForm helper works different. You can now specify an 
+    # object as the first parameter of the form_for() method. This object will be used to 
+    # retrieve the values of each field. This means that you can directly pass a database 
+    # result object to the form and no longer have to manually specify values. However, 
+    # you can still specify your own values if you want.
     #
     # Old behaviour:
     #
@@ -30,10 +32,11 @@ module Ramaze
     #
     # == Form Data
     #
-    # As stated earlier it's possible to pass an object to the form_for() method. What kind of object this is,
-    # a database result object or an OpenStruct object doesn't matter as long as the attributes can be accessed
-    # outside of the object (this can be done using attr_readers). This makes it extremely easy to directly pass
-    # a result object from your favourite ORM. Example:
+    # As stated earlier it's possible to pass an object to the form_for() method. What 
+    # kind of object this is, a database result object or an OpenStruct object doesn't 
+    # matter as long as the attributes can be accessed outside of the object (this can be 
+    # done using attr_readers). This makes it extremely easy to directly pass a result 
+    # object from your favourite ORM. Example:
     #
     #  @data = User[1]
     #
@@ -45,13 +48,14 @@ module Ramaze
     #
     # == HTML Output
     #
-    # The form helper uses Gestalt, Ramaze's custom HTML builder that works somewhat like Erector.
-    # The output is very minimalistic, elements such as legends and fieldsets have to be added manually.
-    # Each combination of a label and input element will be wrapped in <p> tags.
+    # The form helper uses Gestalt, Ramaze's custom HTML builder that works somewhat like 
+    # Erector. The output is very minimalistic, elements such as legends and fieldsets 
+    # have to be added manually. Each combination of a label and input element will be 
+    # wrapped in <p> tags.
     #
-    # When using the form helper as a block in your templates it's important to remember that the
-    # result is returned and not displayed in the browser directly. When using Etanni this would result in
-    # something like the following:
+    # When using the form helper as a block in your templates it's important to remember 
+    # that the result is returned and not displayed in the browser directly. When using 
+    # Etanni this would result in something like the following:
     #
     #  #{
     #    form_for(@result, :method => :post) do |f| do
@@ -68,11 +72,14 @@ module Ramaze
     module BlueForm
       ##
       # The form method generates the basic structure of the form. It should be called
-      # using a block and it's return value should be manually sent to the browser (since it does not echo the value).
+      # using a block and it's return value should be manually sent to the browser (since 
+      # it does not echo the value).
       #
       # @param [Object] form_values Object containing the values for each form field.
-      # @param [Hash] options Hash containing any additional form attributes such as the method, action, enctype and so on.
-      # @param [Block] block Block containing the elements of the form such as password fields, textareas and so on.
+      # @param [Hash] options Hash containing any additional form attributes such as the 
+      #  method, action, enctype and so on.
+      # @param [Block] block Block containing the elements of the form such as password 
+      #  fields, textareas and so on.
       #
       def form_for(form_values, options = {}, &block)
         form = Form.new(form_values, options)
@@ -81,8 +88,9 @@ module Ramaze
       end
 
       ##
-      # Manually add a new error to the form_errors key in the flash hash.
-      # The first parameter is the name of the form field and the second parameter is the custom message.
+      # Manually add a new error to the form_errors key in the flash hash. The first 
+      # parameter is the name of the form field and the second parameter is the custom 
+      # message.
       #
       # @param [String] name The name of the form field to which the error belongs.
       # @param [String] message The custom error message to show.
@@ -111,7 +119,8 @@ module Ramaze
       end
 
       ##
-      # Retrieve all the form errors for the specified model and add them to the flash hash.
+      # Retrieve all the form errors for the specified model and add them to the flash 
+      # hash.
       #
       # @param [Object] obj An object of a model that contains form errors.
       #
@@ -128,9 +137,9 @@ module Ramaze
       end
 
       ##
-      # Main form class that contains all the required methods to generate form specific tags,
-      # such as textareas and select boxes. Do note that this class is not thread-safe so you should
-      # modify it only within one thread of execution.
+      # Main form class that contains all the required methods to generate form specific 
+      # tags, such as textareas and select boxes. Do note that this class is not 
+      # thread-safe so you should modify it only within one thread of execution.
       #
       class Form
         attr_reader :g
@@ -207,7 +216,8 @@ module Ramaze
 
         ##
         # Generate an input tag with a type of "text" along with a label tag.
-        # This method also has the alias "text" so feel free to use that one instead of input_text.
+        # This method also has the alias "text" so feel free to use that one instead of 
+        # input_text.
         #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the text field.
@@ -236,8 +246,9 @@ module Ramaze
 
         ##
         # Generate an input tag with a type of "password" along with a label.
-        # Password fields are pretty much the same as text fields except that the content of these fields is replaced with dots.
-        # This method has the following alias: "password".
+        # Password fields are pretty much the same as text fields except that the content 
+        # of these fields is replaced with dots. This method has the following alias: 
+        # "password".
         #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the password field.
@@ -265,8 +276,8 @@ module Ramaze
         alias password input_password
 
         ##
-        # Generate a submit tag (without a label). A submit tag is a button that once it's clicked
-        # will send the form data to the server.
+        # Generate a submit tag (without a label). A submit tag is a button that once it's 
+        # clicked will send the form data to the server.
         #
         # @param [String] value The text to display in the button.
         # @param [Hash] args Any additional HTML attributes along with their values.
@@ -293,8 +304,8 @@ module Ramaze
         #
         # If you want to have multiple checkboxes you can either use an array or a hash.
         # In the case of an array the values will also be used as text for each checkbox.
-        # When using a hash the key will be displayed and the value will be the value of the
-        # checkbox. Example:
+        # When using a hash the key will be displayed and the value will be the value of 
+        # the checkbox. Example:
         #
         #  @data = Class.new
         #    attr_reader :gender_arr
@@ -311,15 +322,28 @@ module Ramaze
         #    f.input_checkbox "Gender", :gender_hash
         #  end
         #
-        # @param [String] label The text to display inside the label tag.
-        # @param [String Symbol] name The name of the checkbox.
-        # @param [String] checked String that indicates if (and which) checkbox should be checked.
-        # @param [Hash] args Any additional HTML attributes along with their values.
         # @example
-        #
         #  form_for(@data, :method => :post) do |f|
         #    f.input_checkbox 'Remember me', :remember_user
         #  end
+        #
+        # @param [String] label The text to display inside the label tag.
+        # @param [String Symbol] name The name of the checkbox.
+        # @param [String] checked String that indicates if (and which) checkbox should be 
+        #  checked.
+        # @param [Hash] args Any additional HTML attributes along with their values.
+        # @option args [String/Symbol] :id The value to use for the ID attribute.
+        # @option args [String/Symbol] :default The default value to use for the hidden
+        #  field of the checkbox (set to 0 by default).
+        # @option args [Array] :values An array containing the possible values for the
+        #  checkboxes. 
+        # @option args [String/Symbol] :span_class The class to use for the <span> element
+        #  that's wrapped around the checkbox.
+        # @option args [TrueClass/FalseClass] :show_value When set to false the value of
+        #  each checkbox won't be displayed to the right of the checkbox. This option is
+        #  set to true by default.
+        # @option args [TrueClass/FalseClass] :show_label When set to true (default) the
+        # label for the checkbox will be displayed. Setting this to false will hide it.
         #
         def input_checkbox(label, name, checked = nil, args = {})
           id = args[:id] ? args[:id] : "#{id_for(name)}_0"
@@ -330,6 +354,20 @@ module Ramaze
             args.delete(:default)
           else
             default = 0
+          end
+
+          # Determine whether or not to show the value of the checkbox
+          if args.key?(:show_value)
+            show_value = args.delete(:show_value)
+          else
+            show_value = true
+          end
+
+          # Determine whether or not to show the label
+          if args.key?(:show_label)
+            show_label = args.delete(:show_label)
+          else
+            show_label = true
           end
 
           # Get the checkbox value from either the args hash or from
@@ -347,13 +385,14 @@ module Ramaze
             span_class = "checkbox_wrap"
           end
 
-          # Get the type from the args hash instead of pre-defining it. Doing so means we can use
-          # this method for the input_radio method.
+          # Get the type from the args hash instead of pre-defining it. Doing so means we 
+          # can use this method for the input_radio method.
           if !args[:type]
             args[:type] = :checkbox
           end
 
-          # Convert the values to an array if it's something we can't use in a loop (e.g. a string).
+          # Convert the values to an array if it's something we can't use in a loop 
+          # (e.g. a string).
           if args[:values].class != Hash and args[:values].class != Array
             args[:values] = [args[:values]]
           end
@@ -362,11 +401,15 @@ module Ramaze
           if !args[:values].empty?
             @g.p do
               # Let's create the label and the hidden field
-              label_for(id, label, name)
+              if show_label === true
+                label_for(id, label, name)
+              end
+
               self.input_hidden(name, default)
 
-              # Loop through all the values. Each checkbox will have an ID of "form-NAME-INDEX".
-              # Each name will be NAME followed by [] to indicate it's an array (since multiple values are possible).
+              # Loop through all the values. Each checkbox will have an ID of 
+              # "form-NAME-INDEX". Each name will be NAME followed by [] to indicate it's 
+              # an array (since multiple values are possible).
               args[:values].each_with_index do |value, index|
                 id            = args[:id] ? args[:id] : "#{id_for(name)}_#{index}"
 
@@ -394,17 +437,23 @@ module Ramaze
                 end
 
                 # And we're done, easy wasn't it?
-                opts = opts.merge(:name => checkbox_name, :id => id, :value => checkbox_value)
+                opts = opts.merge(
+                  :name => checkbox_name, :id => id, :value => checkbox_value
+                )
 
                 # Generate the following HTML:
                 #
                 # <span class="#{span_class}">
-                #   <input type="checkbox" name="#{checkbox_name}" id="#{id}" value="#{value}" /> #{value}
+                #   <input type="checkbox" name="#{checkbox_name}" id="#{id}" 
+                #   value="#{value}" /> #{value}
                 # </span>
                 #
                 @g.span :class => span_class do
                   @g.input(opts)
-                  " #{checkbox_text}"
+
+                  if show_value === true
+                    " #{checkbox_text}"
+                  end
                 end
               end
             end
@@ -435,13 +484,15 @@ module Ramaze
         #    f.input_radio "Gender", :gender_hash
         #  end
         #
+        # For more information see the input_checkbox() method.
+        #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the radio button.
-        # @param [String] checked String that indicates if (and which) radio button should be checked.
+        # @param [String] checked String that indicates if (and which) radio button should 
+        #  be checked.
         # @param [Hash] args Any additional HTML attributes along with their values.
         # @see input_checkbox()
         # @example
-        #
         #  form_for(@data, :method => :post) do |f|
         #    f.input_radio 'Gender', :gender
         #  end
@@ -628,7 +679,7 @@ module Ramaze
             "form_#{field_name}".downcase.gsub(/-/, '_')
           end
         end
-      end
-    end
-  end
-end
+      end # Form
+    end # BlueForm
+  end # Helper
+end # Ramaze

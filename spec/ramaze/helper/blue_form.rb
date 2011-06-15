@@ -254,6 +254,39 @@ describe BF = Ramaze::Helper::BlueForm do
     FORM
   end
 
+  it 'Make a form with input_checkbox(label, name) but hide the value of the checkbox' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_checkbox 'Assigned', :assigned, nil, :show_value => false
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_0">Assigned</label>
+    <input type="hidden" name="assigned" value="0" />
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" value="bacon" /></span>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="steak" /></span>
+  </p>
+</form>
+    FORM
+  end
+
+  it 'Make a form with input_checkbox(label, name) but hide thelabel' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_checkbox 'Assigned', :assigned, nil, :show_label => false
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <input type="hidden" name="assigned" value="0" />
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" value="bacon" /> bacon</span>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="steak" /> steak</span>
+  </p>
+</form>
+    FORM
+  end
+
   # ------------------------------------------------
   # Checkboxes using a hash
 
@@ -343,6 +376,40 @@ describe BF = Ramaze::Helper::BlueForm do
 </form>
     FORM
   end
+
+  it 'Make a form with input_radio(label, name) but hide the value' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_radio 'Assigned', :assigned, nil, :show_value => false
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_0">Assigned</label>
+    <input type="hidden" name="assigned" value="0" />
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" value="bacon" /></span>
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_1" value="steak" /></span>
+  </p>
+</form>
+    FORM
+  end
+
+  it 'Make a form with input_radio(label, name) but hide the label' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_radio 'Assigned', :assigned, nil, :show_label => false
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <input type="hidden" name="assigned" value="0" />
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" value="bacon" /> bacon</span>
+    <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_1" value="steak" /> steak</span>
+  </p>
+</form>
+    FORM
+  end
+
 
   # ------------------------------------------------
   # Radio buttons using a hash
