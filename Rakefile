@@ -29,7 +29,8 @@ DEVELOPMENT_DEPENDENCIES = {
   "addressable"             => {:version => "2.1.1"},
   "bacon"                   => {:version => "1.1.0"},
   "builder"                 => {:version => "2.1.2"},
-  "erector"                 => {:version => "0.7.2"},
+  "dalli"                   => {:version => "1.0.5"},
+  "erector"                 => {:version => "0.8.2"},
   "erubis"                  => {:version => "2.6.5"},
   "ezamar"                  => {:version => "2009.06"},
   "haml"                    => {:version => "2.2.22"},
@@ -40,7 +41,6 @@ DEVELOPMENT_DEPENDENCIES = {
   "locale"                  => {:version => "2.0.5"},
   "lokar"                   => {:version => "0.1.0"},
   "maruku"                  => {:version => "0.6.0"},
-  "dalli"                   => {:version => "1.0.4"},
   "mustache"                => {:version => "0.9.2"},
   "mutter"                  => {:version => "0.5.3"},
   "nagoro"                  => {:version => "2009.05"},
@@ -49,8 +49,8 @@ DEVELOPMENT_DEPENDENCIES = {
   "RedCloth"                => {:version => "4.2.3"},
   "Remarkably"              => {:version => "0.5.2", :lib => 'remarkably'},
   "RubyInline"              => {:version => "3.8.4"},
-  "sequel"                  => {:version => "3.9.0"},
   "scaffolding_extensions"  => {:version => "1.4.0"},
+  "sequel"                  => {:version => "3.9.0"},
   "slippers"                => {:version => "0.0.14"},
   "sqlite3-ruby"            => {:version => "1.2.5", :lib => 'sqlite3'},
   "tagz"                    => {:version => "7.2.3"},
@@ -69,14 +69,9 @@ GEMSPEC = Gem::Specification.new{|s|
   s.description  = s.summary
   s.email        = 'm.fellinger@gmail.com'
   s.homepage     = 'http://ramaze.net'
-  s.platform     = Gem::Platform::RUBY
   s.version      = PROJECT_VERSION
   s.files        = `git ls-files`.split("\n").sort
-  s.has_rdoc     = true
-  s.require_path = 'lib'
-  s.bindir       = "bin"
   s.executables  = ["ramaze"]
-  s.rubyforge_project = "ramaze"
   s.required_rubygems_version = '>= 1.3.5'
 
   s.post_install_message = <<MESSAGE.strip

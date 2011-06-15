@@ -13,9 +13,6 @@ module Ramaze
   #
   #    # gem with specific version from rubyforge (default)
   #    gem 'json', :version => '=1.1.3', :source => rubyforge
-  #
-  #    # gem from github
-  #    gem 'manveru-org', :lib => 'org', :source => github
   #  end
   #
   # @author manveru
