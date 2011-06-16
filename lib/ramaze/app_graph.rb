@@ -5,6 +5,19 @@ module Ramaze
   # The AppGraph class can be used to generate a graph of all the URLs mapped in a Ramaze
   # application and saves this graph as an image.
   #
+  # == Usage
+  #
+  # In order to generate a graph of your application all you need to do is the following:
+  #
+  #  require 'ramaze/app_graph'
+  #
+  #  graph = Ramaze::AppGraph.new
+  #  graph.generate
+  #  graph.show 
+  #
+  # Once this code is executed you can find the .dot and PNG files in the root directory
+  # of your application.
+  #
   # @author Michael Fellinger
   #
   class AppGraph
@@ -73,7 +86,7 @@ module Ramaze
     end
 
     ##
-    # Opens the graph using bin/dot. and bin/feh.
+    # Generates a PNG file based on the .dot file.
     #
     # @author Michael Fellinger
     #
