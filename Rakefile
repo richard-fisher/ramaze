@@ -7,7 +7,7 @@ require 'time'
 require 'date'
 
 PROJECT_SPECS = FileList[
-  'spec/{contrib,examples,ramaze,snippets}/**/*.rb',
+  'spec/{examples,ramaze,snippets}/**/*.rb',
   'lib/proto/spec/*.rb'
 ]
 
@@ -76,11 +76,9 @@ GEMSPEC = Gem::Specification.new{|s|
 
   s.post_install_message = <<MESSAGE.strip
 ============================================================
-
 Thank you for installing Ramaze!
 To create a new project:
 $ ramaze create yourproject
-
 ============================================================
 MESSAGE
 }

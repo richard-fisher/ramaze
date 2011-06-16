@@ -54,7 +54,7 @@ task :gem_setup do
 
       log "activating #{name}"
 
-      Gem::Specification.find_by_name(name, *version).activate
+      Gem.activate(name, *version)
     rescue Gem::LoadError
       log "activating #{name} failed, try to install"
 
@@ -70,7 +70,7 @@ task :gem_setup do
         installer.install(name, *version)
       end
 
-      Gem::Specification.find_by_name(name, *version).activate
+      Gem.activate(name, *version)
 
       log "install and final activation successful"
     rescue Gem::GemNotFoundException => ex

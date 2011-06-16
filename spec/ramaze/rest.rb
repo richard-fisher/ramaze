@@ -1,5 +1,5 @@
 require File.expand_path('../../../spec/helper', __FILE__)
-require 'ramaze/contrib/rest'
+require 'ramaze/rest'
 
 class Posts < Ramaze::Controller
   map '/'
