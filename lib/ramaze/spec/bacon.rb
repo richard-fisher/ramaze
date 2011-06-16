@@ -31,3 +31,6 @@ shared :webrat do
   extend Webrat::Methods
   extend Webrat::Matchers
 end
+
+# Ignore log messages
+Ramaze::Log.level = Logger::ERROR

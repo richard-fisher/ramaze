@@ -44,20 +44,20 @@ module Ramaze
       include Innate::Optioned
 
       options.dsl do
-        o 'The SMTP server to use for sending Emails'     , :host          , nil
-        o 'The SMTP helo domain'                          , :helo_domain   , nil
-        o 'The username for the SMTP server'              , :username      , nil
-        o 'The password for the SMTP server'              , :password      , nil
-        o 'The sender\'s Email address'                   , :sender        , nil
+        o 'The SMTP server to use for sending Emails'     , :host          , ''
+        o 'The SMTP helo domain'                          , :helo_domain   , ''
+        o 'The username for the SMTP server'              , :username      , ''
+        o 'The password for the SMTP server'              , :password      , ''
+        o 'The sender\'s Email address'                   , :sender        , ''
         o 'The port of the SMTP server'                   , :port          , 25
         o 'The authentication type of the SMTP server'    , :auth_type     , :login
         o 'An array of addresses to forward the Emails to', :bcc           , []
         o 'The name (including the Email) of the sender'  , :sender_full   , nil
-        o 'A prefix to use for the subjects of the Emails', :subject_prefix, nil
+        o 'A prefix to use for the subjects of the Emails', :subject_prefix, ''
         o 'The type of newlines to use for the Email'     , :newline       , "\r\n"
-        o 'The generator to use for Email IDs'            , :generator     , lambda do
+        o 'The generator to use for Email IDs'            , :generator     , lambda {
           "<" + Time.now.to_i.to_s + "@" + Ramaze::Helper::Email.options.helo_domain + ">"
-        end
+        }
       end
       
       ##
@@ -74,26 +74,26 @@ module Ramaze
       # @param  [String] message The body of the Email
       #
       def send_email(recipient, subject, message)
-        sender  = options.sender_full || "#{options.sender} <#{options.sender}>"
-        subject = [options.subject_prefix, subject].join(' ').strip
-        id      = options.generator.call
+        sender  = Email.options.sender_full || "#{Email.options.sender} <#{Email.options.sender}>"
+        subject = [Email.options.subject_prefix, subject].join(' ').strip
+        id      = Email.options.generator.call
 
         # Generate the body of the Email
         email   = [
           "From: #{sender}", "To: <#{recipient}>", "Date: #{Time.now.rfc2822}",
           "Subject: #{subject}", "Message-Id: #{id}", '', message
-        ].join(options.newline)
+        ].join(Email.options.newline)
 
         # Send the Email
         email_options = []
 
         [:host, :port, :helo_domain, :username, :password, :auth_type].each do |k|
-          email_options.push(options[k])
+          email_options.push(Email.options[k])
         end
 
         begin
           Net::SMTP.start(*email_options) do |smtp|
-            smtp.send_message(email, options.sender, [recipient, *options.bcc])
+            smtp.send_message(email, Email.options.sender, [recipient, *Email.options.bcc])
             Ramaze::Log.info("Email sent to #{recipient} with subject \"#{subject}\"")
           end
         rescue => e
