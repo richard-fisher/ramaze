@@ -103,9 +103,7 @@ module Ramaze
           # THINK: For now the field name is hard-coded to "csrf_token". While
           # this is perfectly fine in most cases it might be a good idea
           # to allow developers to change the name of this field (for whatever the reason).
-          if validate_csrf_token(request.params['csrf_token']) != true
-            yield
-          end
+          yield unless validate_csrf_token(request.params['csrf_token'])
         end
       end
 
@@ -126,30 +124,23 @@ module Ramaze
       #
       def generate_csrf_token args = {}
         # Default TTL is 15 minutes
-        if args[:ttl]
-          ttl = args[:ttl]
-        else
-          ttl = 900
-        end
+        ttl = args[:ttl] || (15 * 60)
 
-        # Generate all the required data
-        time    = Time.new.to_i.to_s
-        number  = SecureRandom.random_number(10000).to_s
-        base64  = SecureRandom.base64.to_s
-        token   = Digest::SHA2.new(512).hexdigest(srand.to_s + rand.to_s + time + number + base64).to_s
+        # Get some good entropy
+        random = SecureRandom.random_bytes(512)
+        # and some not so good entropy
+        time = Time.now.to_f
 
-        # Get several details from the client such as the user agent, IP, etc
-        ip      = request.env['REMOTE_ADDR']
-        agent   = request.env['HTTP_USER_AGENT']
-        host    = request.env['REMOTE_HOST']
+        # Hash it together
+        token = Digest::SHA512.hexdigest(random + time.to_s)
 
-        # Time to store all the data
+        # Time to store all the data we want to check later.
         session[:_csrf] = {
           :time  => time.to_i,
           :token => token,
-          :ip    => ip,
-          :agent => agent,
-          :host  => host,
+          :ip    => request.env['REMOTE_ADDR'],
+          :agent => request.env['HTTP_USER_AGENT'],
+          :host  => request.env['REMOTE_HOST'],
           :ttl   => ttl
         }
 
@@ -169,7 +160,7 @@ module Ramaze
       #  end
       #
       def get_csrf_token
-        if !session[:_csrf] or !self.validate_csrf_token(session[:_csrf][:token])
+        if !session[:_csrf] || !self.validate_csrf_token(session[:_csrf][:token])
           self.generate_csrf_token
         end
 
@@ -198,38 +189,22 @@ module Ramaze
       #    end
       #  end
       #
-      def validate_csrf_token input_token
+      def validate_csrf_token(input_token)
         # Check if the CSRF data has been generated and generate it if this
         # hasn't been done already (usually on the first request).
         if !session[:_csrf] or session[:_csrf].empty?
           self.generate_csrf_token
         end
 
-        # Get several details from the client such as the user agent, IP, etc
-        ip      = session[:_csrf][:ip]
-        agent   = session[:_csrf][:agent]
-        host    = session[:_csrf][:host]
-
-        # Get the current time and the time when the token was created
-        now         = Time.new.to_i
-        token_time  = session[:_csrf][:time]
+        _csrf = session[:_csrf]
 
         # Mirror mirror on the wall, who's the most secure of them all?
-        results     = Array.new
-        results.push( session[:_csrf][:token] == input_token )
-        results.push( (now  - token_time) <= session[:_csrf][:ttl] )
-        results.push( host  == request.env['REMOTE_HOST'] )
-        results.push( ip    == request.env['REMOTE_ADDR'] )
-        results.push( agent == request.env['HTTP_USER_AGENT'] )
-
-        # Verify the results
-        if results.include?(false)
-          return false
-        else
-          return true
-        end
+        session[:_csrf][:token] == input_token &&
+          (Time.now.to_f - _csrf[:time]) <= _csrf[:ttl] &&
+          _csrf[:host] == request.env['REMOTE_HOST'] &&
+          _csrf[:ip] == request.env['REMOTE_ADDR'] &&
+          _csrf[:agent] == request.env['HTTP_USER_AGENT']
       end
-
     end
   end
 end
