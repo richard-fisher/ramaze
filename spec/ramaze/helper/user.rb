@@ -63,6 +63,7 @@ describe Ramaze::Helper::UserHelper do
     get('/status').body.should == 'yes'
     get('/profile').body.should == MockSequelUser.new.profile
     get('/logout').status.should == 200
+    get('/status').body.should == 'no'
   end
 
   should 'login via the callback' do
@@ -71,5 +72,6 @@ describe Ramaze::Helper::UserHelper do
     get('/callback/status').body.should == 'yes'
     get('/callback/profile').body.should == MockSequelUser.new.profile
     get('/logout').status.should == 200
+    get('/callback/status').body.should == 'no'
   end
 end

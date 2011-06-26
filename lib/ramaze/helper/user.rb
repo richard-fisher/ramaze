@@ -171,10 +171,17 @@ module Ramaze
         #                                         model or callback
         # @see Ramaze::Helper::User#user_login
         # @author manveru
-        def _login(creds = _persistence)
-          if @_user = _would_login?(creds)
-            Current.session.resid!
-            self._persistence = creds
+        def _login(creds = nil)
+          if creds
+            if @_user = _would_login?(creds)
+              Current.session.resid!
+              self._persistence = {
+                :credentials => creds,
+                :user => @_user,
+              }
+            end
+          elsif persistence = self._persistence
+            @_user = persistence[:user]
           end
         end
 
@@ -198,7 +205,7 @@ module Ramaze
         # @see Ramaze::Helper::User#user_logout
         # @author manveru
         def _logout
-          _persistence.clear
+          (_persistence || {}).clear
           Current.request.env['ramaze.helper.user'] = nil
         end
 
@@ -210,12 +217,12 @@ module Ramaze
           !!_user
         end
 
-        def _persistence=(creds)
-          Current.session[:USER] = creds
+        def _persistence=(obj)
+          Current.session[:USER] = obj
         end
 
         def _persistence
-          Current.session[:USER] || {}
+          Current.session[:USER]
         end
 
         # Refer everything not known
