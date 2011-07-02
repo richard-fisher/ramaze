@@ -20,7 +20,8 @@ class SpecHelperAuth < Ramaze::Controller
   def secured
     "Secret content"
   end
-  before(:secured){ login_required }
+
+  before(:secured) { login_required }
 end
 
 class SpecHelperAuthHash < SpecHelperAuth
@@ -43,9 +44,9 @@ end
 
 class SpecHelperAuthLambda < SpecHelperAuth
   map '/lambda'
-  trait :auth_table => lambda{
-      { 'manveru' => $password }
-    }
+  trait :auth_table => lambda {
+    { 'manveru' => $password }
+  }
 end
 
 describe Ramaze::Helper::Auth do

@@ -9,10 +9,10 @@ require File.expand_path('../../../../spec/helper', __FILE__)
 spec_require 'rack/contrib'
 
 # minimal middleware, no exception handling
-Ramaze.middleware!(:spec){|m|
+Ramaze.middleware!(:spec) do |m|
   m.apps Rack::ConditionalGet, Rack::ETag
   m.run Ramaze::AppMap
-}
+end
 
 class Main < Ramaze::Controller
   map '/'
@@ -27,19 +27,19 @@ describe 'Serving static files' do
   it 'serves from public root' do
     css = File.read(__DIR__('public/test_download.css'))
     get '/test_download.css'
-    last_response.body.should == css
-    last_response.status.should == 200
+    last_response.body.should   === css
+    last_response.status.should === 200
   end
 
   it 'serves files with spaces' do
     get '/file%20name.txt'
-    last_response.status.should == 200
-    last_response.body.should == 'hi'
+    last_response.status.should === 200
+    last_response.body.should   === 'hi'
   end
 
-  it 'sends Etag for string bodies' do
+  it 'sends ETag for string bodies' do
     get '/'
-    last_response['Etag'].size.should > 1
+    last_response['ETag'].size.should > 1
   end
 
   it 'sends Last-Modified for file bodies' do
@@ -50,16 +50,17 @@ describe 'Serving static files' do
     last_response['Last-Modified'].should == mtime.httpdate
   end
 
-  it 'respects Etag with IF_NONE_MATCH' do
+  it 'respects ETag with IF_NONE_MATCH' do
     get '/'
 
-    etag = last_response['Etag']
+    etag = last_response['ETag']
     etag.should.not.be.nil
 
     header 'IF_NONE_MATCH', etag
     get '/'
-    last_response.status.should == 304
-    last_response.body.should == ''
+
+    last_response.status.should === 304
+    last_response.body.should   === ''
   end
 
   it 'respects Last-Modified with IF_MODIFIED_SINCE' do
@@ -70,7 +71,8 @@ describe 'Serving static files' do
 
     header 'IF_MODIFIED_SINCE', mtime
     get '/test_download.css'
-    last_response.status.should == 304
-    last_response.body.should == ''
+
+    last_response.status.should === 304
+    last_response.body.should   === ''
   end
 end

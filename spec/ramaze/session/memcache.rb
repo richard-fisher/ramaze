@@ -2,10 +2,10 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
+require 'dalli'
 
 spec_precondition 'memcached is running' do
-  require 'memcache'
-  cache = MemCache.new(['localhost:11211'])
+  cache = Dalli::Client.new('localhost:11211')
   cache.set('active', true)
 end
 
