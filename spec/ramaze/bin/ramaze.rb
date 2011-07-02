@@ -37,22 +37,9 @@ USAGE = <<TXT
 	 console - Starts an irb console with app.rb (and irb completion) loaded. This command
 	           ignores rack options, ARGV is passed on to IRB.
 
+TXT
 
-	Ruby options:
-	  -e, --eval LINE          evaluate a LINE of code
-	  -d, --debug              set debugging flags (set $DEBUG to true)
-	  -w, --warn               turn warnings on for your script
-	  -I, --include PATH       specify $LOAD_PATH (may be used more than once)
-	  -r, --require LIBRARY    require the library, before executing your script
-
-	Rack options:
-	  -s, --server SERVER      serve using SERVER (webrick/mongrel)
-	  -o, --host HOST          listen on HOST (default: 0.0.0.0)
-	  -p, --port PORT          use PORT (default: 9292)
-	  -E, --env ENVIRONMENT    use ENVIRONMENT for defaults (default: development)
-	  -D, --daemonize          run daemonized in the background
-	  -P, --pid FILE           file to store PID (default: rack.pid)
-
+USAGE_2 = <<TXT
 	Common options:
 	  -h, -?, --help           Show this message
 	      --version            Show version
@@ -65,7 +52,8 @@ describe "bin/ramaze command" do
 
   it "Shows command line help" do
     output = `#{Ramaze::BINPATH} -h`
-    output.should == USAGE
+    output.should.match /#{USAGE}/
+    output.should.include?(USAGE_2)
   end
 
   it "Shows the correct version" do
