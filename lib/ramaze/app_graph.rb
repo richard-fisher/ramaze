@@ -2,21 +2,20 @@ require 'set'
 
 module Ramaze
   ##
-  # The AppGraph class can be used to generate a graph of all the URLs mapped in a Ramaze
-  # application and saves this graph as an image.
+  # The AppGraph class can be used to generate a graph of all the URLs mapped in
+  # a Ramaze application and saves this graph as an image.
   #
   # == Usage
   #
-  # In order to generate a graph of your application all you need to do is the following:
+  # In order to generate a graph of your application all you need to do is the
+  # following:
   #
   #  require 'ramaze/app_graph'
   #
-  #  graph = Ramaze::AppGraph.new
-  #  graph.generate
-  #  graph.show 
+  #  graph = Ramaze::AppGraph.new graph.generate graph.show 
   #
-  # Once this code is executed you can find the .dot and PNG files in the root directory
-  # of your application.
+  # Once this code is executed you can find the .dot and PNG files in the root
+  # directory of your application.
   #
   # @author Michael Fellinger
   #
@@ -31,8 +30,8 @@ module Ramaze
     end
 
     ##
-    # Generates the graph based on all the current routes. The graph is saved in the
-    # application directory.
+    # Generates the graph based on all the current routes. The graph is saved in
+    # the application directory.
     #
     # @author Michael Fellinger
     #
@@ -55,7 +54,10 @@ module Ramaze
           c_node.update_method_arities
           c_node.method_arities.each do |method, arity|
             action_path = File.join(c_node.mapping, method.to_s)
-            connect(action_path => "#{c_node}##{method}[#{arity}]", c_node => action_path)
+            connect(
+              action_path => "#{c_node}##{method}[#{arity}]", 
+              c_node      => action_path
+            )
           end
         end
       end
