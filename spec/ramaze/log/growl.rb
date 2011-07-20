@@ -1,7 +1,20 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_precondition 'ruby-growl is installed' do
-  require 'ruby-growl'
+  if !RUBY_PLATFORM.include?('darwin')
+    should.flunk 'Growl can only be installed on Mac OS'
+  else
+    spec_require 'ruby-growl'
+  end
+end
+
+spec_precondition 'Growl should be running' do
+  begin
+    growl = Ramaze::Logger::Growl.new
+    growl.log(:info, 'Ramaze connection test')
+  rescue
+    should.flunk 'Growl is not running'
+  end
 end
 
 require 'ramaze/log/growl'
