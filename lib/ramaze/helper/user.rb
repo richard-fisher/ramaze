@@ -175,13 +175,10 @@ module Ramaze
           if creds
             if @_user = _would_login?(creds)
               Current.session.resid!
-              self._persistence = {
-                :credentials => creds,
-                :user => @_user,
-              }
+              self._persistence = {:credentials => creds}
             end
           elsif persistence = self._persistence
-            @_user = persistence[:user]
+            @_user = _would_login?(persistence[:credentials])
           end
         end
 
@@ -191,6 +188,8 @@ module Ramaze
         # This will not actually login, just check whether the credentials
         # would result in a user.
         def _would_login?(creds)
+          return unless creds
+
           if c = @_callback
             c.call(creds)
           elsif _model.respond_to?(:authenticate)
