@@ -1,5 +1,3 @@
-require 'rake/gempackagetask'
-
 task :gemspec => [:manifest, :changelog] do
   gemspec_file = "#{GEMSPEC.name}.gemspec"
   File.open(gemspec_file, 'w+'){|gs| gs.puts(GEMSPEC.to_ruby) }
@@ -16,7 +14,7 @@ task :uninstall => [:clean] do
   sh %{gem uninstall -x #{GEMSPEC.name}}
 end
 
-Rake::GemPackageTask.new(GEMSPEC) do |p|
+Gem::PackageTask.new(GEMSPEC) do |p|
   p.need_tar = true
   p.need_zip = true
 end
