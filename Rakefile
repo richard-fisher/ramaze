@@ -93,6 +93,8 @@ end
 
 Dir['tasks/*.rake'].each{|f| import(f) }
 
+task :test => [:bacon]
+task :spec => [:bacon]
 task :default => [:bacon]
 
 CLEAN.include %w[
