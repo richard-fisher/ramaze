@@ -3,9 +3,8 @@ module Ramaze
   module Logger
 
     ##
-    # A customized logger (based on Informer) that creates multiple log files based on time
-    #
-    # TODO: This class isn't fully documented and could use a few improvements.
+    # A customized logger (based on Informer) that creates multiple log files
+    # based on current date.
     #
     class RotatingInformer
       include Innate::Traited
@@ -19,7 +18,7 @@ module Ramaze
 
       # This is how the final output is arranged.
       trait :format => "[%time] %prefix  %text"
-      
+
       ##
       # Create a new instance of RotatingInformer.
       #
@@ -34,16 +33,17 @@ module Ramaze
       # any or all of the symbols :debug, :error, :info and/or :warn
       #
       # @example
-      #   
-      #   # Creates logs in directory called logs. The generated filenames will be in the form YYYY-MM-DD.log
+      #
+      #   # Creates logs in directory called logs. The generated filenames
+      #   # will be in the form YYYY-MM-DD.log
       #   RotatingInformer.new('logs')
       #
-      #   
-      #   # Creates logs in directory called logs. The generated filenames will be in the form YYYY-MM.txt
+      #   # Creates logs in directory called logs. The generated filenames
+      #   # will be in the form YYYY-MM.txt
       #   RotatingInformer.new('logs', '%Y-%m.txt')
-      #                                   
       #
-      #   # Creates logs in directory called logs. The generated filenames will be in the form YYYY-MM.txt. 
+      #   # Creates logs in directory called logs. The generated filenames
+      #   # will be in the form YYYY-MM.txt.
       #   # Only errors will be logged to the files.
       #   RotatingInformer.new('logs', '%Y-%m.txt', [:error])
       #
@@ -51,7 +51,8 @@ module Ramaze
       # @param [String] time_format The time format for all log files.
       # @param [Array] log_levels Array containing the type of messages to log.
       #
-      def initialize(base_dir, time_format = '%Y-%m-%d.log', log_levels = [:debug, :error, :info, :warn])
+      def initialize(base_dir, time_format = '%Y-%m-%d.log',
+      log_levels = [:debug, :error, :info, :warn])
         # Verify and set base directory
         send :base_dir=, base_dir, true
 
@@ -74,7 +75,8 @@ module Ramaze
       # or is unwritable.
       #
       # @param [String] directory The base directory specified by the developer.
-      # @param [Bool] raise_exception Boolean that indicates if an exception should be raised if the base directory doesn't exist.
+      # @param [Bool] raise_exception Boolean that indicates if an exception
+      #  should be raised if the base directory doesn't exist.
       #
       def base_dir=(directory, raise_exception = false)
         # Expand directory path
@@ -195,7 +197,6 @@ module Ramaze
           @out = File.open(out, 'ab+')
         end
       end
-    end
-
-  end
-end
+    end # RotatingInformer
+  end # Log
+end # Ramaze

@@ -6,10 +6,10 @@ require 'syslog'
 
 # Add aliases for the levelnames used by Ramaze logging
 module Syslog
-    alias dev debug
-    alias warn warning
-    alias error err
-    module_function :dev, :warn, :error 
+  alias dev debug
+  alias warn warning
+  alias error err
+  module_function :dev, :warn, :error 
 end
 
 module Ramaze
@@ -52,6 +52,6 @@ module Ramaze
       def inspect
         ::Syslog.inspect
       end
-    end
-  end
-end
+    end # Syslog
+  end # Logger
+end # Ramaze

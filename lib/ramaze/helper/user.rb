@@ -4,8 +4,8 @@ module Ramaze
     # This helper provides a convenience wrapper for handling authentication
     # and persistence of users.
     #
-    # On every request, when you use the {UserHelper#user} method for the first time,
-    # we confirm the authentication and store the returned object in the
+    # On every request, when you use the {UserHelper#user} method for the first
+    # time, we confirm the authentication and store the returned object in the
     # request.env, usually this will involve a request to your database.
     #
     # @example Basic usage with User::authenticate
@@ -99,13 +99,16 @@ module Ramaze
       # Using this as key in request.env
       RAMAZE_HELPER_USER = 'ramaze.helper.user'.freeze
 
+      ##
       # Use this method in your application, but do not use it in conditionals
       # as it will never be nil or false.
       #
-      # @return [Ramaze::Helper::User::Wrapper] wrapped return value from model or callback
+      # @return [Ramaze::Helper::User::Wrapper] wrapped return value from 
+      #  model or callback
       #
       # @api external
       # @author manveru
+      #
       def user
         env = request.env
         found = env[RAMAZE_HELPER_USER]
@@ -116,19 +119,22 @@ module Ramaze
         env[RAMAZE_HELPER_USER] = Wrapper.new(model, callback)
       end
 
+      ##
       # shortcut for user._login but default argument are request.params
       #
-      # @param [Hash] creds the credentials that will be passed to callback or model
-      #
+      # @param [Hash] creds the credentials that will be passed to callback or 
+      #  model
       # @return [nil Hash] the given creds are returned on successful login
       #
       # @api external
       # @see Ramaze::Helper::User::Wrapper#_login
       # @author manveru
+      #
       def user_login(creds = request.params)
         user._login(creds)
       end
 
+      ##
       # shortcut for user._logout
       #
       # @return [nil]
@@ -136,19 +142,23 @@ module Ramaze
       # @api external
       # @see Ramaze::Helper::User::Wrapper#_logout
       # @author manveru
+      #
       def user_logout
         user._logout
       end
 
+      ##
       # @return [true false] whether the user is logged in already.
       #
       # @api external
       # @see Ramaze::Helper::User::Wrapper#_logged_in?
       # @author manveru
+      #
       def logged_in?
         user._logged_in?
       end
 
+      ##
       # Wrapper for the ever-present "user" in your application.
       # It wraps around an arbitrary instance and worries about authentication
       # and storing information about the user in the session.
@@ -157,6 +167,7 @@ module Ramaze
       # methods with an underscore.
       #
       # Patches and suggestions are highly appreciated.
+      #
       class Wrapper < BlankSlate
         attr_accessor :_model, :_callback, :_user
 
@@ -166,9 +177,11 @@ module Ramaze
           _login
         end
 
-        # @param [Hash] creds this hash will be stored in the session on successful login
+        ##
+        # @param [Hash] creds this hash will be stored in the session on 
+        #  successful login
         # @return [Ramaze::Helper::User::Wrapper] wrapped return value from
-        #                                         model or callback
+        #  model or callback
         # @see Ramaze::Helper::User#user_login
         # @author manveru
         def _login(creds = nil)
@@ -232,6 +245,6 @@ module Ramaze
           _user.send(meth, *args, &block)
         end
       end
-    end
-  end
-end
+    end # User
+  end # Helper
+end # Ramaze

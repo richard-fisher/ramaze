@@ -28,7 +28,6 @@ module Ramaze
     {:name => 'nagoro'      , :version => ['>= 2009.05']},
     {:name => 'rack-contrib', :version => ['>= 0.9.2'], :lib => 'rack/contrib'},
     {:name => 'rack-test'   , :version => ['>= 0.5.3'], :lib => 'rack/test'},
-    {:name => 'RedCloth'    , :version => ['>= 4.2.3'], :lib => 'redcloth'},
     {:name => 'Remarkably'  , :version => ['>= 0.5.2'], :lib => 'remarkably'},
     {:name => 'RubyInline'  , :version => ['>= 3.8.4'], :lib => 'inline'},
     {:name => 'sequel'      , :version => ['>= 3.9.0']},

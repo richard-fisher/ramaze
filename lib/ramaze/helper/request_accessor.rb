@@ -11,6 +11,6 @@ module Ramaze
           eval("def %s(*a) request.%s(*a); end" % [method, method])
         end
       end
-    end
-  end
-end
+    end # RequestAccessor
+  end # Helper
+end # Ramaze

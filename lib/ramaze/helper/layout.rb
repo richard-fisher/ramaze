@@ -2,18 +2,19 @@ module Ramaze
   module Helper
     ##
     # Provides wrapper methods for a higher-level approach than the core layout
-    # method. The layout() method that comes with Innate/Ramaze is fairly basic as it only
-    # allows you to specify a single layout to always use or a block giving you some extra
-    # flexibility. The latter however is still a bit of a pain when dealing with many
-    # custom layouts in a single controller. Meet the Layout helper. This helper provides
-    # a single method (since April 2011, it used to provide more) called "set_layout".
-    # This method allows you to specify a number of layouts and the methods for which
-    # these layouts should be used.
+    # method. The layout() method that comes with Innate/Ramaze is fairly basic
+    # as it only allows you to specify a single layout to always use or a block
+    # giving you some extra flexibility. The latter however is still a bit of a
+    # pain when dealing with many custom layouts in a single controller. Meet
+    # the Layout helper. This helper provides a single method (since April 2011,
+    # it used to provide more) called "set_layout".  This method allows you to
+    # specify a number of layouts and the methods for which these layouts should
+    # be used.
     #
     # == Examples
     #
-    # The most basic example is simply setting a layout as you would do with the layout()
-    # method:
+    # The most basic example is simply setting a layout as you would do with the
+    # layout() method:
     #
     #  set_layout 'default'
     #
@@ -21,21 +22,22 @@ module Ramaze
     #
     #  set_layout 'default' => [:index]
     #
-    # Woah! What just happened? It's quite easy actually, we merely defined that the
-    # layout called "default" should be used for the index method *only*. Pretty sweet
-    # huh? It gets even better:
+    # Woah! What just happened? It's quite easy actually, we merely defined that
+    # the layout called "default" should be used for the index method *only*.
+    # Pretty sweet huh? It gets even better:
     #
     #  set_layout 'default' => [:index, :edit], 'alternative' => [:add, :process]
     #
-    # A few things changed. First of all there are now two key/value groups. Each group
-    # defines a layout (the key) and a set of methods (the value) for which each layout
-    # should be used. In this case the layout "default" will be used for index() and edit()
-    # but the layout "alternative" will be used for add() and process().
+    # A few things changed. First of all there are now two key/value groups.
+    # Each group defines a layout (the key) and a set of methods (the value) for
+    # which each layout should be used. In this case the layout "default" will
+    # be used for index() and edit() but the layout "alternative" will be used
+    # for add() and process().
     #
-    # Last but not least, multiple calls to set_layout will no longer override any
-    # existing settings *unless* you actually specify the same method with a different
-    # layout. This is possible because the set_layout method stores all these details in
-    # an instance variable called "_ramaze_layouts".
+    # Last but not least, multiple calls to set_layout will no longer override
+    # any existing settings *unless* you actually specify the same method with a
+    # different layout. This is possible because the set_layout method stores
+    # all these details in an instance variable called "_ramaze_layouts".
     #
     # @author Yorick Peterse
     # @author Michael Fellinger
@@ -44,8 +46,8 @@ module Ramaze
     module Layout
 
       ##
-      # Extends the class that included this module so that the methods that this helper
-      # provides can be called outside of instance of class methods.
+      # Extends the class that included this module so that the methods that
+      # this helper provides can be called outside of instance of class methods.
       #
       # @param [Object] into The class that included this module.
       # @author Michael Fellinger
@@ -57,9 +59,9 @@ module Ramaze
 
       module SingletonMethods
         ##
-        # The set_layout method allows you to specify a number of methods and their
-        # layout. This allows you to use layout A for methods 1, 2 and 3 but layout B for
-        # method 4.
+        # The set_layout method allows you to specify a number of methods and
+        # their layout. This allows you to use layout A for methods 1, 2 and 3
+        # but layout B for method 4.
         #
         # @example
         #  # The key is the layout, the value an array of methods
@@ -105,7 +107,7 @@ module Ramaze
         def set_layout_except(hash_or_layout)
           Ramaze.deprecated('set_layout_except', 'set_layout')
         end
-      end
-    end
-  end
-end
+      end # SingletonMethods
+    end # Layout
+  end # Helper
+end # Ramaze

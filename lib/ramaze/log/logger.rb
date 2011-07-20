@@ -5,7 +5,6 @@ require 'logger'
 
 module Ramaze
   module Logger
-
     ##
     # Informer for the Stdlib Logger.
     #
@@ -28,7 +27,6 @@ module Ramaze
       def dev(*args)
         debug(*args)
       end
-    end
-
-  end
-end
+    end # Logger
+  end # Logger
+end # Ramaze

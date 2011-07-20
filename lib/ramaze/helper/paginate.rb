@@ -2,23 +2,21 @@ require 'ramaze/gestalt'
 
 module Ramaze
   module Helper
-
     # Helper for pagination and pagination-navigation.
     #
     # See detailed API docs for Paginator below.
     # Also have a look at the examples/helpers/paginate.rb
-
     module Paginate
       include Traited
 
       # Define default options in your Controller, they are being retrieved by
       # ancestral_trait, so you can also put it into a common superclass
-
       trait :paginate => {
         :limit => 10,
         :var   => 'pager',
       }
 
+      ##
       # Returns a new Paginator instance.
       #
       # Note that the pagination relies on being inside a Ramaze request to
@@ -53,18 +51,17 @@ module Ramaze
       #   :page   The page you are currently on, if not given it will be
       #           retrieved from current request variables. Defaults to 1 if
       #           neither exists.
-
+      #
       def paginate(dataset, options = {})
         options = ancestral_trait[:paginate].merge(options)
         limit = options[:limit]
         var   = options[:var]
         page  = options[:page] || (request[var] || 1).to_i
-          
+
         Paginator.new(dataset, page, limit, var)
       end
 
       # Provides easy pagination and navigation
-
       class Paginator
         include Ramaze::Helper
         helper :link, :cgi
@@ -76,6 +73,7 @@ module Ramaze
           @pager = pager_for(data)
         end
 
+        ##
         # Returns String with navigation div.
         #
         # This cannot be customized very nicely, but you can style it easily
@@ -100,8 +98,7 @@ module Ramaze
         #     <span class="next grey">&gt;</span>
         #     <span class="last grey">&gt;&gt;</span>
         #   </div>
-
-
+        #
         def navigation(limit = 8)
           g = Ramaze::Gestalt.new
           g.div :class => :pager do
@@ -140,24 +137,22 @@ module Ramaze
         end
 
         # Useful to omit pager if it's of no use.
-
         def needed?
           @pager.page_count > 1
         end
 
         # these methods are actually on the pager, but we def them here for
         # convenience (method_missing in helper is evil and even slower)
-
-        def page_count; @pager.page_count end
-        def each(&block) @pager.each(&block) end
-        def first_page?; @pager.first_page?; end
-        def prev_page; @pager.prev_page; end
+        def page_count  ; @pager.page_count  ; end
+        def each(&block); @pager.each(&block); end
+        def first_page? ; @pager.first_page? ; end
+        def prev_page   ; @pager.prev_page   ; end
         def current_page; @pager.current_page; end
-        def last_page; @pager.last_page; end
-        def last_page?; @pager.last_page?; end
-        def next_page; @pager.next_page; end
-        def empty?; @pager.empty?; end
-        def count; @pager.count; end
+        def last_page   ; @pager.last_page   ; end
+        def last_page?  ; @pager.last_page?  ; end
+        def next_page   ; @pager.next_page   ; end
+        def empty?      ; @pager.empty?      ; end
+        def count       ; @pager.count       ; end
 
         private
 
@@ -185,7 +180,6 @@ module Ramaze
         end
 
         # Wrapper for Array to behave like the Sequel pagination
-
         class ArrayPager
           def initialize(array, page, limit)
             @array, @page, @limit = array, page, limit
@@ -257,10 +251,8 @@ module Ramaze
           def empty?
             size == 0
           end
-
-        end
-
-      end
-    end
-  end
-end
+        end # DataMapperPager
+      end # Paginator
+    end # Paginate
+  end # Helper
+end # Ramaze

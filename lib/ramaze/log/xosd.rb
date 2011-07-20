@@ -7,7 +7,6 @@ require 'thread'
 
 module Ramaze
   module Logger
-
     ##
     # Informer for the XOSD notification system for X11.
     #
@@ -89,7 +88,6 @@ module Ramaze
           QUEUE << [tag, message]
         end
       end
-    end
-
-  end
-end
+    end # Xosd
+  end # Logger
+end # Ramaze

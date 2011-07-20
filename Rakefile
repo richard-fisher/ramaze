@@ -1,5 +1,6 @@
 begin; require 'rubygems'; rescue LoadError; end
 require 'rake'
+require 'rake/clean'
 require 'date'
 require 'time'
 
@@ -10,6 +11,19 @@ PROJECT_SPECS = Dir.glob(File.expand_path('../spec/ramaze/**/*.rb', __FILE__))
 GEMSPEC = Gem::Specification::load(
   File.expand_path('../ramaze.gemspec', __FILE__)
 )
+
+CLEAN.include %w[
+  **/.*.sw?
+  *.gem
+  .config
+  **/*~
+  **/{data.db,cache.yaml}
+  *.yaml
+  pkg
+  rdoc
+  ydoc
+  *coverage*
+]
 
 Dir.glob(File.expand_path('../tasks/*.rake', __FILE__)).each do |f|
   import(f)

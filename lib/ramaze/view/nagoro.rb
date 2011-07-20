@@ -39,6 +39,6 @@ module Ramaze
 
         return html, 'text/html'
       end
-    end
-  end
-end
+    end # Nagoro
+  end # View
+end # Ramaze

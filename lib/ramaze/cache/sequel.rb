@@ -3,9 +3,10 @@ require 'sequel'
 module Ramaze
   class Cache
     ##
-    # The Sequel cache is a cache system that uses the Sequel database toolkit to store
-    # the data in a DBMS supported by Sequel. Examples of these databases are MySQL,
-    # SQLite3 and so on. In order to use this cache you'd have to do the following:
+    # The Sequel cache is a cache system that uses the Sequel database toolkit
+    # to store the data in a DBMS supported by Sequel. Examples of these
+    # databases are MySQL, SQLite3 and so on. In order to use this cache you'd
+    # have to do the following:
     #
     #  Ramaze::Cache.options.view = Ramaze::Cache::Sequel.using(
     #    :connection => Sequel.mysql(
@@ -17,11 +18,11 @@ module Ramaze
     #    :table => :blog_sessions
     #  )
     #
-    # If you already have an existing connection you can just pass the object to the
-    # :connection option instead of creating a new connection manually.
+    # If you already have an existing connection you can just pass the object to
+    # the :connection option instead of creating a new connection manually.
     #
-    # Massive thanks to Lars Olsson for patching the original Sequel cache so that it
-    # supports multiple connections and other useful features.
+    # Massive thanks to Lars Olsson for patching the original Sequel cache so
+    # that it supports multiple connections and other useful features.
     #
     # @author Lars Olsson
     # @since  18-04-2011
@@ -45,20 +46,21 @@ module Ramaze
         :ttl => nil
       }
 
-      # Hash containing all the default options merged with the user specified ones
+      # Hash containing all the default options merged with the user specified 
+      # ones
       attr_accessor :options
 
       class << self
         attr_accessor :options
 
         ##
-        # This method returns a subclass of Ramaze::Cache::Sequel with the provided options 
-        # set. This is necessary because Ramaze expects a class and not an instance of a 
-        # class for its cache option.
+        # This method returns a subclass of Ramaze::Cache::Sequel with the
+        # provided options set. This is necessary because Ramaze expects a class
+        # and not an instance of a class for its cache option.
         #
-        # You can provide any parameters you want, but those not used by the cache will not 
-        # get stored. No parameters are mandatory. Any missing parameters will be replaced 
-        # by default values.
+        # You can provide any parameters you want, but those not used by the
+        # cache will not get stored. No parameters are mandatory. Any missing
+        # parameters will be replaced by default values.
         #
         # @example
         #  ##
@@ -80,25 +82,28 @@ module Ramaze
         # @author Lars Olsson
         # @since  18-04-2011
         # @param  [Object] options A hash containing the options to use
-        # @option options [Object] :connection a Sequel database object (Sequel::Database)
-        #  You can use any parameters that Sequel supports for this object. If this option
-        #  is left unset, a Sqlite memory database will be used.
-        # @option options [String] :table The table name you want to use for the cache.
-        #  Can be either a String or a Symbol. If this option is left unset, a table called
-        #  ramaze_cache will be used.
-        # @option options [Fixnum] :ttl Setting this value will override Ramaze's default 
-        #  setting for when a particular cache item will be invalidated. By default this
-        #  setting is not used and the cache uses the values provided by Ramaze, but if you 
-        #  want to use this setting it should be set to an integer representing the number 
-        #  of seconds before a cache item becomes invalidated.
-        # @option options [TrueClass] :display_warnings When this option is set to true, 
-        #  failure to serialiaze or deserialize cache items will produce a warning in the 
-        #  Ramaze log. This option is set to false by default. Please note that certain 
-        #  objects (for instance Procs) cannot be serialized by ruby and therefore cannot be 
-        #  cached by this cache class. Setting this option to true is a good way to find out 
-        #  if the stuff you are trying to cache is affected by this. Failure to 
-        #  serialize/deserialize a cache item will never raise an exception, the item will 
-        #  just remain uncached.
+        # @option options [Object] :connection a Sequel database object
+        #  (Sequel::Database) You can use any parameters that Sequel supports for
+        #  this object. If this option is left unset, a Sqlite memory database
+        #  will be used.
+        # @option options [String] :table The table name you want to use for the
+        #  cache. Can be either a String or a Symbol. If this option is left
+        #  unset, a table called ramaze_cache will be used.
+        # @option options [Fixnum] :ttl Setting this value will override
+        #  Ramaze's default setting for when a particular cache item will be
+        #  invalidated. By default this setting is not used and the cache uses
+        #  the values provided by Ramaze, but if you want to use this setting it
+        #  should be set to an integer representing the number of seconds before
+        #  a cache item becomes invalidated.
+        # @option options [TrueClass] :display_warnings When this option is set
+        #  to true, failure to serialiaze or deserialize cache items will produce
+        #  a warning in the Ramaze log. This option is set to false by default.
+        #  Please note that certain objects (for instance Procs) cannot be
+        #  serialized by ruby and therefore cannot be cached by this cache class.
+        #  Setting this option to true is a good way to find out if the stuff you
+        #  are trying to cache is affected by this. Failure to
+        #  serialize/deserialize a cache item will never raise an exception, the
+        #  item will just remain uncached.
         # @return [Object]
         #
         def using(options = {})
@@ -112,19 +117,22 @@ module Ramaze
       #
       # @author Michael Fellinger
       # @since  04-05-2011
-      # @param  [Hash] options A hash with custom options, see Ramaze::Cache::Sequel.using
-      #  for all available options.
+      # @param  [Hash] options A hash with custom options, see 
+      #  Ramaze::Cache::Sequel.using for all available options.
       #
       def initialize(options = {})
-        self.class.options ||= Ramaze::Cache::Sequel.trait[:default].merge(options)
-        @options             = options.merge(self.class.options)
+        self.class.options ||= Ramaze::Cache::Sequel.trait[:default].merge(
+          options
+        )
+        
+        @options = options.merge(self.class.options)
       end
 
       ##
       # Executed after #initialize and before any other method.
       #
-      # Some parameters identifying the current process will be passed so caches that act 
-      # in one global name-space can use them as a prefix.
+      # Some parameters identifying the current process will be passed so caches 
+      # that act in one global name-space can use them as a prefix.
       #
       # @author Lars Olsson
       # @since  18-04-2011
@@ -151,8 +159,8 @@ module Ramaze
       end
 
       ##
-      # Remove all key/value pairs from the cache. Should behave as if #delete had been 
-      # called with all +keys+ as argument.
+      # Remove all key/value pairs from the cache. Should behave as if #delete 
+      # had been called with all +keys+ as argument.
       #
       # @author Lars Olsson
       # @since  18-04-2011
@@ -162,11 +170,11 @@ module Ramaze
       end
 
       ##
-      # Remove the corresponding key/value pair for each key passed. If removing is not 
-      # an option it should set the corresponding value to nil.
+      # Remove the corresponding key/value pair for each key passed. If removing
+      # is not an option it should set the corresponding value to nil.
       #
-      # If only one key was deleted, answer with the corresponding value. If multiple keys 
-      # were deleted, answer with an Array containing the values.
+      # If only one key was deleted, answer with the corresponding value. If 
+      # multiple keys were deleted, answer with an Array containing the values.
       #
       # @author Lars Olsson
       # @since  18-04-2011
@@ -204,7 +212,8 @@ module Ramaze
       end
 
       ##
-      # Answer with the value associated with the +key+, +nil+ if not found or expired.
+      # Answer with the value associated with the +key+, +nil+ if not found or 
+      # expired.
       #
       # @author Lars Olsson
       # @since  18-04-2011
@@ -242,8 +251,8 @@ module Ramaze
       # @param  [Object] key The value is stored with this key
       # @param  [Object] value The key points to this value
       # @param  [Hash] options for now, only :ttl => Fixnum is used.
-      # @option options [Fixnum] :ttl The time in seconds after which the cache item 
-      #  should be expired.
+      # @option options [Fixnum] :ttl The time in seconds after which the cache 
+      #  item should be expired.
       #
       def cache_store(key, value, options = {})
         nkey = namespaced(key)
@@ -269,11 +278,14 @@ module Ramaze
           serialized_value = serialize(value)
 
           if serialized_value
-            @dataset.insert(:key => nkey, :value => serialize(value), :expires => expires)
+            @dataset.insert(
+              :key => nkey, :value => serialize(value), :expires => expires
+            )
           end
         end
 
-        # Try to deserialize the value. If this fails we'll return a different value
+        # Try to deserialize the value. If this fails we'll return a different 
+        # value
         deserialized = deserialize(@dataset.select(:value).filter(:key => nkey)
           .limit(1).first[:value])
 
