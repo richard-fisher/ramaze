@@ -1,3 +1,69 @@
+[522302b | Wed Jul 20 20:30:33 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
+
+  * Updated the minimum version numbers for all the development dependencies and
+
+    that it checks to see if Growl is running.
+
+[7febd27 | Wed Jul 20 19:41:23 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
+
+  * rake gem:build now creates the pkg/ directory if it doesn't exist.
+
+[a9ac54c | Wed Jul 20 19:29:15 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
+
+  * Documented, re-wrapped and cleaned up a lot of files. Also removed
+
+
+
+[4d22079 | Wed Jul 20 17:57:49 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
+
+  * Documented a few more files and removed all trailing whitespace in several
+
+
+
+[6e470ed | Wed Jul 20 17:33:34 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
+
+  * Documented Ramaze::App, Ramaze::Cache and Ramaze::Controller.
+
+[56fa0c7 | Wed Jul 20 15:47:14 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
+
+  * Second commit of the series. In this commit I removed the benchmark/ directory
+
+    
+    The benchmark/ directory was removed as I personally feel benchmarks should be
+    done by a third-party that has an unbiased opinion of Ramaze, on top of that I
+    doubt if most code in the benchmark still applies to today's Ramaze.
+    
+    The building/installing process has also been finished. Building a gemspec is no
+    longer possible (as it's not needed) but building an actual gem file and
+    releasing it is still possible. Building a gem file can be done as following:
+    
+        $ rake gem:build
+        $ rake gem:install
+    
+    Releasing a version of Ramaze on Rubygems can be done as following:
+    
+        $ rake release
+
+[f511186 | Wed Jul 20 15:32:36 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
+
+  * The changes in this commit are the first set of changes to make developing
+
+    idea of others such as @manveru so feel free to discuss them.
+    
+    First of all the Gemspec generation process has been changed. Rather than using
+    a Rake task to build/update the Gemspec Ramaze now has it's own manually created
+    Gemspec. The dependencies of this Gemspec are specified in Ramaze::DEPENDENCIES
+    and Ramaze::DEVELOPMENT_DEPENDENCIES, these files are also used for the setup
+    task.
+    
+    Second I've removed several Rake tasks that appeared to be useless or did not
+    fit the idea of Ramaze (the jQuery task). I've also removed the Git tasks and
+    some other tasks that did not add anything useful to the development process.
+    
+    If any of these changes do not meet any particular standards or ideas feel free
+    to discuss them but note that this is the first commit of a series so things
+    might change a bit after this commit has been pushed.
+
 [41fd9e0 | Mon Jul 04 20:07:17 UTC 2011] Masahiro Nakagawa <repeatedly@gmail.com>
 
   * Fix mustache-view for latest Mustache.
