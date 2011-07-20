@@ -136,7 +136,7 @@ module Ramaze
 
     ##
     # Generates a URI for the full namespace of a class. If a class is named
-    # A::B::C the URI would be /a/b/c. 
+    # A::B::C the URI would be /a/b/c.
     #
     # @author Michael Fellinger
     # @since  04-01-2009

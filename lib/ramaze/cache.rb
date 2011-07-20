@@ -4,7 +4,7 @@ require 'innate/cache'
 
 module Ramaze
   Cache = Innate::Cache
-  
+
   #:nodoc:
   class Cache
     autoload :LRU,           'ramaze/cache/lru'

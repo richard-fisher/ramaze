@@ -1,6 +1,5 @@
 #          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
-
 require 'ramaze/log/logging'
 require 'ramaze/log/informer'
 
@@ -16,17 +15,10 @@ module Ramaze
   Log = Innate::Log
 
   ##
-  # Logger module that will autoload a certain logging helper if it's needed.
-  # Ramaze ships with the following logging helpers:
+  # Module used as the base namespace for all loggers that ship with Ramaze.
   #
-  #   * Analogger
-  #   * Knotify
-  #   * Syslog
-  #   * Growl
-  #   * Xosd
-  #   * Logger
-  #   * Informer
-  #   * RotatingInformer
+  # @author Michael Fellinger
+  # @since  11-08-2009
   #
   module Logger
     autoload :Analogger, 'ramaze/log/analogger'

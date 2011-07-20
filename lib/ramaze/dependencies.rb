@@ -1,21 +1,11 @@
 module Ramaze
-  ##
   # Array containing the names and versions of all the gems required by Ramaze
   # along with the name of how the gem should be required.
-  #
-  # @author Yorick Peterse
-  # @since  20-07-2011
-  #
   DEPENDENCIES = [
-    {:name => 'innate', :version => ['>= 2010.03']} 
+    {:name => 'innate', :version => ['>= 2010.03']}
   ]
 
-  ##
   # Array containing all the development dependencies.
-  #
-  # @author Yorick Peterse
-  # @since  20-07-2011
-  #
   DEVELOPMENT_DEPENDENCIES = [
     {:name => 'abstract'    , :version => ['>= 1.0.0']},
     {:name => 'addressable' , :version => ['>= 2.1.1'], :setup => false},

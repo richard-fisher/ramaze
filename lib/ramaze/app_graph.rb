@@ -12,7 +12,7 @@ module Ramaze
   #
   #  require 'ramaze/app_graph'
   #
-  #  graph = Ramaze::AppGraph.new graph.generate graph.show 
+  #  graph = Ramaze::AppGraph.new graph.generate graph.show
   #
   # Once this code is executed you can find the .dot and PNG files in the root
   # directory of your application.
@@ -55,7 +55,7 @@ module Ramaze
           c_node.method_arities.each do |method, arity|
             action_path = File.join(c_node.mapping, method.to_s)
             connect(
-              action_path => "#{c_node}##{method}[#{arity}]", 
+              action_path => "#{c_node}##{method}[#{arity}]",
               c_node      => action_path
             )
           end
