@@ -1,15 +1,18 @@
 #!/usr/bin/env ruby
+
 begin
-  require "pathname"
-  local_ramaze = Pathname.new(__FILE__).expand_path.dirname.join("..", "lib", "ramaze.rb")
-  if local_ramaze.file?
-    require local_ramaze.to_s
+  local_ramaze = File.expand_path('../../lib/ramaze', __FILE__)
+
+  if File.exist?(local_ramaze)
+    require local_ramaze
+    require File.join(local_ramaze, 'bin', 'runner')
   else
-    require "ramaze"
+    require 'ramaze'
+    require 'ramaze/bin/runner'
   end
-  require "ramaze/tool/bin"
-rescue LoadError
-  require "rubygems"
-  require "ramaze/tool/bin"
+rescue
+  require 'rubygems'
+  require 'ramaze/bin/runner'
 end
-Ramaze::Tool::Bin::Cmd.run(ARGV)
+
+Ramaze::Bin::Runner.run
