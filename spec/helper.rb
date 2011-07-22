@@ -7,3 +7,8 @@ end
 require File.expand_path('../../lib/ramaze/spec/bacon', __FILE__)
 
 Ramaze.options.roots = [caller_root] if caller_root
+
+module Ramaze
+  BINPATH = __DIR__('../bin/ramaze')
+  PROTO   = __DIR__('../lib/proto')
+end

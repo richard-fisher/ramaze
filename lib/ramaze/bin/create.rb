@@ -69,12 +69,10 @@ Example:
       def run(argv = [])
         @opts.parse!(argv)
 
-        name  = argv.delete_at(0)
+        path  = argv.delete_at(0)
         proto = __DIR__('../../proto')
 
-        abort 'You need to specify a name for your application' if name.nil?
-
-        path = File.join(Dir.pwd, name)
+        abort 'You need to specify a name for your application' if path.nil?
 
         if File.directory?(path) and @options[:force] === false
           abort 'The specified application already exists, use -f to overwrite it'
@@ -84,7 +82,12 @@ Example:
           FileUtils.rm_rf(path)
         end
 
-        FileUtils.cp_r(proto, path)
+        begin
+          FileUtils.cp_r(proto, path)
+          puts "The application has been generated and saved in #{path}"
+        rescue
+          abort 'The application could not be generated'
+        end
       end
     end # Create
   end # Bin

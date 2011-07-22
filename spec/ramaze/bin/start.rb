@@ -1,10 +1,6 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 require __DIR__('../../../lib/ramaze/bin/runner')
-
-module Ramaze
-  BINPATH = __DIR__('../../../bin/ramaze')
-  PROTO   = __DIR__('../../../lib/proto')
-end
+require 'open3'
 
 describe('Ramaze::Bin::Start') do
 
@@ -15,17 +11,28 @@ describe('Ramaze::Bin::Start') do
   end
 
   it('Start using a directory') do
-    pid = File.join(Ramaze::PROTO, 'proto.pid')
-    cmd = Ramaze::Bin::Start.new
-    cmd.run([Ramaze::PROTO, "-P #{pid}", '-D'])
+    output = ''
 
-    # Confirm that the process is running
-    should.not.raise(Errno::ESRCH) do
-      Process.getpriority(Process::PRIO_PROCESS, File.read(pid).to_i)
+    Open3.popen3(Ramaze::BINPATH, 'start', Ramaze::PROTO) do |sin, sout, serr|
+      output += serr.gets(100).strip
+
+      serr.close
     end
 
-    sleep(2)
-    Process.kill(9, File.read(pid).to_i)
+    output.should.match /INFO\s+WEBrick/
+  end
+
+  it('Start using a file') do
+    output = ''
+    path   = File.join(Ramaze::PROTO, 'config.ru')
+
+    Open3.popen3(Ramaze::BINPATH, 'start', path) do |sin, sout, serr|
+      output += serr.gets(100).strip
+
+      serr.close
+    end
+
+    output.should.match /INFO\s+WEBrick/
   end
 
 end
