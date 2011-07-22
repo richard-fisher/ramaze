@@ -89,7 +89,8 @@ Example:
 
         # Show a help message if no command has been specified
         if !argv[0]
-          abort op.to_s
+          puts op.to_s
+          exit
         end
 
         cmd = argv.delete_at(0).to_sym

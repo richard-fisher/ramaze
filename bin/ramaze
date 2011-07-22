@@ -1,18 +1,7 @@
 #!/usr/bin/env ruby
+begin; require 'rubygems'; rescue LoadError; end
 
-begin
-  local_ramaze = File.expand_path('../../lib/ramaze', __FILE__)
-
-  if File.exist?(local_ramaze)
-    require local_ramaze
-    require File.join(local_ramaze, 'bin', 'runner')
-  else
-    require 'ramaze'
-    require 'ramaze/bin/runner'
-  end
-rescue
-  require 'rubygems'
-  require 'ramaze/bin/runner'
-end
+require File.expand_path('../../lib/ramaze'           , __FILE__)
+require File.expand_path('../../lib/ramaze/bin/runner', __FILE__)
 
 Ramaze::Bin::Runner.run
