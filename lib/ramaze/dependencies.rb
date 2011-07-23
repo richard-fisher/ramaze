@@ -15,7 +15,6 @@ module Ramaze
     {:name => 'sass'        , :version => ['>= 3.1.4']},
     {:name => 'haml'        , :version => ['>= 3.1.2']},
     {:name => 'hpricot'     , :version => ['>= 0.8.4']},
-    {:name => 'less'        , :version => ['>= 2.0.5']},
     {:name => 'liquid'      , :version => ['>= 2.2.2']},
     {:name => 'locale'      , :version => ['>= 2.0.5']},
     {:name => 'lokar'       , :version => ['>= 0.2.1']},

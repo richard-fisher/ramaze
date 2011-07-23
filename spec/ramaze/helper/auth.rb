@@ -58,26 +58,26 @@ describe Ramaze::Helper::Auth do
         get "/#{prefix}/secured"
         follow_redirect!
         last_response.status.should == 200
-        last_response.body.should =~ (/<form/)
+        last_response.body.should   =~ (/<form/)
 
         post("/#{prefix}/login", 'username' => 'manveru', 'password' => 'pass')
         follow_redirect!
         last_response.status.should == 200
-        last_response.body.should == 'Secret content'
+        last_response.body.should   == 'Secret content'
 
         get "/#{prefix}/secured"
         last_response.status.should == 200
-        last_response.body.should == 'Secret content'
+        last_response.body.should   == 'Secret content'
 
         get "/#{prefix}/logout"
         follow_redirect!
         last_response.status.should == 200
-        last_response.body.should == 'SpecHelperAuth'
+        last_response.body.should   == 'SpecHelperAuth'
 
         get "/#{prefix}/secured"
         follow_redirect!
         last_response.status.should == 200
-        last_response.body.should =~ (/<form/)
+        last_response.body.should   =~ (/<form/)
       end
     end
   end
