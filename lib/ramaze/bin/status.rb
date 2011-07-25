@@ -129,6 +129,7 @@ Status: %s
               stats = File.read(stat_file).split
 
               puts Statistics % [
+                nil,
                 File.read(proc_dir.join("cmdline")).split("\000").join(" "),
                 "%s k" % (stats[22].to_f / 1024),
                 File.mtime(proc_dir),
