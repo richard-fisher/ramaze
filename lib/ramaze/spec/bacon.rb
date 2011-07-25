@@ -26,7 +26,7 @@ shared :webrat do
 
   require 'webrat'
 
-  Webrat.configure{|config| config.mode = :rack }
+  Webrat.configure { |config| config.mode = :rack }
 
   extend Webrat::Methods
   extend Webrat::Matchers

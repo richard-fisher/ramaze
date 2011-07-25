@@ -1,5 +1,5 @@
 require 'haml/util'
-require 'sass/engine'
+require 'sass'
 
 module Ramaze
   module View

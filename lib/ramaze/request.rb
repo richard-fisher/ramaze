@@ -107,7 +107,7 @@ module Ramaze
     # Pretty prints current action with parameters, cookies and enviroment
     # variables.
     def pretty_print(pp)
-      pp.object_group(self){
+      pp.object_group(self) do
         group = {
           'params'  => params,
           'cookies' => cookies,
@@ -119,7 +119,7 @@ module Ramaze
           pp.text " @#{name}="
           pp.nest(name.size + 3){ pp.pp_hash(hash) }
         end
-      }
+      end
     end
   end # Request
 end # Ramaze

@@ -2,7 +2,7 @@ require File.expand_path('../', __FILE__) unless defined?(Ramaze)
 
 def spec_requires(*libs)
   spec_precondition 'require' do
-    libs.each{|lib| require(lib) }
+    libs.each { |lib| require(lib) }
   end
 end
 alias spec_require spec_requires
