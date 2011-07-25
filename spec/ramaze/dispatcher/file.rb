@@ -67,8 +67,10 @@ describe 'Serving static files' do
     get '/test_download.css'
 
     mtime = last_response['Last-Modified']
-    mtime.should.not.be.nil
 
+    mtime.nil?.should === false
+
+    header 'IF_NONE_MATCH'    , nil
     header 'IF_MODIFIED_SINCE', mtime
     get '/test_download.css'
 
