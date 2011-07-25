@@ -213,7 +213,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_0">Assigned</label>
-    <input type="hidden" name="assigned" value="0" />
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" value="bacon" /> bacon</span>
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="steak" /> steak</span>
   </p>
@@ -230,7 +229,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_0">Assigned</label>
-    <input type="hidden" name="assigned" value="0" />
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" checked="checked" value="bacon" /> bacon</span>
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="steak" /> steak</span>
   </p>
@@ -240,14 +238,13 @@ describe BF = Ramaze::Helper::BlueForm do
 
   it 'Make a form with input_checkbox(label, name, checked, values, default)' do
     out = form_for(@data, :method => :get) do |f|
-      f.input_checkbox 'Assigned', :assigned, 'boo', :values => ['boo'], :default => 'ramaze'
+      f.input_checkbox 'Assigned', :assigned, 'boo', :values => ['boo']
     end
 
     assert(<<-FORM, out)
 <form method="get">
   <p>
     <label for="form_assigned_0">Assigned</label>
-    <input type="hidden" name="assigned" value="ramaze" />
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" checked="checked" value="boo" /> boo</span>
   </p>
 </form>
@@ -263,7 +260,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_0">Assigned</label>
-    <input type="hidden" name="assigned" value="0" />
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" value="bacon" /></span>
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="steak" /></span>
   </p>
@@ -279,7 +275,6 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <input type="hidden" name="assigned" value="0" />
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" value="bacon" /> bacon</span>
     <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="steak" /> steak</span>
   </p>
@@ -299,7 +294,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_hash_0">Assigned</label>
-    <input type="hidden" name="assigned_hash" value="0" />
     <span class="checkbox_wrap"><input type="checkbox" name="assigned_hash[]" id="form_assigned_hash_0" value="bacon" /> Bacon</span>
     <span class="checkbox_wrap"><input type="checkbox" name="assigned_hash[]" id="form_assigned_hash_1" value="steak" /> Steak</span>
   </p>
@@ -316,7 +310,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_hash_0">Assigned</label>
-    <input type="hidden" name="assigned_hash" value="0" />
     <span class="checkbox_wrap"><input type="checkbox" name="assigned_hash[]" id="form_assigned_hash_0" checked="checked" value="bacon" /> Bacon</span>
     <span class="checkbox_wrap"><input type="checkbox" name="assigned_hash[]" id="form_assigned_hash_1" value="steak" /> Steak</span>
   </p>
@@ -336,7 +329,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_0">Assigned</label>
-    <input type="hidden" name="assigned" value="0" />
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" value="bacon" /> bacon</span>
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_1" value="steak" /> steak</span>
   </p>
@@ -353,7 +345,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_0">Assigned</label>
-    <input type="hidden" name="assigned" value="0" />
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" checked="checked" value="bacon" /> bacon</span>
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_1" value="steak" /> steak</span>
   </p>
@@ -363,14 +354,13 @@ describe BF = Ramaze::Helper::BlueForm do
 
   it 'Make a form with input_radio(label, name, checked, values, default)' do
     out = form_for(@data, :method => :get) do |f|
-      f.input_radio 'Assigned', :assigned, 'boo', :values => ['boo'], :default => 'ramaze'
+      f.input_radio 'Assigned', :assigned, 'boo', :values => ['boo']
     end
 
     assert(<<-FORM, out)
 <form method="get">
   <p>
     <label for="form_assigned_0">Assigned</label>
-    <input type="hidden" name="assigned" value="ramaze" />
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" checked="checked" value="boo" /> boo</span>
   </p>
 </form>
@@ -386,7 +376,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_0">Assigned</label>
-    <input type="hidden" name="assigned" value="0" />
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" value="bacon" /></span>
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_1" value="steak" /></span>
   </p>
@@ -402,7 +391,6 @@ describe BF = Ramaze::Helper::BlueForm do
     assert(<<-FORM, out)
 <form method="get">
   <p>
-    <input type="hidden" name="assigned" value="0" />
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_0" value="bacon" /> bacon</span>
     <span class="radio_wrap"><input type="radio" name="assigned" id="form_assigned_1" value="steak" /> steak</span>
   </p>
@@ -423,7 +411,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_hash_0">Assigned</label>
-    <input type="hidden" name="assigned_hash" value="0" />
     <span class="radio_wrap"><input type="radio" name="assigned_hash" id="form_assigned_hash_0" value="bacon" /> Bacon</span>
     <span class="radio_wrap"><input type="radio" name="assigned_hash" id="form_assigned_hash_1" value="steak" /> Steak</span>
   </p>
@@ -440,7 +427,6 @@ describe BF = Ramaze::Helper::BlueForm do
 <form method="get">
   <p>
     <label for="form_assigned_hash_0">Assigned</label>
-    <input type="hidden" name="assigned_hash" value="0" />
     <span class="radio_wrap"><input type="radio" name="assigned_hash" id="form_assigned_hash_0" checked="checked" value="bacon" /> Bacon</span>
     <span class="radio_wrap"><input type="radio" name="assigned_hash" id="form_assigned_hash_1" value="steak" /> Steak</span>
   </p>
