@@ -1,3 +1,7 @@
+[cfc6c2b | Mon Jul 25 17:56:49 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
+
+  * Updated the changelog and the list of contributors.
+
 [3e3b227 | Mon Jul 25 17:52:10 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
 
   * Fixed an issue with Ramaze::Bin::Status and not enough arguments being set.
@@ -133,6 +137,10 @@
 
   * Documented Ramaze::App, Ramaze::Cache and Ramaze::Controller.
 
+[bb6e857 | Wed Jul 20 10:03:10 UTC 2011] Pistos <github.pistos@purepistos.net>
+
+  * Rake task aliases: :test and :spec (go to :bacon).
+
 [56fa0c7 | Wed Jul 20 15:47:14 UTC 2011] YorickPeterse <yorickpeterse@gmail.com>
 
   * Second commit of the series. In this commit I removed the benchmark/ directory
@@ -172,6 +180,10 @@
     If any of these changes do not meet any particular standards or ideas feel free
     to discuss them but note that this is the first commit of a series so things
     might change a bit after this commit has been pushed.
+
+[1e5bdb3 | Wed Jul 20 08:37:06 UTC 2011] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Don't store the user object of the user helper in the session, it might not be possible to marshal
 
 [41fd9e0 | Mon Jul 04 20:07:17 UTC 2011] Masahiro Nakagawa <repeatedly@gmail.com>
 

@@ -7,7 +7,7 @@ path = File.expand_path('../', __FILE__)
 Gem::Specification.new do |s|
   s.name                      = 'ramaze'
   s.version                   = Ramaze::VERSION
-  s.date                      = '20-07-2011'
+  s.date                      = '25-07-2011'
   s.authors                   = ['Michael \'manveru\' Fellinger']
   s.email                     = 'm.fellinger@gmail.com'
   s.summary                   = 'Ramaze is a simple and modular web framework'
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files                     = `cd #{path}; git ls-files`.split("\n").sort
   s.has_rdoc                  = 'yard'
   s.executables               = ['ramaze']
-  
+
   Ramaze::DEPENDENCIES.each do |dep|
     s.add_dependency(dep[:name], dep[:version])
   end

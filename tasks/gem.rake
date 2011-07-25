@@ -10,7 +10,7 @@ namespace :gem do
   end
 
   desc "package and install from gemspec"
-  task :install do
+  task :install => [:build] do
     sh "gem install pkg/#{GEMSPEC.name}-#{GEMSPEC.version}.gem"
   end
 
