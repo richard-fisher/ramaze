@@ -1,11 +1,11 @@
 #          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
-
 module Ramaze
+  ##
   # The purpose of this class is to act as a simple wrapper for Rack::Request
   # and provide some convinient methods for our own use.
   class Request < Innate::Request
-
+    ##
     # you can access the original @request via this method_missing,
     # first it tries to match your method with any of the HTTP parameters
     # then, in case that fails, it will relay to @request
@@ -15,6 +15,7 @@ module Ramaze
       super
     end
 
+    ##
     # Sets any arguments passed as @instance_variables for the current action.
     #
     # Usage:
@@ -23,7 +24,7 @@ module Ramaze
     #   @q    # => 'google'
     #   @name # => 'manveru'
     #   @lang # => nil
-
+    #
     def to_instance_variables(*args)
       instance = Current.action.instance
       args.each do |arg|
@@ -39,6 +40,7 @@ module Ramaze
       charset == '*' ? default : charset
     end
 
+    ##
     # Try to find out which languages the client would like to have and sort
     # them by weight, (most wanted first).
     #
@@ -54,6 +56,7 @@ module Ramaze
     # @return [Array] list of locales
     # @see Request#accept_language_with_weight
     # @author manveru
+    #
     def accept_language(string = env['HTTP_ACCEPT_LANGUAGE'])
       return [] unless string
 
@@ -61,6 +64,7 @@ module Ramaze
     end
     alias locales accept_language
 
+    ##
     # Transform the HTTP_ACCEPT_LANGUAGE header into an Array with:
     #
     #   [[lang, weight], [lang, weight], ...]
@@ -76,6 +80,7 @@ module Ramaze
     # @return [Array] array of [lang, weight] arrays
     # @see Request#accept_language
     # @author manveru
+    #
     def accept_language_with_weight(string = env['HTTP_ACCEPT_LANGUAGE'])
       string.to_s.gsub(/\s+/, '').split(',').
             map{|chunk|        chunk.split(';q=', 2) }.
@@ -102,14 +107,19 @@ module Ramaze
     # Pretty prints current action with parameters, cookies and enviroment
     # variables.
     def pretty_print(pp)
-      pp.object_group(self){
-        group = { 'params' => params, 'cookies' => cookies, 'env' => http_variables }
+      pp.object_group(self) do
+        group = {
+          'params'  => params,
+          'cookies' => cookies,
+          'env'     => http_variables
+        }
+
         group.each do |name, hash|
           pp.breakable
           pp.text " @#{name}="
           pp.nest(name.size + 3){ pp.pp_hash(hash) }
         end
-      }
+      end
     end
-  end
-end
+  end # Request
+end # Ramaze

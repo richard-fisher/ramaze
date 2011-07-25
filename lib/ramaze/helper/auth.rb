@@ -5,10 +5,10 @@ module Ramaze
   module Helper
     ##
     # The Auth helper can be used for authentication without using a model.
-    # This can be useful when working with very basic applications that don't 
+    # This can be useful when working with very basic applications that don't
     # require database access.
     #
-    # If you're looking for a way to do authentication using a model you should 
+    # If you're looking for a way to do authentication using a model you should
     # take a look at Helper::User instead.
     #
     module Auth
@@ -22,17 +22,17 @@ module Ramaze
       def self.included(into)
         into.helper(:stack)
       end
-      
+
       ##
-      # Log a user in based on the :username and :password key in the request 
+      # Log a user in based on the :username and :password key in the request
       # hash.
       #
-      # @return [String] The login template in case the user's login data was 
+      # @return [String] The login template in case the user's login data was
       #  incorrect.
       #
       def login
         if trait[:auth_post_only] and !request.post?
-          return auth_template 
+          return auth_template
         end
 
         @username, password = request[:username, :password]
@@ -47,13 +47,13 @@ module Ramaze
       #
       def logout
         auth_logout
-        answer(request.referer)
+        redirect_referrer
       end
 
       private
 
       ##
-      # Validate the user's session and redirect him/her to the login page in 
+      # Validate the user's session and redirect him/her to the login page in
       # case the user isn't logged in.
       #
       def login_required
@@ -61,7 +61,7 @@ module Ramaze
       end
 
       ##
-      # Validate the user's session and return a boolean that indicates if the 
+      # Validate the user's session and return a boolean that indicates if the
       # user is logged in or not.
       #
       # @return [true false] Whether user is logged in right now
@@ -72,7 +72,7 @@ module Ramaze
 
       ##
       # Try to log the user in based on the username and password.
-      # This method is called by the login() method and shouldn't be called 
+      # This method is called by the login() method and shouldn't be called
       # directly.
       #
       # @param [String] user The users's username.

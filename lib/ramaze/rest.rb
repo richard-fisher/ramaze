@@ -1,8 +1,9 @@
 ##
-# The code in this file adds an extra option and a route to Ramaze that allows REST like
-# HTTP requests. For example, when this file is loaded a GET request to a controller will
-# be mapped to the "show" method while a POST request will be mapped to "create". In order
-# to use this extension you have to load it manually:
+# The code in this file adds an extra option and a route to Ramaze that allows
+# REST like HTTP requests. For example, when this file is loaded a GET request
+# to a controller will be mapped to the "show" method while a POST request will
+# be mapped to "create". In order to use this extension you have to load it
+# manually:
 #
 #  require 'ramaze/rest'
 #
@@ -11,11 +12,11 @@
 #  Ramaze.options.rest_rewrite['GET'] = 'another_method'
 #
 module Ramaze
-  # Don't use one option per method, we don't want to turn request_method into a symbol, 
-  # together with MethodOverride this could lead to a memory leak.
+  # Don't use one option per method, we don't want to turn request_method into a
+  # symbol, together with MethodOverride this could lead to a memory leak.
   options.o(
-    'REST rewrite mapping', 
-    :rest_rewrite, 
+    'REST rewrite mapping',
+    :rest_rewrite,
     {
       'GET'    => 'show',
       'POST'   => 'create',

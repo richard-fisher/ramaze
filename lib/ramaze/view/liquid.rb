@@ -95,6 +95,6 @@ module Ramaze
         @arg =~ /^(['"])(.*?)\1\s+(.*)/
         Ramaze::Current.action.node.anchor($2, $3)
       end
-    end
-  end
-end
+    end # Liquid
+  end # View
+end # Ramaze

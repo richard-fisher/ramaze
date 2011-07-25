@@ -3,7 +3,6 @@
 
 module Ramaze
   module Logger
-
     ##
     # Informer for the Knotify notfication system used on KDE.
     # Doesn't need any special libraries.
@@ -27,7 +26,6 @@ module Ramaze
           system(%{dcop knotify default notify Ramaze "#{tag}" "#{message}" '' '' #{present} 0})
         end
       end
-    end
-
-  end
-end
+    end # Knotify
+  end # Logger
+end # Ramaze

@@ -16,9 +16,10 @@ module Ramaze
         [prefix, location].join('/')
       end
 
-      # Give it a path with character to split at and one to join the crumbs with.
-      # It will generate a list of links that act as pointers to previous pages on
-      # this path.
+      ##
+      # Give it a path with character to split at and one to join the crumbs
+      # with.  It will generate a list of links that act as pointers to previous
+      # pages on this path.
       #
       # @example usage
       #   breadcrumbs('/path/to/somewhere')
@@ -51,6 +52,6 @@ module Ramaze
         end
         bread.join(join)
       end
-    end
-  end
-end
+    end # Link
+  end # Helper
+end # Ramaze

@@ -41,6 +41,6 @@ module Ramaze
 
         return RamazeContext.new(klass.new), path, View.exts_of(self).first
       end
-    end
-  end
-end
+    end # Mustache
+  end # View
+end # Ramaze

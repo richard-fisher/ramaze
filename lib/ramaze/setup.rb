@@ -1,7 +1,8 @@
 module Ramaze
   ##
-  # Convenient setup and activation of gems from different sources and specific versions.
-  # It's almost like Kernel#gem but also installs automatically if a gem is missing.
+  # Convenient setup and activation of gems from different sources and specific
+  # versions.  It's almost like Kernel#gem but also installs automatically if a
+  # gem is missing.
   #
   # @example
   #  Ramaze.setup :verbose => true do
@@ -35,9 +36,10 @@ module Ramaze
     #
     # @author Michael Fellinger (manveru)
     # @since  19-05-2009
-    # @param  [Hash] options Hash containing various options to pass to the GemSetup class.
-    # @option options :verbose When set to true Ramaze will log various actions such as
-    #  messages about the installation process.
+    # @param  [Hash] options Hash containing various options to pass to the
+    #  GemSetup class.
+    # @option options :verbose When set to true Ramaze will log
+    #  various actions such as messages about the installation process.
     # @yield block
     #
     def initialize(options = {}, &block)
@@ -49,8 +51,8 @@ module Ramaze
     end
 
     ##
-    # Executes the data inside the block, loading all the gems and optionally installing
-    # them.
+    # Executes the data inside the block, loading all the gems and optionally
+    # installing them.
     #
     # @author Michael Fellinger (manveru)
     # @since  19-05-2009
@@ -101,8 +103,8 @@ module Ramaze
     end
 
     ##
-    # First try to activate, install and try to activate again if activation fails the
-    # first time
+    # First try to activate, install and try to activate again if activation
+    # fails the first time.
     #
     # @author Michael Fellinger (manveru)
     # @since  19-05-2009

@@ -1,4 +1,5 @@
 desc 'Generate YARD documentation'
-task :yard => :clean do
-  sh("yardoc -o ydoc -r #{PROJECT_README}")
+task :yard do
+  readme = File.expand_path('../../README.md', __FILE__)
+  sh("yardoc -o ydoc -r #{readme}")
 end

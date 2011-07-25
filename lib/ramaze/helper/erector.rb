@@ -4,9 +4,7 @@
 require 'erector'
 
 module Ramaze
-
   module Helper
-    
     ##
     # Allows you to use some shortcuts for Erector in your Controller.
     #
@@ -14,9 +12,8 @@ module Ramaze
     # Refer to the Erector-documentation and testsuite for more examples.
     #
     # @example
-    #
-    #   erector { h1 "Apples & Oranges" }                           #=> "<h1>Apples &amp; Oranges</h1>"
-    #   erector { h1(:class => 'fruits&floots'){ text 'Apples' } }  #=> "<h1 class=\"fruits&amp;floots\">Apples</h1>"
+    #   erector { h1 "Apples & Oranges" } #=> "<h1>Apples &amp; Oranges</h1>"
+    #   erector { h1(:class => 'fruits&floots'){ text 'Apples' } }
     #
     module Erector
       include ::Erector::Mixin
@@ -41,8 +38,10 @@ module Ramaze
         #     end
         #   end
         #
-        # @param [Hash] args Hash containing extra options such as the xml:lang and xmlns attribute.
-        # @param [Block] block Block that contains the inner data of the <html> element.
+        # @param [Hash] args Hash containing extra options such as the xml:lang 
+        #  and xmlns attribute.
+        # @param [Block] block Block that contains the inner data of the <html>
+        #  element.
         #
         def strict_xhtml(*args, &block)
           raw! '<?xml version="1.0" encoding="UTF-8"?>'
@@ -73,7 +72,8 @@ module Ramaze
         #   end
         #
         # @param [String] expr The if expression, such as 'IE' or 'lte IE7'.
-        # @param [block] block Block that contains the data that needs to be loaded for the specified browser.
+        # @param [block] block Block that contains the data that needs to be 
+        #  loaded for the specified browser.
         #
         def ie_if(expr, &block)
           raw! "<!--[if #{expr}]>"
@@ -97,8 +97,10 @@ module Ramaze
         #
         #   css 'css/reset.css', :media => 'print'
         #
-        # @param [String] href The path (either absolute or relative) to the CSS file.
-        # @param [Hash] args A hash containing additional arguments to add to the CSS tag.
+        # @param [String] href The path (either absolute or relative) to the CSS 
+        #  file.
+        # @param [Hash] args A hash containing additional arguments to add to 
+        #  the CSS tag.
         #
         def css(href, args = {})
           attrs = {
@@ -109,8 +111,7 @@ module Ramaze
 
           link attrs
         end
-      end
-    end
-  end
-end
-
+      end # Erector::Widget
+    end # Erector
+  end # Helper
+end # Ramaze

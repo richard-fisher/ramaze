@@ -36,15 +36,14 @@ module Ramaze
         op = rand > 0.42 ? [ns[0], :+, ns[1]] : [ns[1], :-, ns[0]]
 
         question = op.join(' ')
-        answer = op[0].send(op[1], op[2])
+        answer   = op[0].send(op[1], op[2])
 
         [question, answer]
       }
 
       # Call the trait[:captcha] and store question/answer in session
       def simple_captcha
-        question, answer = ancestral_trait[:captcha].call
-
+        question, answer  = ancestral_trait[:captcha].call
         session[:CAPTCHA] = { :question => question, :answer => answer.to_s }
 
         question
@@ -56,6 +55,6 @@ module Ramaze
 
         answer.to_s.strip == captcha[:answer].to_s
       end
-    end
-  end
-end
+    end # SimpleCaptcha
+  end # Helper 
+end # Ramaze

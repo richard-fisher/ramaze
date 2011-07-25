@@ -7,10 +7,10 @@ task :bacon => :setup do
   specs = PROJECT_SPECS
 
   some_failed = false
-  specs_size = specs.size
-  len = specs.map{|s| s.size }.sort.last
+  specs_size  = specs.size
+  len         = specs.map{|s| s.size }.sort.last
   total_tests = total_assertions = total_failures = total_errors = 0
-  totals = Vector[0, 0, 0, 0]
+  totals      = Vector[0, 0, 0, 0]
 
   red, yellow, green = "\e[31m%s\e[0m", "\e[33m%s\e[0m", "\e[32m%s\e[0m"
   left_format = "%4d/%d: %-#{len + 11}s"

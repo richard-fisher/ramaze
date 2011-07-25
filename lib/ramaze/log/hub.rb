@@ -3,7 +3,6 @@
 
 module Ramaze
   module Logger
-
     ##
     # Bundles different informer instances and sends incoming messages to each.
     # This is the default with Informer as only member.
@@ -43,7 +42,6 @@ module Ramaze
           logger.log(tag, *args)
         end
       end
-    end
-
-  end
-end
+    end # Hub
+  end # log
+end # Ramaze
