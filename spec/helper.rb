@@ -10,5 +10,5 @@ Ramaze.options.roots = [caller_root] if caller_root
 
 module Ramaze
   BINPATH = __DIR__('../bin/ramaze')
-  PROTO   = __DIR__('../lib/proto')
+  BIN_APP = __DIR__('ramaze/bin/app')
 end

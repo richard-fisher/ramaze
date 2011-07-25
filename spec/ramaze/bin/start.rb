@@ -13,7 +13,7 @@ describe('Ramaze::Bin::Start') do
   it('Start using a directory') do
     output = ''
 
-    Open3.popen3(Ramaze::BINPATH, 'start', Ramaze::PROTO) do |sin, sout, serr|
+    Open3.popen3(Ramaze::BINPATH, 'start', Ramaze::BIN_APP) do |sin, sout, serr|
       output += serr.gets(100).strip
 
       serr.close
@@ -24,7 +24,7 @@ describe('Ramaze::Bin::Start') do
 
   it('Start using a file') do
     output = ''
-    path   = File.join(Ramaze::PROTO, 'config.ru')
+    path   = File.join(Ramaze::BIN_APP, 'config.ru')
 
     Open3.popen3(Ramaze::BINPATH, 'start', path) do |sin, sout, serr|
       output += serr.gets(100).strip
