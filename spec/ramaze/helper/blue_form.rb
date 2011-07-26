@@ -251,6 +251,37 @@ describe BF = Ramaze::Helper::BlueForm do
     FORM
   end
 
+  it 'Make a form with input_checkbox and check multiple values using an array' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_checkbox 'Assigned', :assigned, ['boo'], :values => ['boo', 'foo']
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_0">Assigned</label>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" checked="checked" value="boo" /> boo</span>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_1" value="foo" /> foo</span>
+  </p>
+</form>
+    FORM
+  end
+
+  it 'Make a form with input_checkbox and check multiple values using a hash' do
+    out = form_for(@data, :method => :get) do |f|
+      f.input_checkbox 'Assigned', :assigned, ['boo'], :values => {'Boo' => 'boo'}
+    end
+
+    assert(<<-FORM, out)
+<form method="get">
+  <p>
+    <label for="form_assigned_0">Assigned</label>
+    <span class="checkbox_wrap"><input type="checkbox" name="assigned[]" id="form_assigned_0" checked="checked" value="boo" /> Boo</span>
+  </p>
+</form>
+    FORM
+  end
+
   it 'Make a form with input_checkbox(label, name) but hide the value of the checkbox' do
     out = form_for(@data, :method => :get) do |f|
       f.input_checkbox 'Assigned', :assigned, nil, :show_value => false

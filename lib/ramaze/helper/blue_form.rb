@@ -338,8 +338,8 @@ module Ramaze
         #
         # @param [String] label The text to display inside the label tag.
         # @param [String Symbol] name The name of the checkbox.
-        # @param [String] checked String that indicates if (and which) checkbox
-        #  should be checked.
+        # @param [String/Array] checked String or array that indicates which
+        #  value(s) should be checked.
         # @param [Hash] args Any additional HTML attributes along with their
         #  values.
         # @option args [String/Symbol] :id The value to use for the ID attribute.
@@ -430,8 +430,14 @@ module Ramaze
                 end
 
                 # Let's see if the current item is checked
-                if checkbox_value == checked
-                  opts[:checked] = 'checked'
+                if checked.class == Array
+                  if checked.include?(checkbox_value)
+                    opts[:checked] = 'checked'
+                  end
+                else
+                  if checkbox_value == checked
+                    opts[:checked] = 'checked'
+                  end
                 end
 
                 # And we're done, easy wasn't it?
