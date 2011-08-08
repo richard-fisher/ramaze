@@ -1,12 +1,14 @@
 module Ramaze
 
   module Helper
-  
+
     # Helper module for handling file uploads. File uploads are mostly handled
     # by Rack, but this helper adds some conveniance methods for handling
     # and saving the uploaded files.
     module UploadHelper
-    
+
+      DEFAULT_UPLOADED_FILES = {}.freeze
+
       # This method will iterate through all request parameters
       # and convert those parameters which represents uploaded
       # files to Ramaze::UploadedFile object. The matched parameters
@@ -21,13 +23,27 @@ module Ramaze
       # Ramaze::Helper::UploadHelper::ClassMethods::handle_all_uploads instead
       #
       def get_uploaded_files(pattern = nil)
+        uploaded_files = {}
         request.params.each_pair do |k, v|
           if pattern.nil? || pattern =~ k
             if is_uploaded_file?(v)
-              self.uploaded_files[k] = Ramaze::UploadedFile.new(
+              uploaded_files[k] = Ramaze::UploadedFile.new(
                 v[:filename], v[:type], v[:tempfile]
               )
               request.params.delete(k)
+            end
+          end
+        end
+
+        # If at least one file upload matched, override the uploaded_files
+        # method with a singleton method that returns the list of uploaded
+        # files. Doing things this way allows us to store the list of uploaded
+        # files without using an instance variable.
+        unless uploaded_files.empty?
+          metaclass = class << self; self; end
+          metaclass.instance_eval do
+            define_method :uploaded_files do
+              return uploaded_files
             end
           end
         end
@@ -43,7 +59,7 @@ module Ramaze
       # Helper class methods. Methods in this module will be available
       # in your controller *class* (not your controller instance).
       module ClassMethods
-      
+
         # This method will activate automatic handling of uploaded files
         # for specified actions
         #
@@ -83,7 +99,7 @@ module Ramaze
             get_uploaded_files(pattern)
           end
         end
-        
+
         # Set the default save directory for uploaded files. Please note that
         # no files are actually saved until the save method is called on the
         # uploaded file.
@@ -91,17 +107,16 @@ module Ramaze
         def default_save_dir=(path)
           trait({:default_save_dir => path})
         end
-        
+
       end
-    
+
       # Return list of currently handled file uploads
       def uploaded_files
-        @uploaded_files ||= {}
-        return @uploaded_files
+        return DEFAULT_UPLOADED_FILES
       end
-    
+
       private
-      
+
       # Returns whether +param+ is considered an uploaded file
       # A parameter is considered to be an uploaded file if it is
       # a hash and contains all parameters that Rack assigns to an
@@ -119,9 +134,9 @@ module Ramaze
           return false
         end
       end
-    
+
     end
-  
+
   end
 
   # This class represents an uploaded file
@@ -138,7 +153,7 @@ module Ramaze
     def save(dirname = nil, filename = nil)
       # Check if both filename and dirname is set and then save
     end
-  
+
   end
 
 
