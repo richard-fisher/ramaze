@@ -5,6 +5,7 @@ require File.expand_path('../../../../spec/helper', __FILE__)
 
 class LayoutHelperOne < Ramaze::Controller
   map '/one'
+
   set_layout 'default'
 
   def laid_out1; end
@@ -14,18 +15,33 @@ end
 
 class LayoutHelperTwo < Ramaze::Controller
   map '/two'
-  set_layout 'default' => [:laid_out1, :laid_out2]
+
+  layout     'default'
+  set_layout 'alternative' => [:laid_out2, :laid_out3]
 
   def laid_out1; end
   def laid_out2; end
-
-  def not_laid_out; end
+  def laid_out3; end
 end
 
 class LayoutHelperThree < Ramaze::Controller
   map '/three'
+
   set_layout 'default' => [:laid_out1], 'alternative' => [:laid_out2]
   set_layout 'default' => [:laid_out3]
+
+  def laid_out1; end
+  def laid_out2; end
+  def laid_out3; end
+end
+
+class LayoutHelperFour < Ramaze::Controller
+  map '/four'
+
+  layout { |path| 'default' }
+
+  set_layout 'alternative' => [:laid_out2]
+  set_layout 'alternative' => [:laid_out3]
 
   def laid_out1; end
   def laid_out2; end
@@ -39,24 +55,28 @@ describe Ramaze::Helper::Layout do
     get '/one/laid_out1'
     last_response.status.should == 200
     last_response.body.should.match /laid out/
+
     get '/one/laid_out2'
     last_response.status.should == 200
     last_response.body.should.match /laid out/
+
     get '/one/laid_out3'
     last_response.status.should == 200
     last_response.body.should.match /laid out/
   end
 
-  it 'lays out only a whitelist of actions' do
+  it 'lays out only a whitelist of actions with layout() as a fallback' do
     get '/two/laid_out1'
     last_response.status.should == 200
     last_response.body.should.match /laid out/
+
     get '/two/laid_out2'
     last_response.status.should == 200
-    last_response.body.should.match /laid out/
-    get '/two/not_laid_out'
+    last_response.body.should.match /alternative/
+
+    get '/two/laid_out3'
     last_response.status.should == 200
-    last_response.body.should.not.match /laid out/
+    last_response.body.should.match /alternative/
   end
 
   it 'Define a set of method specific layouts' do
@@ -73,4 +93,17 @@ describe Ramaze::Helper::Layout do
     last_response.body.should.match /laid out/
   end
 
+  it 'lays out a whitelist with layout() as a fallback using a block' do
+    get '/four/laid_out1'
+    last_response.status.should == 200
+    last_response.body.should.match /laid out/
+
+    get '/four/laid_out2'
+    last_response.status.should == 200
+    last_response.body.should.match /alternative/
+
+    get '/four/laid_out3'
+    last_response.status.should == 200
+    last_response.body.should.match /alternative/
+  end
 end
