@@ -1,16 +1,12 @@
 module Ramaze
-
   module Helper
-
     # Helper module for handling file uploads. File uploads are mostly handled
     # by Rack, but this helper adds some conveniance methods for handling
     # and saving the uploaded files.
     module UploadHelper
-      
       include Innate::Traited
-      
       # Assume that no files have been uploaded by default
-      trait :default_uploaded_files => Hash.new
+      trait :default_uploaded_files => {}.freeze
 
       # This method will iterate through all request parameters
       # and convert those parameters which represents uploaded
@@ -34,7 +30,10 @@ module Ramaze
                 v[:filename],
                 v[:type],
                 v[:tempfile],
-                ancestral_trait[:upload_options] || ancestral_trait[:default_upload_options]
+                ancestral_trait[:upload_options] ||
+                Ramaze::Helper::UploadHelper::ClassMethods.trait[
+                  :default_upload_options
+                ]
               )
               request.params.delete(k)
             end
@@ -53,7 +52,8 @@ module Ramaze
             end
           end
           # Save uploaded files if autosave is set to true
-          if ancestral_trait[:upload_options] && ancestral_trait[:upload_options][:autosave]
+          if ancestral_trait[:upload_options] &&
+             ancestral_trait[:upload_options][:autosave]
             uploaded_files.each_value do |uf|
               uf.save
             end
@@ -92,7 +92,7 @@ module Ramaze
           return false
         end
       end
-      
+
       # Helper class methods. Methods in this module will be available
       # in your controller *class* (not your controller instance).
       module ClassMethods
@@ -100,11 +100,12 @@ module Ramaze
         # Default options for uploaded files. You can affect these options
         # by using the uploads_options method
         trait :default_upload_options => {
-          :allow_overwrites => false,
+          :allow_overwrite => false,
           :autosave => false,
-          :default_upload_dir => nil
-        }
-        
+          :default_upload_dir => nil,
+          :unlink_tempfile => false
+        }.freeze
+
         # This method will activate automatic handling of uploaded files
         # for specified actions
         #
@@ -144,17 +145,17 @@ module Ramaze
             get_uploaded_files(pattern)
           end
         end
-        
+
         # Set options for uploads
         def upload_options(hsh)
-          options = Innate::Helper::UploadHelper::ClassMethods.trait[:default_upload_options].merge(hsh)
+          options = Innate::Helper::UploadHelper::ClassMethods.trait[
+            :default_upload_options
+          ].merge(hsh)
           trait :upload_options => options
         end
-        
-      end
-    end
-
-  end
+      end # end module ClassMethods
+    end # end module UploadHelper
+  end # end module Helper
 
   # This class represents an uploaded file
   class UploadedFile
@@ -171,26 +172,47 @@ module Ramaze
     def save(dirname = nil, filename = nil)
       # Check that dirname is set
       dn = dirname || @options[:default_upload_dir]
-      raise Exception.new('Unable to save file, no dirname given') unless dn     
+      raise Exception.new('Unable to save file, no dirname given') unless dn
       # Check that filename is set
       fn = filename || @filename
       raise Exception.new('Unable to save file, no filename given') unless fn
-      
       # Build path
       path = File.absolute_path(File.join(dn, fn))
       # Abort if file altready exists and overwrites are not allowed
-      raise Exception.new('Unable to overwrite existing file') if File.exists?(path) && !@options[:allow_overwrites]
+      raise Exception.new('Unable to overwrite existing file') if
+        File.exists?(path) && !@options[:allow_overwrite]
       # Confirm that we can read source file
-      raise Exception.new('Unable to read temporary file') unless File.readable?(@tempfile)
+      raise Exception.new('Unable to read temporary file') unless
+        File.readable?(@tempfile)
       # Confirm that we can write to the destination file
-      raise Exception.new("Unable to save file to #{path}. Path is not writable") unless (File.exists?(path) && File.writable?(path)) || File.writable?(File.dirname(path))
-      File.open(@tempfile, 'rb') do |source|
-        File.open(path, 'wb') do |dest|
-          dest.write(source.read)
+      raise Exception.new(
+        "Unable to save file to #{path}. Path is not writable"
+      ) unless
+        (File.exists?(path) &&
+        File.writable?(path)) ||
+        File.writable?(File.dirname(path))
+      # If supported, use IO,copy_stream. If not, require fileutils
+      # and use the same function from there
+      if IO.respond_to?(:copy_stream)
+        IO.copy_stream(@tempfile, path)
+      else
+        require 'fileutils'
+        File.open(@tempfile, 'rb') do |src|
+          File.open(path, 'wb') do |dest|
+            copy_stream(src, dest)
+          end
         end
+      end
+      # If the unlink_tempfile is set to true, delete the temporary file
+      # created by Rack
+      if (@options[:unlink_tempfile])
+        unlink_tempfile
       end
     end
 
-  end
-
-end
+    def unlink_tempfile
+      File.unlink(@tempfile)
+      @tempfile = nil
+    end
+  end # end class UploadedFile
+end # end module Ramaze
