@@ -49,7 +49,7 @@ module Ramaze
       # Extends the class that included this module so that the methods that
       # this helper provides can be called outside of instance of class methods.
       #
-      # @param [Object] into The class that included this module.
+      # @param  [Object] into The class that included this module.
       # @author Michael Fellinger
       # @author Pistos
       #
@@ -85,8 +85,10 @@ module Ramaze
         # @author Michael Fellinger
         # @author Pistos
         # @since 2011-04-07
+        #
         def set_layout(hash_or_layout)
-          @_ramaze_layouts ||= {}
+          @_ramaze_layouts    ||= {}
+          @_ramaze_old_layout ||= trait[:layout]
 
           # Extract the layout to use
           if hash_or_layout.respond_to?(:to_hash)
@@ -97,9 +99,22 @@ module Ramaze
               end
             end
 
-            layout{|path| @_ramaze_layouts[path.to_s] }
+            layout do |path, wish|
+              path = path.to_s
+
+              if @_ramaze_layouts.key?(path)
+                use_layout = @_ramaze_layouts[path.to_s]
+              # Use the old layout
+              elsif @_ramaze_old_layout.respond_to?(:call)
+                use_layout = @_ramaze_old_layout.call(path, wish)
+              else
+                use_layout = @_ramaze_old_layout
+              end
+
+              use_layout
+            end
           else
-            layout{|path| hash_or_layout }
+            layout { |path| hash_or_layout }
           end
         end
 
