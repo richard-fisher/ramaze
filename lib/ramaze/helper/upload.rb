@@ -159,28 +159,45 @@ module Ramaze
 
   # This class represents an uploaded file
   class UploadedFile
+    include Innate::Traited
+
+    attr_reader :filename, :type
 
     # Initializes a new Ramaze::UploadedFile object
     def initialize(filename, type, tempfile, options)
       @filename = filename
       @type = type
       @tempfile = tempfile
-      @options = options
+      @realfile = nil
+      trait :options => options
     end
 
-    # Save file
-    def save(dirname = nil, filename = nil)
-      # Check that dirname is set
-      dn = dirname || @options[:default_upload_dir]
-      raise Exception.new('Unable to save file, no dirname given') unless dn
-      # Check that filename is set
-      fn = filename || @filename
-      raise Exception.new('Unable to save file, no filename given') unless fn
-      # Build path
-      path = File.absolute_path(File.join(dn, fn))
+    # Saves the Ramaze::UploadedFile
+    #
+    # +path+ is the path where the uploaded file should be saved. If +path+
+    # is not set, the method checks whether there exists default options for
+    # the path and tries to use that instead.
+    #
+    # If you need to override any options set in the controller
+    # (using upload_options) you can set the corresponding option in +options+
+    # to override the behavior for this particular Ramaze::UploadedFile object.
+    #
+    def save(path = nil, options = {})
+      # Merge options
+      opts = trait[:options].merge(options)
+      unless path
+        # No path was provided, use info stored elsewhere to try to build
+        # the path
+        raise Exception.new('Unable to save file, no dirname given') unless
+          opts[:default_upload_dir]
+        raise Exception.new('Unable to save file, no filename given') unless
+          @filename
+        path = File.join(opts[:default_upload_dir], @filename)
+      end
+      path = File.absolute_path(path)
       # Abort if file altready exists and overwrites are not allowed
       raise Exception.new('Unable to overwrite existing file') if
-        File.exists?(path) && !@options[:allow_overwrite]
+        File.exists?(path) && !opts[:allow_overwrite]
       # Confirm that we can read source file
       raise Exception.new('Unable to read temporary file') unless
         File.readable?(@tempfile)
@@ -188,8 +205,7 @@ module Ramaze
       raise Exception.new(
         "Unable to save file to #{path}. Path is not writable"
       ) unless
-        (File.exists?(path) &&
-        File.writable?(path)) ||
+        (File.exists?(path) && File.writable?(path)) ||
         File.writable?(File.dirname(path))
       # If supported, use IO,copy_stream. If not, require fileutils
       # and use the same function from there
@@ -203,13 +219,24 @@ module Ramaze
           end
         end
       end
-      # If the unlink_tempfile is set to true, delete the temporary file
+
+      # Update the realfile property, indicating that the file has been saved
+      @realfile = File.new(path)
+
+      # If the unlink_tempfile option is set to true, delete the temporary file
       # created by Rack
-      if (@options[:unlink_tempfile])
+      if (opts[:unlink_tempfile])
         unlink_tempfile
       end
     end
 
+    # Returns whether the Ramaze::UploadedFile has been saved or not
+    def saved?
+      return !@savefile.nil?
+    end
+
+    # Deletes the temporary file associated with this Ramaze::UploadedFile
+    # immediately
     def unlink_tempfile
       File.unlink(@tempfile)
       @tempfile = nil
