@@ -194,13 +194,13 @@ module Ramaze
           @filename
         path = File.join(opts[:default_upload_dir], @filename)
       end
-      path = File.absolute_path(path)
+      path = File.expand_path(path)
       # Abort if file altready exists and overwrites are not allowed
       raise Exception.new('Unable to overwrite existing file') if
         File.exists?(path) && !opts[:allow_overwrite]
       # Confirm that we can read source file
       raise Exception.new('Unable to read temporary file') unless
-        File.readable?(@tempfile)
+        File.readable?(@tempfile.path)
       # Confirm that we can write to the destination file
       raise Exception.new(
         "Unable to save file to #{path}. Path is not writable"
@@ -213,9 +213,9 @@ module Ramaze
         IO.copy_stream(@tempfile, path)
       else
         require 'fileutils'
-        File.open(@tempfile, 'rb') do |src|
+        File.open(@tempfile.path, 'rb') do |src|
           File.open(path, 'wb') do |dest|
-            copy_stream(src, dest)
+            FileUtils.copy_stream(src, dest)
           end
         end
       end
@@ -238,7 +238,7 @@ module Ramaze
     # Deletes the temporary file associated with this Ramaze::UploadedFile
     # immediately
     def unlink_tempfile
-      File.unlink(@tempfile)
+      File.unlink(@tempfile.path)
       @tempfile = nil
     end
   end # end class UploadedFile
