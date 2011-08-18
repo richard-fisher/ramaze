@@ -216,7 +216,13 @@ module Ramaze
         #                       uploaded files without specifying a path. If you
         #                       intend to call Ramaze::UploadedFile.save with a
         #                       path you don't need to set this option at all.
-        #                       This option is set to *nil* by default.
+        #                       If you need to delay the calculation of the
+        #                       directory, you can also set this option to a
+        #                       proc. The proc should accept zero arguments and
+        #                       return a string. This comes in handy when you
+        #                       want to use different directory paths for
+        #                       different users etc. This option is set to *nil*
+        #                       by default.
         # [:unlink_tempfile] If set to *true*, this option will automatically
         #                    unlink the tempory file created by Rack immediatly
         #                    after Ramaze::UploadedFile.save is done saving the
@@ -237,6 +243,22 @@ module Ramaze
         #     upload_options :allow_overwrite => true,
         #                    :autosave => true,
         #                    :default_upload_dir => '/uploads/myapp',
+        #                    :unlink_tempfile => true
+        #   end
+        #
+        #   # This controller will handle all file uploads automatically.
+        #   # All uploaded files are saved automatically, but the exact location
+        #   # is depending on a session variable. Old files are overwritten.
+        #   #
+        #   class MyController2 < Ramaze::Controller
+        #
+        #     # Proc to use for save directory calculation
+        #     calculate_dir = lambda { File.join('/uploads', session['user']) }
+        #
+        #     handle_all_uploads
+        #     upload_options :allow_overwrite => true,
+        #                    :autosave => true,
+        #                    :default_upload_dir => calculate_dir,
         #                    :unlink_tempfile => true
         #   end
         def upload_options(options)
@@ -305,7 +327,13 @@ module Ramaze
           opts[:default_upload_dir]
         raise StandardError.new('Unable to save file, no filename given') unless
           @filename
-        path = File.join(opts[:default_upload_dir], @filename)
+        # Check to see if a proc or a string was used for the default_upload_dir
+        # parameter. If it was a proc, call the proc and use the result as
+        # the directory part of the path. If a string was used, use the
+        # string directly as the directory part of the path.
+        dn = opts[:default_upload_dir].is_a?(Proc) ?
+          opts[:default_upload_dir].call : opts[:default_upload_dir]  
+        path = File.join(dn, @filename)
       end
       path = File.expand_path(path)
       # Abort if file altready exists and overwrites are not allowed
