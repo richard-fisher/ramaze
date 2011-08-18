@@ -21,6 +21,13 @@ module Ramaze
       # Ramaze::Helper::UploadHelper::ClassMethods::handle_uploads_for or
       # Ramaze::Helper::UploadHelper::ClassMethods::handle_all_uploads instead
       #
+      # Regardless if you choose to use manual or automatic handling of file
+      # uploads, both single and array parameters are supported. If you give
+      # your file upload fields the same name (for instance upload[]) Rack will
+      # merge them into a single parameter. The upload helper will keep this
+      # structure so that whenever Rack uses an array, the uploaded_files
+      # method will also return (a hash) of arrays.
+      #
       # ==== Example usage
       #
       #   class MyController < Ramaze::Controller
@@ -71,19 +78,61 @@ module Ramaze
       #
       def get_uploaded_files(pattern = nil)
         uploaded_files = {}
+        # Iterate over all request parameters
         request.params.each_pair do |k, v|
+          # If we use a pattern, check that it matches
           if pattern.nil? || pattern =~ k
-            if is_uploaded_file?(v)
-              uploaded_files[k] = Ramaze::UploadedFile.new(
-                v[:filename],
-                v[:type],
-                v[:tempfile],
-                ancestral_trait[:upload_options] ||
-                Ramaze::Helper::UploadHelper::ClassMethods.trait[
-                  :default_upload_options
-                ]
-              )
-              request.params.delete(k)
+            # Rack supports request parameters with either a single value or
+            # an array of values. To support both, we need to check if the
+            # current parameter is an array or not.
+            if v.is_a?(Array)
+              # Got an array. Iterate through it and check for uploaded files
+              file_indices = []
+              v.each_with_index do |elem, idx|
+                if is_uploaded_file?(elem)
+                  file_indices << idx
+                end
+              end
+              # Convert found uploaded files to Ramaze::UploadedFile objects
+              file_elems = []
+              file_indices.each do |fi|
+                file_elems << Ramaze::UploadedFile.new(
+                  v[fi][:filename],
+                  v[fi][:type],
+                  v[fi][:tempfile],
+                  ancestral_trait[:upload_options] ||
+                  Ramaze::Helper::UploadHelper::ClassMethods.trait[
+                    :default_upload_options
+                  ]
+                )
+              end
+              # Remove uploaded files from current request param
+              file_indices.reverse_each do |fi|
+                v.delete_at(fi)
+              end
+              # If the request parameter contained at least one file upload,
+              # add upload(s) to the list of uploaded files
+              uploaded_files[k] = file_elems unless file_elems.empty?
+              # Delete parameter from request parameter array if it doesn't
+              # contain any other elements.
+              request.params.delete(k) if v.empty?
+            else
+              # Got a single value. Check if it is an uploaded file
+              if is_uploaded_file?(v)
+                # The current parameter represents an uploaded file.
+                # Convert the parameter to a Ramaze::UploadedFile object
+                uploaded_files[k] = Ramaze::UploadedFile.new(
+                  v[:filename],
+                  v[:type],
+                  v[:tempfile],
+                  ancestral_trait[:upload_options] ||
+                  Ramaze::Helper::UploadHelper::ClassMethods.trait[
+                    :default_upload_options
+                  ]
+                )
+                # Delete parameter from request parameter array
+                request.params.delete(k)
+              end
             end
           end
         end
@@ -332,7 +381,7 @@ module Ramaze
         # the directory part of the path. If a string was used, use the
         # string directly as the directory part of the path.
         dn = opts[:default_upload_dir].is_a?(Proc) ?
-          opts[:default_upload_dir].call : opts[:default_upload_dir]  
+          opts[:default_upload_dir].call : opts[:default_upload_dir]
         path = File.join(dn, @filename)
       end
       path = File.expand_path(path)
