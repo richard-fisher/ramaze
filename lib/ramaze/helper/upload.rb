@@ -32,6 +32,9 @@ module Ramaze
       #
       #   class MyController < Ramaze::Controller
       #
+      #     # Use upload helper
+      #     helper :upload
+      #
       #     # This action will handle *all* uploaded files
       #     def handleupload1
       #       # Get all uploaded files
@@ -53,10 +56,10 @@ module Ramaze
       #       end
       #     end
       #
-      #     # This action will handle uploaded files matching /^up/
+      #     # This action will handle uploaded files beginning with 'up'
       #     def handleupload2
       #       # Get selected uploaded files
-      #       get_uploaded_files /^up/
+      #       get_uploaded_files /^up.*/
       #
       #       # Iterate over uploaded files and save them in the
       #       # '/uploads/myapp' directory
@@ -223,12 +226,16 @@ module Ramaze
         # ==== Example usage
         #
         #   class MyController < Ramaze::Controller
+        #
+        #     # Use upload helper
+        #     helper :upload
+        #
         #     # Handle all uploads for the foo and bar actions
         #     handle_uploads_for :foo, :bar
         #
         #     # Handle all uploads for the baz action and uploads beginning with
         #     # 'up' for the qux action
-        #     handle_uploads_for :baz, [:qux, /^up/]
+        #     handle_uploads_for :baz, [:qux, /^up.*/]
         #   end
         #
         def handle_uploads_for(*args)
@@ -288,6 +295,10 @@ module Ramaze
         #   # and old files are overwritten.
         #   #
         #   class MyController < Ramaze::Controller
+        #
+        #     # Use upload helper
+        #     helper :upload
+        #
         #     handle_all_uploads
         #     upload_options :allow_overwrite => true,
         #                    :autosave => true,
@@ -300,6 +311,9 @@ module Ramaze
         #   # is depending on a session variable. Old files are overwritten.
         #   #
         #   class MyController2 < Ramaze::Controller
+        #
+        #     # Use upload helper
+        #     helper :upload
         #
         #     # Proc to use for save directory calculation
         #     calculate_dir = lambda { File.join('/uploads', session['user']) }
