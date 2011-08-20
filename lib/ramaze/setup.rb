@@ -117,14 +117,11 @@ module Ramaze
 
       log "Activating gem #{name}"
 
-      Gem.activate(name, *version)
-      require(lib_name)
-
+      activate(name, lib_name, *version)
     # Gem not installed yet
-    rescue LoadError
+    rescue Gem::LoadError
       install_gem(name, options)
-      Gem.activate(name, *version)
-      require(lib_name)
+      activate(name, lib_name, *version)
     end
 
     ##
@@ -164,6 +161,26 @@ module Ramaze
     end
 
     private
+
+    ##
+    # Activates a gem and requires it.
+    #
+    # @author Yorick Peterse
+    # @author Lee Jarvis
+    # @since  20-08-2011
+    # @param  [String] name The name of the gem to activate.
+    # @param  [String] lib_name The name of the gem as it should be required.
+    # @param  [Array] requirements An array with additional requirements.
+    #
+    def activate(name, lib_name, *requirements)
+      if Gem::Specification.respond_to?(:find_by_name)
+        Gem::Specification.find_by_name(name, *requirements).activate
+      else
+        Gem.activate(name, *requirements)
+      end
+
+      require(lib_name)
+    end
 
     ##
     # Writes the message to the logger.
