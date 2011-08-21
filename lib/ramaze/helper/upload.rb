@@ -10,23 +10,13 @@ module Ramaze
 
       # This method will iterate through all request parameters
       # and convert those parameters which represents uploaded
-      # files to Ramaze::UploadedFile object. The matched parameters
+      # files to Ramaze::UploadedFile objects. The matched parameters
       # will then be removed from the request parameter hash.
-      #
-      # If +pattern+ is given, only those request parameters which
-      # has a name matching +pattern+ will be considered.
       #
       # Use this method if you want to decide whether to handle file uploads
       # in your action at runtime. For automatic handling, use
-      # Ramaze::Helper::UploadHelper::ClassMethods::handle_uploads_for or
-      # Ramaze::Helper::UploadHelper::ClassMethods::handle_all_uploads instead
-      #
-      # Regardless if you choose to use manual or automatic handling of file
-      # uploads, both single and array parameters are supported. If you give
-      # your file upload fields the same name (for instance upload[]) Rack will
-      # merge them into a single parameter. The upload helper will keep this
-      # structure so that whenever Rack uses an array, the uploaded_files
-      # method will also return (a hash) of arrays.
+      # Ramaze::Helper::UploadHelper::ClassMethods#handle_all_uploads or
+      # Ramaze::Helper::UploadHelper::ClassMethods#handle_uploads_for instead
       #
       # ==== Example usage
       #
@@ -79,6 +69,13 @@ module Ramaze
       #
       #   end
       #
+      # @param [Regexp] pattern If set, only those request parameters which
+      #                         has a name matching the Regexp will be checked
+      #                         for file uploads.
+      # @return [Fixnum] The number of uploaded files that was converted to
+      #                  Ramaze::UploadedFile objects.
+      # @see Ramaze::Helper::UploadHelper::ClassMethods#handle_all_uploads
+      # @see Ramaze::Helper::UploadHelper::ClassMethods#handle_uploads_for
       def get_uploaded_files(pattern = nil)
         uploaded_files = {}
         # Iterate over all request parameters
@@ -138,6 +135,7 @@ module Ramaze
               end
             end
           end
+          return uploaded_files.length
         end
 
         # If at least one file upload matched, override the uploaded_files
@@ -161,14 +159,26 @@ module Ramaze
         end
       end
 
-      # :nodoc:
-      # Add some class method whenever the helper is included
-      # in a controller
+      # Adds some class method to the controller whenever the helper
+      # is included.
+      # @private
       def self.included(mod)
         mod.extend(ClassMethods)
       end
 
-      # Return list of currently handled file uploads
+      # Return list of currently handled file uploads.
+      #
+      # Both single and array parameters are supported. If you give
+      # your file upload fields the same name (for instance upload[]) Rack will
+      # merge them into a single parameter. The upload helper will keep this
+      # structure so that whenever the request parameter contains an array, the
+      # uploaded_files method will also return an array of Ramaze::UploadedFile
+      # objects for the same key.
+      #
+      # @return [Hash] Currently uploaded files. The keys in the hash
+      #                corresponds to the names of the request parameters that
+      #                contained file uploads and the values consist of
+      #                Ramaze::UploadedFile objects.
       def uploaded_files
         return Innate::Helper::UploadHelper.trait[:default_uploaded_files]
       end
@@ -180,6 +190,8 @@ module Ramaze
       # a hash and contains all parameters that Rack assigns to an
       # uploaded file
       #
+      # @param [Hash] param A request parameter
+      # @return [Boolean]
       def is_uploaded_file?(param)
         if param.is_a?(Hash) &&
           param.has_key?(:filename) &&
@@ -207,10 +219,13 @@ module Ramaze
         }.freeze
 
         # This method will activate automatic handling of uploaded files
-        # for *all* actions in the controller
+        # for *all* actions in the controller.
         #
-        # If +pattern+ is given, only those request parameters which match
-        # +pattern+ will be considered for automatic handling
+        # @param [Regexp] pattern If set, only those request parameters which
+        #                         has a name matching the Regexp will be
+        #                         handled automatically.
+        # @see #handle_uploads_for
+        # @see UploadHelper#get_uploaded_files
         def handle_all_uploads(pattern = nil)
           before_all do
             get_uploaded_files(pattern)
@@ -219,9 +234,6 @@ module Ramaze
 
         # This method will activate automatic handling of uploaded files
         # for specified actions in the controller.
-        #
-        # Each argument to this method can either be a symbol or an array
-        # consisting of a symbol and a reqexp.
         #
         # ==== Example usage
         #
@@ -238,6 +250,12 @@ module Ramaze
         #     handle_uploads_for :baz, [:qux, /^up.*/]
         #   end
         #
+        # @param *args An arbitrary long list of arguments with action names
+        #             (and optionally patterns) that should handle file uploads
+        #             automatically. Each argument can either be a symbol or an
+        #             array consisting of a symbol and a reqexp.
+        # @see #handle_all_uploads
+        # @see Ramaze::Helper::UploadHelper#get_uploaded_files
         def handle_uploads_for(*args)
           args.each do |arg|
             if arg.is_a?(Array)
@@ -252,41 +270,7 @@ module Ramaze
           end
         end
 
-        # Set options for for file uploads in the controll
-        #
-        # +options+ is a hash containing the options you want to use.
-        # The following options are supported:
-        #
-        # [:allow_overwrite] If set to *true*, uploaded files are allowed to
-        #                    overwrite existing ones. This option is set to
-        #                    *false* by default
-        # [:autosave] If set to *true*, Ramaze::UploadedFile.save will be called
-        #             on all matched file uploads automatically. You can use
-        #             this option to automatically save files at a preset
-        #             location, but please note that you will need to set the
-        #             :default_upload_dir (and possibly :allow_overwrite)
-        #             options as well in order for this to work correctly.
-        #             This option is set to *false* by default.
-        # [:default_upload_dir] If set to a string (representing a path in the
-        #                       file system) this option will allow you to save
-        #                       uploaded files without specifying a path. If you
-        #                       intend to call Ramaze::UploadedFile.save with a
-        #                       path you don't need to set this option at all.
-        #                       If you need to delay the calculation of the
-        #                       directory, you can also set this option to a
-        #                       proc. The proc should accept zero arguments and
-        #                       return a string. This comes in handy when you
-        #                       want to use different directory paths for
-        #                       different users etc. This option is set to *nil*
-        #                       by default.
-        # [:unlink_tempfile] If set to *true*, this option will automatically
-        #                    unlink the tempory file created by Rack immediatly
-        #                    after Ramaze::UploadedFile.save is done saving the
-        #                    uploaded file. This is probably not needed in most
-        #                    cases, but if you don't want to expose your
-        #                    uploaded files in a shared tempdir longer than
-        #                    necessary this option might be for you. This option
-        #                    is set to *false* by default.
+        # Sets options for file uploads in the controller.
         #
         # ==== Example usage
         #
@@ -324,6 +308,50 @@ module Ramaze
         #                    :default_upload_dir => calculate_dir,
         #                    :unlink_tempfile => true
         #   end
+        # @param [Hash] options Options controlling how file uploads
+        #                       are handled.
+        # @option options [Boolean]    :allow_overwrite If set to *true*,
+        #                               uploaded files are allowed to overwrite
+        #                               existing ones. This option is set to
+        #                               *false* by default.
+        # @option options [Boolean]    :autosave If set to *true*,
+        #                              Ramaze::UploadedFile#save will be called
+        #                              on all matched file uploads
+        #                              automatically. You can use this option to
+        #                              automatically save files at a preset
+        #                              location, but please note that you will
+        #                              need to set the :default_upload_dir
+        #                              (and possibly :allow_overwrite)
+        #                              options as well in order for this to work
+        #                              correctly. This option is set to *false*
+        #                              by default.
+        # @option options [String|Proc] :default_upload_dir If set to a string
+        #                               (representing a path in the file system)
+        #                               this option will allow you to save
+        #                               uploaded files without specifying a
+        #                               path. If you intend to call
+        #                               Ramaze::UploadedFile#save with a path
+        #                               you don't need to set this option at
+        #                               all. If you need to delay the
+        #                               calculation of the directory, you can
+        #                               also set this option to a proc. The proc
+        #                               should accept zero arguments and return
+        #                               a string. This comes in handy when you
+        #                               want to use different directory paths
+        #                               for different users etc. This option is
+        #                               set to *nil* by default.
+        # @option options [Boolean]    :unlink_tempfile If set to *true*, this
+        #                              option will automatically unlink the
+        #                              tempory file created by Rack immediatly
+        #                              after Ramaze::UploadedFile.save is done
+        #                              saving the uploaded file. This is
+        #                              probably not needed in most cases, but if
+        #                              you don't want to expose your uploaded
+        #                              files in a shared tempdir longer than
+        #                              necessary this option might be for you.
+        #                              This option is set to *false* by default.
+        # @see Ramaze::UploadedFile#initialize
+        # @see Ramaze::UploadedFile#save
         def upload_options(options)
           opts = Innate::Helper::UploadHelper::ClassMethods.trait[
             :default_upload_options
@@ -334,17 +362,28 @@ module Ramaze
     end # end module UploadHelper
   end # end module Helper
 
-  # This class represents an uploaded file
+  # This class represents an uploaded file.
   class UploadedFile
     include Innate::Traited
 
     # Suggested file name
+    # @return [String]
     attr_reader :filename
 
     # MIME-type
+    # @return [String]
     attr_reader :type
 
-    # Initializes a new Ramaze::UploadedFile object
+    # Initializes a new Ramaze::UploadedFile object.
+    # @param [String] filename Suggested file name
+    # @param [String] type MIME-type
+    # @param [File] tempfile temporary file
+    # @param [Hash] options Options for uploaded files. Options supported match
+    #               those available to
+    #               Ramaze::Helper::UploadHelper::ClassMethods#upload_options
+    # @return [Ramaze::UploadedFile] A new Ramaze::UploadedFile object
+    # @see #save
+    # @see Ramaze::Helper::UploadHelper::ClassMethods#upload_options
     def initialize(filename, type, tempfile, options)
       @filename = filename
       @type = type
@@ -358,6 +397,7 @@ module Ramaze
     # not a complete path), but if you provide a complete path this method it
     # will try to identify the filename and use that instead.
     #
+    # @param [String] The new suggested filename.
     def filename=(name)
       @filename = File.basename(name)
     end
@@ -366,20 +406,27 @@ module Ramaze
     # The method will always return *nil* before *save* has been called
     # on the Ramaze::UploadedFile object.
     #
+    # @return [String|nil]
     def path
       return self.saved? ? @realfile.path : nil
     end
 
     # Saves the Ramaze::UploadedFile
     #
-    # +path+ is the path where the uploaded file should be saved. If +path+
-    # is not set, the method checks whether there exists default options for
-    # the path and tries to use that instead.
+    # If +path+ is not set, the method checks whether there exists default
+    # options for the path and tries to use that instead.
     #
     # If you need to override any options set in the controller
     # (using upload_options) you can set the corresponding option in +options+
     # to override the behavior for this particular Ramaze::UploadedFile object.
     #
+    # @param [String] path Path where the Ramaze::UploadedFile will be saved
+    # @param [Hash] options Options for uploaded files. Options supported match
+    #               those available to
+    #               Ramaze::Helper::UploadHelper::ClassMethods#upload_options
+    # @raise [StandardError] Will be raised if the save operation fails.
+    # @see #initialize
+    # @see Ramaze::Helper::UploadHelper::ClassMethods#upload_options
     def save(path = nil, options = {})
       # Merge options
       opts = trait[:options].merge(options)
@@ -432,13 +479,14 @@ module Ramaze
       unlink_tempfile if opts[:unlink_tempfile]
     end
 
-    # Returns whether the Ramaze::UploadedFile has been saved or not
+    # Returns whether the Ramaze::UploadedFile has been saved or not.
+    # @return [Boolean]
     def saved?
       return !@realfile.nil?
     end
 
     # Deletes the temporary file associated with this Ramaze::UploadedFile
-    # immediately
+    # immediately.
     def unlink_tempfile
       File.unlink(@tempfile.path)
       @tempfile = nil
