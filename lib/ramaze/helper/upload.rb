@@ -134,7 +134,6 @@ module Ramaze
               end
             end
           end
-          return uploaded_files.length
         end
 
         # If at least one file upload matched, override the uploaded_files
@@ -156,6 +155,8 @@ module Ramaze
             end
           end
         end
+        # Return number of uploaded files that were converted
+        return uploaded_files.length
       end
 
       # Adds some class method to the controller whenever the helper
