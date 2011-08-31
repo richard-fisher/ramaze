@@ -55,7 +55,7 @@ module Ramaze
     # @author Lars Olsson
     # @since  04-08-2011
     #
-    module UploadHelper
+    module Upload
       include Innate::Traited
 
       ##
@@ -66,8 +66,8 @@ module Ramaze
       #
       # Use this method if you want to decide whether to handle file uploads
       # in your action at runtime. For automatic handling, use
-      # Ramaze::Helper::UploadHelper::ClassMethods#handle_all_uploads or
-      # Ramaze::Helper::UploadHelper::ClassMethods#handle_uploads_for instead.
+      # Ramaze::Helper::Upload::ClassMethods#handle_all_uploads or
+      # Ramaze::Helper::Upload::ClassMethods#handle_uploads_for instead.
       #
       # @author Lars Olsson
       # @since  04-08-2011
@@ -75,8 +75,8 @@ module Ramaze
       #  has a name matching the Regexp will be checked for file uploads.
       # @return [Fixnum] The number of uploaded files that was converted to
       #  Ramaze::Helper::Upload::UploadedFile objects.
-      # @see Ramaze::Helper::UploadHelper::ClassMethods#handle_all_uploads
-      # @see Ramaze::Helper::UploadHelper::ClassMethods#handle_uploads_for
+      # @see Ramaze::Helper::Upload::ClassMethods#handle_all_uploads
+      # @see Ramaze::Helper::Upload::ClassMethods#handle_uploads_for
       #
       def get_uploaded_files(pattern = nil)
         uploaded_files = {}
@@ -106,7 +106,7 @@ module Ramaze
                   v[fi][:type],
                   v[fi][:tempfile],
                   ancestral_trait[:upload_options] ||
-                  Ramaze::Helper::UploadHelper::ClassMethods.trait[
+                  Ramaze::Helper::Upload::ClassMethods.trait[
                     :default_upload_options
                   ]
                 )
@@ -135,7 +135,7 @@ module Ramaze
                   v[:type],
                   v[:tempfile],
                   ancestral_trait[:upload_options] ||
-                  Ramaze::Helper::UploadHelper::ClassMethods.trait[
+                  Ramaze::Helper::Upload::ClassMethods.trait[
                     :default_upload_options
                   ]
                 )
@@ -235,7 +235,7 @@ module Ramaze
         # @param [Regexp] pattern If set, only those request parameters which
         #   has a name matching the Regexp will be handled automatically.
         # @see #handle_uploads_for
-        # @see UploadHelper#get_uploaded_files
+        # @see Upload#get_uploaded_files
         def handle_all_uploads(pattern = nil)
           before_all do
             get_uploaded_files(pattern)
@@ -265,7 +265,7 @@ module Ramaze
         #  automatically. Each argument can either be a symbol or a two-element
         #  array consisting of a symbol and a reqexp.
         # @see #handle_all_uploads
-        # @see Ramaze::Helper::UploadHelper#get_uploaded_files
+        # @see Ramaze::Helper::Upload#get_uploaded_files
         def handle_uploads_for(*args)
           args.each do |arg|
             if arg.is_a?(Array)
@@ -353,182 +353,183 @@ module Ramaze
         #
         def upload_options(options)
           trait(
-            :upload_options => Innate::Helper::UploadHelper::ClassMethods.trait[
+            :upload_options => Innate::Helper::Upload::ClassMethods.trait[
               :default_upload_options
             ].merge(options)
           )
         end
       end # ClassMethods
-    end # UploadHelper
-
-    ##
-    # This class represents an uploaded file.
-    #
-    # @author Lars Olsson
-    # @since  18-08-2011
-    #
-    class UploadedFile
-      include Innate::Traited
-
-      # Suggested file name
-      # @return [String]
-      attr_reader :filename
-
-      # MIME-type
-      # @return [String]
-      attr_reader :type
 
       ##
-      # Initializes a new Ramaze::Helper::Upload::UploadedFile object.
+      # This class represents an uploaded file.
       #
-      # @param [String] filename Suggested file name
-      # @param [String] type MIME-type
-      # @param [File] tempfile temporary file
-      # @param [Hash] options Options for uploaded files. Options supported
-      #  match those available to
-      #  Ramaze::Helper::UploadHelper::ClassMethods#upload_options
-      # @return [Ramaze::Helper::Upload::UploadedFile] A new
-      #  Ramaze::Helper::Upload::UploadedFile object
-      # @see #save
-      # @see Ramaze::Helper::UploadHelper::ClassMethods#upload_options
-      def initialize(filename, type, tempfile, options)
-        @filename = filename
-        @type     = type
-        @tempfile = tempfile
-        @realfile = nil
+      # @author Lars Olsson
+      # @since  18-08-2011
+      #
+      class UploadedFile
+        include Innate::Traited
 
-        trait :options => options
-      end
+        # Suggested file name
+        # @return [String]
+        attr_reader :filename
 
-      ##
-      # Changes the suggested filename of this
-      # Ramaze::Helper::Upload::UploadedFile.  +name+ should be a string
-      # representing the filename (only the filename, not a complete path), but
-      # if you provide a complete path this method it will try to identify the
-      # filename and use that instead.
-      #
-      # @param [String] The new suggested filename.
-      #
-      def filename=(name)
-        @filename = File.basename(name)
-      end
+        # MIME-type
+        # @return [String]
+        attr_reader :type
 
-      ##
-      # Returns the path of the Ramaze::Helper::Upload::UploadedFile object.
-      # The method will always return *nil* before *save* has been called
-      # on the Ramaze::Helper::Upload::UploadedFile object.
-      #
-      # @return [String|nil]
-      #
-      def path
-        return self.saved? ? @realfile.path : nil
-      end
+        ##
+        # Initializes a new Ramaze::Helper::Upload::UploadedFile object.
+        #
+        # @param [String] filename Suggested file name
+        # @param [String] type MIME-type
+        # @param [File] tempfile temporary file
+        # @param [Hash] options Options for uploaded files. Options supported
+        #  match those available to
+        #  Ramaze::Helper::Upload::ClassMethods#upload_options
+        # @return [Ramaze::Helper::Upload::UploadedFile] A new
+        #  Ramaze::Helper::Upload::UploadedFile object
+        # @see #save
+        # @see Ramaze::Helper::Upload::ClassMethods#upload_options
+        def initialize(filename, type, tempfile, options)
+          @filename = filename
+          @type     = type
+          @tempfile = tempfile
+          @realfile = nil
 
-      ##
-      # Saves the Ramaze::Helper::Upload::UploadedFile.
-      #
-      # If +path+ is not set, the method checks whether there exists default
-      # options for the path and tries to use that instead.
-      #
-      # If you need to override any options set in the controller
-      # (using upload_options) you can set the corresponding option in +options+
-      # to override the behavior for this particular
-      # Ramaze::Helper::Upload::UploadedFile object.
-      #
-      # @param [String] path Path where the Ramaze::Helper::Upload::UploadedFile
-      #  will be saved
-      # @param [Hash] options Options for uploaded files. Options supported
-      #  match those available to
-      #  Ramaze::Helper::UploadHelper::ClassMethods#upload_options
-      # @raise [StandardError] Will be raised if the save operation fails.
-      # @see #initialize
-      # @see Ramaze::Helper::UploadHelper::ClassMethods#upload_options
-      #
-      def save(path = nil, options = {})
-        # Merge options
-        opts = trait[:options].merge(options)
+          trait :options => options
+        end
 
-        unless path
-          # No path was provided, use info stored elsewhere to try to build
-          # the path
-          unless opts[:default_upload_dir]
-            raise StandardError.new('Unable to save file, no dirname given')
+        ##
+        # Changes the suggested filename of this
+        # Ramaze::Helper::Upload::UploadedFile.  +name+ should be a string
+        # representing the filename (only the filename, not a complete path),
+        # but if you provide a complete path this method it will try to identify
+        # the filename and use that instead.
+        #
+        # @param [String] The new suggested filename.
+        #
+        def filename=(name)
+          @filename = File.basename(name)
+        end
+
+        ##
+        # Returns the path of the Ramaze::Helper::Upload::UploadedFile object.
+        # The method will always return *nil* before *save* has been called
+        # on the Ramaze::Helper::Upload::UploadedFile object.
+        #
+        # @return [String|nil]
+        #
+        def path
+          return self.saved? ? @realfile.path : nil
+        end
+
+        ##
+        # Saves the Ramaze::Helper::Upload::UploadedFile.
+        #
+        # If +path+ is not set, the method checks whether there exists default
+        # options for the path and tries to use that instead.
+        #
+        # If you need to override any options set in the controller (using
+        # upload_options) you can set the corresponding option in +options+ to
+        # override the behavior for this particular
+        # Ramaze::Helper::Upload::UploadedFile object.
+        #
+        # @param [String] path Path where the
+        #  Ramaze::Helper::Upload::UploadedFile will be saved
+        # @param [Hash] options Options for uploaded files. Options supported
+        #  match those available to
+        #  Ramaze::Helper::Upload::ClassMethods#upload_options
+        # @raise [StandardError] Will be raised if the save operation fails.
+        # @see #initialize
+        # @see Ramaze::Helper::Upload::ClassMethods#upload_options
+        #
+        def save(path = nil, options = {})
+          # Merge options
+          opts = trait[:options].merge(options)
+
+          unless path
+            # No path was provided, use info stored elsewhere to try to build
+            # the path
+            unless opts[:default_upload_dir]
+              raise StandardError.new('Unable to save file, no dirname given')
+            end
+
+            unless @filename
+              raise StandardError.new('Unable to save file, no filename given')
+            end
+
+            # Check to see if a proc or a string was used for the
+            # default_upload_dir parameter. If it was a proc, call the proc and
+            # use the result as the directory part of the path. If a string was
+            # used, use the string directly as the directory part of the path.
+            dn = opts[:default_upload_dir].is_a?(Proc) ?
+              opts[:default_upload_dir].call : opts[:default_upload_dir]
+
+            path = File.join(dn, @filename)
           end
 
-          unless @filename
-            raise StandardError.new('Unable to save file, no filename given')
+          path = File.expand_path(path)
+
+          # Abort if file altready exists and overwrites are not allowed
+          if File.exists?(path) and !opts[:allow_overwrite]
+            raise StandardError.new('Unable to overwrite existing file')
           end
 
-          # Check to see if a proc or a string was used for the
-          # default_upload_dir parameter. If it was a proc, call the proc and
-          # use the result as the directory part of the path. If a string was
-          # used, use the string directly as the directory part of the path.
-          dn = opts[:default_upload_dir].is_a?(Proc) ?
-            opts[:default_upload_dir].call : opts[:default_upload_dir]
+          # Confirm that we can read source file
+          unless File.readable?(@tempfile.path)
+            raise StandardError.new('Unable to read temporary file')
+          end
 
-          path = File.join(dn, @filename)
-        end
+          # Confirm that we can write to the destination file
+          unless (File.exists?(path) and File.writable?(path)) \
+          or (File.exists?(File.dirname(path)) \
+            and File.writable?(File.dirname(path)))
+            raise StandardError.new(
+              "Unable to save file to #{path}. Path is not writable"
+            )
+          end
 
-        path = File.expand_path(path)
-
-        # Abort if file altready exists and overwrites are not allowed
-        if File.exists?(path) and !opts[:allow_overwrite]
-          raise StandardError.new('Unable to overwrite existing file')
-        end
-
-        # Confirm that we can read source file
-        unless File.readable?(@tempfile.path)
-          raise StandardError.new('Unable to read temporary file')
-        end
-
-        # Confirm that we can write to the destination file
-        unless (File.exists?(path) and File.writable?(path)) \
-        or (File.exists?(File.dirname(path)) \
-          and File.writable?(File.dirname(path)))
-          raise StandardError.new(
-            "Unable to save file to #{path}. Path is not writable"
-          )
-        end
-
-        # If supported, use IO,copy_stream. If not, require fileutils
-        # and use the same method from there
-        if IO.respond_to?(:copy_stream)
-          IO.copy_stream(@tempfile, path)
-        else
-          require 'fileutils'
-          File.open(@tempfile.path, 'rb') do |src|
-            File.open(path, 'wb') do |dest|
-              FileUtils.copy_stream(src, dest)
+          # If supported, use IO,copy_stream. If not, require fileutils
+          # and use the same method from there
+          if IO.respond_to?(:copy_stream)
+            IO.copy_stream(@tempfile, path)
+          else
+            require 'fileutils'
+            File.open(@tempfile.path, 'rb') do |src|
+              File.open(path, 'wb') do |dest|
+                FileUtils.copy_stream(src, dest)
+              end
             end
           end
+
+          # Update the realfile property, indicating that the file has been
+          # saved
+          @realfile = File.new(path)
+
+          # If the unlink_tempfile option is set to true, delete the temporary
+          # file created by Rack
+          unlink_tempfile if opts[:unlink_tempfile]
         end
 
-        # Update the realfile property, indicating that the file has been saved
-        @realfile = File.new(path)
+        ##
+        # Returns whether the Ramaze::Helper::Upload::UploadedFile has been
+        # saved or not.
+        #
+        # @return [Boolean]
+        #
+        def saved?
+          return !@realfile.nil?
+        end
 
-        # If the unlink_tempfile option is set to true, delete the temporary
-        # file created by Rack
-        unlink_tempfile if opts[:unlink_tempfile]
-      end
-
-      ##
-      # Returns whether the Ramaze::Helper::Upload::UploadedFile has been saved
-      # or not.
-      #
-      # @return [Boolean]
-      #
-      def saved?
-        return !@realfile.nil?
-      end
-
-      ##
-      # Deletes the temporary file associated with this
-      # Ramaze::Helper::Upload::UploadedFile immediately.
-      #
-      def unlink_tempfile
-        File.unlink(@tempfile.path)
-        @tempfile = nil
-      end
-    end # UploadedFile
+        ##
+        # Deletes the temporary file associated with this
+        # Ramaze::Helper::Upload::UploadedFile immediately.
+        #
+        def unlink_tempfile
+          File.unlink(@tempfile.path)
+          @tempfile = nil
+        end
+      end # UploadedFile
+    end # Upload
   end # Helper
 end # Ramaze
