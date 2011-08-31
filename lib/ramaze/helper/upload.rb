@@ -5,6 +5,53 @@ module Ramaze
     # by Rack, but this helper adds some conveniance methods for handling
     # and saving the uploaded files.
     #
+    # == Example
+    #
+    #   class MyController < Ramaze::Controller
+    #     # Use upload helper
+    #     helper :upload
+    #
+    #     # This action will handle *all* uploaded files
+    #     def handleupload1
+    #       # Iterate over uploaded files and save them in the
+    #       # '/uploads/myapp' directory
+    #       get_uploaded_files.each_pair do |k, v|
+    #         v.save(
+    #           File.join('/uploads/myapp', v.filename),
+    #           :allow_overwrite => true
+    #         )
+    #
+    #         if v.saved?
+    #           Ramaze::Log.info(
+    #             "Saved uploaded file named #{k} to #{v.path}."
+    #           )
+    #         else
+    #           Ramaze::Log.warn("Failed to save file named #{k}.")
+    #         end
+    #       end
+    #     end
+    #
+    #     # This action will handle uploaded files beginning with 'up'
+    #     def handleupload2
+    #       # Iterate over uploaded files and save them in the
+    #       # '/uploads/myapp' directory
+    #       get_uploaded_files(/^up.*/).each_pair do |k, v|
+    #         v.save(
+    #           File.join('/uploads/myapp', v.filename),
+    #           :allow_overwrite => true
+    #         )
+    #
+    #         if v.saved?
+    #           Ramaze::Log.info(
+    #             "Saved uploaded file named #{k} to #{v.path}."
+    #           )
+    #         else
+    #           Ramaze::Log.warn("Failed to save file named #{k}.")
+    #         end
+    #       end
+    #     end
+    #   end
+    #
     # @author Lars Olsson
     # @since  04-08-2011
     #
@@ -12,65 +59,15 @@ module Ramaze
       include Innate::Traited
 
       ##
-      # This method will iterate through all request parameters
-      # and convert those parameters which represents uploaded
-      # files to Ramaze::Helper::Upload::UploadedFile objects. The matched parameters
+      # This method will iterate through all request parameters and convert
+      # those parameters which represents uploaded files to
+      # Ramaze::Helper::Upload::UploadedFile objects. The matched parameters
       # will then be removed from the request parameter hash.
       #
       # Use this method if you want to decide whether to handle file uploads
       # in your action at runtime. For automatic handling, use
       # Ramaze::Helper::UploadHelper::ClassMethods#handle_all_uploads or
       # Ramaze::Helper::UploadHelper::ClassMethods#handle_uploads_for instead.
-      #
-      # @example
-      #
-      #   class MyController < Ramaze::Controller
-      #     # Use upload helper
-      #     helper :upload
-      #
-      #     # This action will handle *all* uploaded files
-      #     def handleupload1
-      #       # Get all uploaded files
-      #       get_uploaded_files
-      #
-      #       # Iterate over uploaded files and save them in the
-      #       # '/uploads/myapp' directory
-      #       uploaded_files.each_pair do |k, v|
-      #         v.save(
-      #           File.join('/uploads/myapp', v.filename),
-      #           :allow_overwrite => true
-      #         )
-      #
-      #         if v.saved?
-      #           Ramaze::Log.info 'Saved uploaded file named ' <<
-      #           "#{k} to #{v.path}."
-      #         else
-      #           Ramaze::Log.warn "Failed to save file named #{k}."
-      #         end
-      #       end
-      #     end
-      #
-      #     # This action will handle uploaded files beginning with 'up'
-      #     def handleupload2
-      #       # Get selected uploaded files
-      #       get_uploaded_files /^up.*/
-      #
-      #       # Iterate over uploaded files and save them in the
-      #       # '/uploads/myapp' directory
-      #       uploaded_files.each_pair do |k, v|
-      #         v.save(
-      #           File.join('/uploads/myapp', v.filename),
-      #           :allow_overwrite => true
-      #         )
-      #         if v.saved?
-      #           Ramaze::Log.info 'Saved uploaded file named ' <<
-      #           "#{k} to #{v.path}."
-      #         else
-      #           Ramaze::Log.warn "Failed to save file named #{k}."
-      #         end
-      #       end
-      #     end
-      #   end
       #
       # @author Lars Olsson
       # @since  04-08-2011
