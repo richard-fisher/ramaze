@@ -16,7 +16,6 @@ task :bacon => :setup do
     specs_relative[spec] = Pathname.new(spec).relative_path_from(root_path).to_s
   end
 
-
   specs_size  = specs.size
   len         = specs_relative.map { |abs, rel| rel.size }.sort.last
   total_tests = total_assertions = total_failures = total_errors = 0
