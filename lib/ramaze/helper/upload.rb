@@ -56,7 +56,7 @@ module Ramaze
     # @since  04-08-2011
     #
     module Upload
-      include Innate::Traited
+      include Ramaze::Traited
 
       ##
       # This method will iterate through all request parameters and convert
@@ -73,8 +73,7 @@ module Ramaze
       # @since  04-08-2011
       # @param  [Regexp] pattern If set, only those request parameters which
       #  has a name matching the Regexp will be checked for file uploads.
-      # @return [Fixnum] The number of uploaded files that was converted to
-      #  Ramaze::Helper::Upload::UploadedFile objects.
+      # @return [Array] The uploaded files.
       # @see Ramaze::Helper::Upload::ClassMethods#handle_all_uploads
       # @see Ramaze::Helper::Upload::ClassMethods#handle_uploads_for
       #
@@ -168,13 +167,15 @@ module Ramaze
         return uploaded_files()
       end
 
+      ##
       # Adds some class method to the controller whenever the helper
       # is included.
-      # @private
+      #
       def self.included(mod)
         mod.extend(ClassMethods)
       end
 
+      ##
       # Returns list of currently handled file uploads.
       #
       # Both single and array parameters are supported. If you give
@@ -218,9 +219,9 @@ module Ramaze
       # Helper class methods. Methods in this module will be available
       # in your controller *class* (not your controller instance).
       module ClassMethods
-        include Innate::Traited
+        include Ramaze::Traited
 
-        # Default options for uploaded files. You can affect these options
+        # Default options for uploaded files. You can change these options
         # by using the uploads_options method
         trait :default_upload_options => {
           :allow_overwrite    => false,
@@ -229,19 +230,7 @@ module Ramaze
           :unlink_tempfile    => false
         }.freeze
 
-        # This method will activate automatic handling of uploaded files
-        # for *all* actions in the controller.
-        #
-        # @param [Regexp] pattern If set, only those request parameters which
-        #   has a name matching the Regexp will be handled automatically.
-        # @see #handle_uploads_for
-        # @see Upload#get_uploaded_files
-        def handle_all_uploads(pattern = nil)
-          before_all do
-            get_uploaded_files(pattern)
-          end
-        end
-
+        ##
         # This method will activate automatic handling of uploaded files
         # for specified actions in the controller.
         #
@@ -353,7 +342,7 @@ module Ramaze
         #
         def upload_options(options)
           trait(
-            :upload_options => Innate::Helper::Upload::ClassMethods.trait[
+            :upload_options => Ramaze::Helper::Upload::ClassMethods.trait[
               :default_upload_options
             ].merge(options)
           )
@@ -367,7 +356,7 @@ module Ramaze
       # @since  18-08-2011
       #
       class UploadedFile
-        include Innate::Traited
+        include Ramaze::Traited
 
         # Suggested file name
         # @return [String]
@@ -391,7 +380,7 @@ module Ramaze
         # @see #save
         # @see Ramaze::Helper::Upload::ClassMethods#upload_options
         def initialize(filename, type, tempfile, options)
-          @filename = filename
+          @filename = File.basename(filename)
           @type     = type
           @tempfile = tempfile
           @realfile = nil
