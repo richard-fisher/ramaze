@@ -204,12 +204,11 @@ module Ramaze
       # @param [Hash] param A request parameter
       # @return [Boolean]
       def is_uploaded_file?(param)
-        if param.is_a?(Hash) and
-          param.has_key?(:filename) and
-          param.has_key?(:type) and
-          param.has_key?(:name) and
-          param.has_key?(:tempfile) and
-          param.has_key?(:head)
+        if param.respond_to?(:has_key?)
+          [:filename, :type, :name, :tempfile, :head].each do |k|
+            return false if !param.has_key?(k)
+          end
+
           return true
         else
           return false
@@ -257,7 +256,7 @@ module Ramaze
         # @see Ramaze::Helper::Upload#get_uploaded_files
         def handle_uploads_for(*args)
           args.each do |arg|
-            if arg.is_a?(Array)
+            if arg.respond_to?(:first) and arg.respond_to?(:last)
               before(arg.first.to_sym) do
                 get_uploaded_files(arg.last)
               end
@@ -451,8 +450,11 @@ module Ramaze
             # default_upload_dir parameter. If it was a proc, call the proc and
             # use the result as the directory part of the path. If a string was
             # used, use the string directly as the directory part of the path.
-            dn = opts[:default_upload_dir].is_a?(Proc) ?
-              opts[:default_upload_dir].call : opts[:default_upload_dir]
+            dn = opts[:default_upload_dir]
+
+            if dn.respond_to?(:call)
+              dn = dn.call
+            end
 
             path = File.join(dn, @filename)
           end
