@@ -4,6 +4,8 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 require 'dalli'
 
+Dalli.logger.level = Logger::ERROR
+
 spec_precondition 'memcached is running' do
   cache = Dalli::Client.new('localhost:11211')
   cache.set('active', true)

@@ -3,12 +3,21 @@ task :bacon => :setup do
   require 'open3'
   require 'scanf'
   require 'matrix'
+  require 'pathname'
 
-  specs = PROJECT_SPECS
-
+  specs       = PROJECT_SPECS
   some_failed = false
+  root_path   = Pathname.new(File.expand_path('../../', __FILE__))
+
+  # Generate a hash of relative and absolute paths for all the specs.
+  specs_relative = {}
+
+  specs.each do |spec|
+    specs_relative[spec] = Pathname.new(spec).relative_path_from(root_path).to_s
+  end
+
   specs_size  = specs.size
-  len         = specs.map{|s| s.size }.sort.last
+  len         = specs_relative.map { |abs, rel| rel.size }.sort.last
   total_tests = total_assertions = total_failures = total_errors = 0
   totals      = Vector[0, 0, 0, 0]
 
@@ -19,7 +28,7 @@ task :bacon => :setup do
   load_path = File.expand_path('../../lib', __FILE__)
 
   specs.each_with_index do |spec, idx|
-    print(left_format % [idx + 1, specs_size, spec])
+    print(left_format % [idx + 1, specs_size, specs_relative[spec]])
 
     Open3.popen3(RUBY, '-I', load_path, spec) do |sin, sout, serr|
       out = sout.read.strip
