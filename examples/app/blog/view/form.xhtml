@@ -1,0 +1,11 @@
+#{form_for(@post, :method => :post, :action => Posts.r(:save)) do |f|
+  f.input_hidden(:id)
+
+  f.input_text('Title', :title)
+
+  f.g.p('You can use Markdown when writing your post.')
+
+  f.textarea('Body', :body)
+
+  f.input_submit('Submit')
+end}

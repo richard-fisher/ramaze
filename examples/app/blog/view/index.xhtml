@@ -1,0 +1,33 @@
+<div id="posts">
+    <?r if !@posts.empty? ?>
+
+    <?r @posts.each do |post| ?>
+    <?r created_at = post.created_at.strftime('%Y-%m-%d') ?>
+
+    <article>
+        <header>
+            <h1>
+                #{Posts.a(post.title, :view, post.id)}
+            </h1>
+            <p>
+                Created at <time pubdate="pubdate"
+                datetime="#{created_at}">#{created_at}</time> and written by
+                #{post.user.username}
+            </p>
+        </header>
+
+        #{RDiscount.new(post.body).to_html}
+    </article>
+
+    <?r end ?>
+
+    #{if @posts.respond_to?(:navigation) and @posts.page_count > 1
+      @posts.navigation
+    end}
+
+    <?r else ?>
+
+    <p>No posts were found.</p>
+
+    <?r end ?>
+</div>
