@@ -25,6 +25,7 @@ Sequel.extension(:pagination)
 Sequel::Migrator.run(DB, __DIR__('../migrations'))
 
 # Time to load all the models now that Sequel is set up.
+require __DIR__('comment')
 require __DIR__('post')
 require __DIR__('user')
 

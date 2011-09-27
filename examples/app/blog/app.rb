@@ -29,5 +29,4 @@ Ramaze.options.roots = [__DIR__]
 require __DIR__('model/init')
 require __DIR__('controller/init')
 
-Ramaze::Log.info('You can log in with "admin" as both the username and password')
 Ramaze::Log.info('Logging in can be done by going to /users/login')

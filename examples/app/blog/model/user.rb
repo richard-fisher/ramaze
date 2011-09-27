@@ -99,6 +99,7 @@ class User < Sequel::Model
   # @since  26-09-2011
   #
   def validate
-    validates_presence([:username, :password])
+    validates_presence(:username)
+    validates_presence(:password) if new?
   end
 end # User

@@ -1,0 +1,12 @@
+#{form_for(@user, :method => :post, :action => Users.r(:save)) do |f|
+  f.input_hidden(:id)
+
+  f.input_text('Username', :username)
+
+  # Not setting an empty value for the password field would display the hash.
+  # Note that setting it to nil wouldn't work as the BlueForm helper would still
+  # try to extract the value from the @user object.
+  f.input_password('Password', :password, :value => '')
+
+  f.input_submit('Submit')
+end}

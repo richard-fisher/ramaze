@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"
+xml:base="http://localhost:7000/">
+    <id>tag:ramaze-blog</id>
+    <title>Ramaze Blog</title>
+    <updated>#{@posts.last.created_at.strftime('%Y-%m-%dT%H:%M:%SZ')}</updated>
+
+    <?r @posts.each do |post| ?>
+    <entry>
+        <id>tag:ramaze-blog,#{post.id}</id>
+        <title>#{post.title}</title>
+        <author>
+            <name>#{post.user.username}</name>
+        </author>
+        <updated>#{post.created_at.strftime('%Y-%m-%dT%H:%M:%SZ')}</updated>
+        <content type="xhtml">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                #{RDiscount.new(post.body).to_html}
+            </div>
+        </content>
+    </entry>
+    <?r end ?>
+</feed>

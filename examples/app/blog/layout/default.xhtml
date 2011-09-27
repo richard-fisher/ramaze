@@ -22,10 +22,28 @@
                     <nav class="grid_6 last">
                         <ul class="clearfix">
                             <li>#{Posts.a('Posts', :index)}</li>
+
+                            <?r if logged_in? ?>
+
                             <li>#{Users.a('Users', :index)}</li>
+                            <li>#{Users.a('Logout', :logout)}</li>
+
+                            <?r else ?>
+
+                            <li>#{Users.a('Login', :login)}</li>
+
+                            <?r end ?>
                         </ul>
                     </nav>
                 </div>
+
+                <?r [:success, :error].each do |type| ?>
+                <?r if flash[type] ?>
+                <div class="message grid_12 #{type}">
+                    <p>#{flash[type]}</p>
+                </div>
+                <?r end ?>
+                <?r end ?>
 
                 <div id="content" class="grid_12">
                     #{@content}

@@ -10,13 +10,13 @@ class BaseController < Ramaze::Controller
   layout :default
   helper :blue_form, :user, :xhtml, :paginate
 
-  # Configures the Paginate helper so that it shows a maximum of 20 posts per
+  # Configures the Paginate helper so that it shows a maximum of 10 posts per
   # page and uses the "page" query string key to determine the current page.
   # This will result in URLs such as /posts?page=2. Note that when calling the
   # paginate() method you can override these settings.
   trait :paginate => {
     :var   => 'page',
-    :limit => 20
+    :limit => 10
   }
 
   # Tells the User helper what model class should be used for the authenticate()

@@ -11,8 +11,14 @@ class Posts < BaseController
   # Sets the content type and view name based on the extension in the URL. For
   # example, a request to /posts/feed.rss would render the view feed.rss.xhtml
   # and set the content type to application/rss+xml.
-  #provide(:rss , :type => 'application/rss+xml')
-  #provide(:atom, :type => 'application/atom+xml')
+  provide(:atom, :type => 'application/atom+xml') do |action, body|
+    # Disable the layout.
+    action.layout = false
+
+    # Let's make sure the body is actually rendered. Using "return" would cause
+    # a local jumper error.
+    body
+  end
 
   # These methods require the user to be logged in. If this isn't the case the
   # user will be redirected back to the previous page and a message is
@@ -44,6 +50,18 @@ class Posts < BaseController
   end
 
   ##
+  # Returns a list of all posts as either an RSS feed or an Atom feed.
+  #
+  # @author Yorick Peterse
+  # @since  27-09-2011
+  #
+  def feed
+    @posts = Post.all
+
+    render_view(:feed)
+  end
+
+  ##
   # Shows a single post along with all it's comments.
   #
   # @author Yorick Peterse
@@ -58,7 +76,22 @@ class Posts < BaseController
       redirect_referrer
     end
 
-    @title = @post.title
+    @title       = @post.title
+    @created_at  = @post.created_at.strftime('%Y-%m-%d')
+    @new_comment = flash[:form_data] || Comment.new
+  end
+
+  ##
+  # Allows users to create a new post, given the user is logged in.
+  #
+  # @author Yorick Peterse
+  # @since  26-09-2011
+  #
+  def new
+    @post  = flash[:form_data] || Post.new
+    @title = 'New post'
+
+    render_view(:form)
   end
 
   ##
@@ -69,7 +102,7 @@ class Posts < BaseController
   # @param  [Fixnum] id The ID of the blog post to edit.
   #
   def edit(id)
-    @post = Post[id]
+    @post = flash[:form_data] || Post[id]
 
     # Make sure the post is valid
     if @post.nil?
@@ -79,20 +112,38 @@ class Posts < BaseController
 
     @title = "Edit #{@post.title}"
 
-    render_view :form
+    render_view(:form)
   end
 
   ##
-  # Allows users to create a new post, given the user is logged in.
+  # Adds a new comment to an existing post and redirects the user back to the
+  # post.
   #
   # @author Yorick Peterse
-  # @since  26-09-2011
+  # @since  27-09-2011
   #
-  def new
-    @post  = Post.new
-    @title = 'New Post'
+  def add_comment
+    data    = request.subset(:post_id, :username, :comment)
+    comment = Comment.new
 
-    render_view :form
+    # If the user is logged in the user_id field should be set instead of the
+    # username field.
+    if logged_in?
+      data.delete('username')
+      data['user_id'] = user.id
+    end
+
+    begin
+      comment.update(data)
+      flash[:success] = 'The comment has been added'
+    rescue => e
+      Ramaze::Log.error(e)
+
+      flash[:form_errors] = comment.errors
+      flash[:error]       = 'The comment could not be added'
+    end
+
+    redirect_referrer
   end
 
   ##
@@ -106,12 +157,13 @@ class Posts < BaseController
   def save
     # Fetch the POST data to use for a new Post object or for updating an
     # existing one.
-    data = request.subset(:title, :body)
-    id   = request.params['id']
+    data            = request.subset(:title, :body)
+    id              = request.params['id']
+    data['user_id'] = user.id
 
     # If an ID is given it's assumed the user wants to edit an existing post,
     # otherwise a new one will be created.
-    if id
+    if !id.nil? and !id.empty?
       post = Post[id]
 
       # Let's make sure the post is valid
@@ -157,33 +209,24 @@ class Posts < BaseController
   end
 
   ##
-  # Deletes a number of posts using a POST array called "post_ids". This array
-  # contains the IDs of the posts to remove.
+  # Removes a single post from the database.
   #
   # @author Yorick Peterse
   # @since  26-09-2011
+  # @param  [Fixnum] id The ID of the post to remove.
   #
-  def delete
-    ids = request.params['post_ids']
-
-    if ids.nil? or ids.empty?
-      flash[:error] = 'You need to specify at least one post to remove'
-      redirect_referrer
-    end
-
+  def delete(id)
     # The call is wrapped in a begin/rescue block so any errors can be handled
     # properly. Without this the user would bump into a nasty stack trace and
     # probably would have no clue as to what's going on.
     begin
-      Post.filter(:id => ids).destroy
+      Post.filter(:id => id).destroy
+      flash[:success] = 'The specified post has been removed'
     rescue => e
       Ramaze::Log.error(e.message)
-      flash[:error] = 'The specified posts could not be removed'
-
-      redirect_referrer
+      flash[:error] = 'The specified post could not be removed'
     end
 
-    flash[:success] = 'All specified posts have been removed'
-    redirect_referrer
+    redirect(Posts.r(:index))
   end
 end # Posts

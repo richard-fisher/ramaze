@@ -1,0 +1,68 @@
+<article>
+    <header>
+        <h1>
+            #{@post.title}
+        </h1>
+        <p>
+            Created at <time pubdate="pubdate"
+            datetime="#{@created_at}">#{@created_at}</time> and written by
+            #{@post.user.username}
+        </p>
+    </header>
+
+    #{RDiscount.new(@post.body).to_html}
+
+    <?r if logged_in? ?>
+    <p>
+        #{Posts.a('Edit', :edit, @post.id)}
+        | #{Posts.a('Delete', :delete, @post.id)}
+    </p>
+    <?r end ?>
+</article>
+
+<div id="comments">
+    <h2>Comments</h2>
+
+    <?r if !@post.comments.empty? ?>
+
+    <?r @post.comments.each do |comment| ?>
+    <article>
+        <header>
+            <h1>#{comment.username}</h1>
+
+            <p class="meta">
+                <time pubdate="pubdate"
+                datetime="#{comment.created_at.strftime('%Y-%m-%d')}">
+                    #{comment.created_at.strftime('%Y-%m-%d')}
+                </time>
+            </p>
+        </header>
+
+        <p>#{comment.comment}</p>
+    </article>
+    <?r end ?>
+
+    <?r else ?>
+
+    <p>No comments have been added yet.</p>
+
+    <?r end ?>
+
+    <h2>Add Comment</h2>
+
+    #{form_for(
+      @new_comment,
+      :method => :post,
+      :action => Posts.r(:add_comment)
+    ) do |f|
+      f.input_hidden(:post_id, @post.id)
+
+      unless logged_in?
+        f.input_text('Username', :username)
+      end
+
+      f.textarea('Comment', :comment, :rows => 7, :cols => 60)
+
+      f.input_submit('Submit')
+    end}
+</div>

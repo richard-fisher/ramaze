@@ -1,0 +1,30 @@
+<?r if !@users.empty? ?>
+
+<table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?r @users.each do |user| ?>
+        <tr>
+            <td>#{Users.a(user.username, :edit, user.id)}</td>
+            <td>#{Users.a('Delete', :delete, user.id)}</td>
+        </tr>
+        <?r end ?>
+    </tbody>
+</table>
+
+#{if @users.respond_to?(:navigation) and @users.page_count > 1
+  @users.navigation
+end}
+
+<?r else ?>
+
+<p>No users were found.</p>
+
+<?r end ?>
+
+<p>#{Users.a('New User', :new)}</p>
