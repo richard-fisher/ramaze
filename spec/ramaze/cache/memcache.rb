@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
-require 'dalli'
+spec_require 'dalli'
 
 Dalli.logger.level = Logger::ERROR
 

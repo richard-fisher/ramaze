@@ -1,4 +1,6 @@
-require 'sequel'
+Ramaze.setup(:verbose => false) do
+  gem 'sequel'
+end
 
 module Ramaze
   class Cache
@@ -10,9 +12,9 @@ module Ramaze
     #
     #  Ramaze::Cache.options.view = Ramaze::Cache::Sequel.using(
     #    :connection => Sequel.mysql(
-    #      :host     => 'localhost', 
+    #      :host     => 'localhost',
     #      :user     => 'user',
-    #      :password => 'password', 
+    #      :password => 'password',
     #      :database => 'blog'
     #    ),
     #    :table => :blog_sessions
@@ -46,7 +48,7 @@ module Ramaze
         :ttl => nil
       }
 
-      # Hash containing all the default options merged with the user specified 
+      # Hash containing all the default options merged with the user specified
       # ones
       attr_accessor :options
 
@@ -71,9 +73,9 @@ module Ramaze
         #  #
         #  Ramaze.options.cache.session = Ramaze::Cache::Sequel.using(
         #    :connection => Sequel.mysql(
-        #      :host     =>'localhost', 
+        #      :host     =>'localhost',
         #      :user     =>'user',
-        #      :password =>'password', 
+        #      :password =>'password',
         #      :database =>'blog'
         #    ),
         #    :table => :blog_sessions
@@ -117,21 +119,21 @@ module Ramaze
       #
       # @author Michael Fellinger
       # @since  04-05-2011
-      # @param  [Hash] options A hash with custom options, see 
+      # @param  [Hash] options A hash with custom options, see
       #  Ramaze::Cache::Sequel.using for all available options.
       #
       def initialize(options = {})
         self.class.options ||= Ramaze::Cache::Sequel.trait[:default].merge(
           options
         )
-        
+
         @options = options.merge(self.class.options)
       end
 
       ##
       # Executed after #initialize and before any other method.
       #
-      # Some parameters identifying the current process will be passed so caches 
+      # Some parameters identifying the current process will be passed so caches
       # that act in one global name-space can use them as a prefix.
       #
       # @author Lars Olsson
@@ -159,7 +161,7 @@ module Ramaze
       end
 
       ##
-      # Remove all key/value pairs from the cache. Should behave as if #delete 
+      # Remove all key/value pairs from the cache. Should behave as if #delete
       # had been called with all +keys+ as argument.
       #
       # @author Lars Olsson
@@ -173,7 +175,7 @@ module Ramaze
       # Remove the corresponding key/value pair for each key passed. If removing
       # is not an option it should set the corresponding value to nil.
       #
-      # If only one key was deleted, answer with the corresponding value. If 
+      # If only one key was deleted, answer with the corresponding value. If
       # multiple keys were deleted, answer with an Array containing the values.
       #
       # @author Lars Olsson
@@ -207,12 +209,12 @@ module Ramaze
 
           @dataset.filter(:key => nkeys).delete
         end
-        
+
         return result
       end
 
       ##
-      # Answer with the value associated with the +key+, +nil+ if not found or 
+      # Answer with the value associated with the +key+, +nil+ if not found or
       # expired.
       #
       # @author Lars Olsson
@@ -251,7 +253,7 @@ module Ramaze
       # @param  [Object] key The value is stored with this key
       # @param  [Object] value The key points to this value
       # @param  [Hash] options for now, only :ttl => Fixnum is used.
-      # @option options [Fixnum] :ttl The time in seconds after which the cache 
+      # @option options [Fixnum] :ttl The time in seconds after which the cache
       #  item should be expired.
       #
       def cache_store(key, value, options = {})
@@ -263,9 +265,9 @@ module Ramaze
         else
           ttl = Ramaze::Cache::Sequel.options[:ttl]
         end
- 
+
         expires = Time.now + ttl if ttl
-        
+
         # The row already exists, update it.
         if @dataset.filter(:key => nkey).count == 1
           serialized_value = serialize(value)
@@ -284,7 +286,7 @@ module Ramaze
           end
         end
 
-        # Try to deserialize the value. If this fails we'll return a different 
+        # Try to deserialize the value. If this fails we'll return a different
         # value
         deserialized = deserialize(@dataset.select(:value).filter(:key => nkey)
           .limit(1).first[:value])
@@ -295,7 +297,7 @@ module Ramaze
           return value
         end
       end
-      
+
       ##
       # Prefixes the given key with current namespace.
       #
@@ -307,7 +309,7 @@ module Ramaze
       def namespaced(key)
         return [@namespace, key].join(':')
       end
-      
+
       ##
       # Deserialize method, adapted from Sequels serialize plugin
       # This method will try to deserialize a value using Marshal.load
@@ -329,7 +331,7 @@ module Ramaze
               Ramaze::Log::warn("Failed to deserialize #{value.inspect}")
             end
 
-            return nil            
+            return nil
           end
         end
       end

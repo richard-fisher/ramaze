@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
-require 'redis'
+spec_require 'redis'
 
 spec_precondition 'redis is running' do
   cache = Redis.new
@@ -50,6 +50,13 @@ describe Ramaze::Cache::Redis do
     cache.fetch(:hello).should == @hello
     cache.clear
     cache.fetch(:hello).should == nil
+  end
+
+  should 'use a custom set of options' do
+    klass = Ramaze::Cache::Redis.using(:answer => 42)
+
+    klass.options[:answer].should     == 42
+    klass.new.options[:answer].should == 42
   end
 end
 

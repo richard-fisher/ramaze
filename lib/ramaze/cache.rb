@@ -11,6 +11,7 @@ module Ramaze
     autoload :LocalMemCache, 'ramaze/cache/localmemcache'
     autoload :MemCache,      'ramaze/cache/memcache'
     autoload :Sequel,        'ramaze/cache/sequel'
+    autoload :Redis,         'ramaze/cache/redis'
 
     ##
     # Clears the cache after a file has been reloaded.

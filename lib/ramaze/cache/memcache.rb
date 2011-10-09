@@ -1,4 +1,6 @@
-require 'dalli'
+Ramaze.setup(:verbose => false) do
+  gem 'dalli'
+end
 
 # Kgio gives a nice performance boost but it isn't required
 begin; require 'kgio'; rescue LoadError => e; end
@@ -23,7 +25,7 @@ module Ramaze
     # This driver works similar to Ramaze::Cache::Sequel in that it allows you
     # to specify instance specific options uisng the using() method:
     #
-    #  Ramaze::Cache.options.view = Ramaze::Cache::Memcache.using(:compression => false)
+    #  Ramaze::Cache.options.session = Ramaze::Cache::Memcache.using(:compression => false)
     #
     # All options sent to the using() method will be sent to Dalli.
     #
@@ -49,7 +51,7 @@ module Ramaze
         :servers => ['localhost:11211']
       }
 
-      # Hash containing all the default options merged with the user specified 
+      # Hash containing all the default options merged with the user specified
       # ones
       attr_accessor :options
 
@@ -86,31 +88,31 @@ module Ramaze
           merged = Ramaze::Cache::MemCache.trait[:default].merge(options)
           Class.new(self) { @options = merged }
         end
-      end
+      end # class << self
 
       ##
       # Creates a new instance of the cache class.
       #
       # @author Michael Fellinger
       # @since  04-05-2011
-      # @param  [Hash] options A hash with custom options, see 
+      # @param  [Hash] options A hash with custom options, see
       #  Ramaze::Cache::MemCache.using for all available options.
       #
       def initialize(options = {})
         self.class.options ||= Ramaze::Cache::MemCache.trait[:default].merge(
           options
         )
-        
+
         @options = options.merge(self.class.options)
       end
 
       ##
-      # Prepares the cache by creating the namespace and an instance of a Dalli 
+      # Prepares the cache by creating the namespace and an instance of a Dalli
       # client.
       #
       # @author Yorick Peterse
       # @since  04-05-2011
-      # @param  [String] hostname  The hostname of the machine running the 
+      # @param  [String] hostname  The hostname of the machine running the
       #  application.
       # @param  [String] username  The name of the user executing the process
       # @param  [String] appname   Unique identifier for the application.
@@ -125,7 +127,7 @@ module Ramaze
         options[:namespace] = [
           hostname, username, appname, cachename
         ].compact.join('-')
-        
+
         @client = ::Dalli::Client.new(options[:servers], options)
       end
 
@@ -153,7 +155,7 @@ module Ramaze
       end
 
       ##
-      # Fetches the specified key from the cache. It the value was nil the 
+      # Fetches the specified key from the cache. It the value was nil the
       # default value will be returned instead.
       #
       # @author Yorick Peterse
@@ -182,7 +184,7 @@ module Ramaze
       # @param  [String] key The name of the key to store.
       # @param  [Mixed] value The value to store in Memcache.
       # @param  [Fixnum] ttl The Time To Live to use for the current key.
-      # @param  [Hash] options A hash containing options specific for the 
+      # @param  [Hash] options A hash containing options specific for the
       #  specified key.
       # @return [Mixed]
       #
