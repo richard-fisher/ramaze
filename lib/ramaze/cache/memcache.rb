@@ -25,7 +25,9 @@ module Ramaze
     # This driver works similar to Ramaze::Cache::Sequel in that it allows you
     # to specify instance specific options uisng the using() method:
     #
-    #  Ramaze::Cache.options.session = Ramaze::Cache::Memcache.using(:compression => false)
+    #     Ramaze::Cache.options.session = Ramaze::Cache::Memcache.using(
+    #       :compression => false
+    #     )
     #
     # All options sent to the using() method will be sent to Dalli.
     #

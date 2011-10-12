@@ -12,12 +12,12 @@ module Ramaze
     # The usage of this cache is very similar to the Memcache driver. You load
     # it by simply specifying the class:
     #
-    #  Ramaze::Cache.options.session = Ramaze::Cache::Redis
+    #     Ramaze::Cache.options.session = Ramaze::Cache::Redis
     #
-    # If you want to specify custom options you can do so by calling .using() on
+    # If you want to specify custom options you can do so by calling {.using} on
     # the class:
     #
-    #  Ramaze::Cache.options.session = Ramaze::Cache::Redis.using(...)
+    #     Ramaze::Cache.options.session = Ramaze::Cache::Redis.using(...)
     #
     # @author Michael Fellinger
     # @since  09-10-2011
