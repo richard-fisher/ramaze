@@ -47,6 +47,10 @@ I would like to thank:
   He founded the most excellent Freenode IRC-network, where the most important
   channels for rubyists are located (as is #ramaze).  May he rest in peace.
 
+* Loren Segal
+
+  For creating YARD. Without YARD we'd still be stuck using rdoc.
+
 * The guys (and gals) in the various channels on Freenode.
 
   As the people are way too many to be listed, here the channels that I call my

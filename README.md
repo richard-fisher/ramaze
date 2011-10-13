@@ -91,9 +91,9 @@ This starts a WEBRick server listening on localhost:7000.
 * [Website][website]
 
 When joining the IRC channel you don't have to be afraid to ask a question, just
-ask it and you'll get (hopefully) get the answer you're looking for. However,
-keep in mind that most of us are located in different timezones so it may
-sometimes take a while before you get a reply.
+ask it and (hopefully) you'll get the answer you're looking for. However, keep
+in mind that most of us are located in different timezones so it may sometimes
+take a while before you get a reply.
 
 ## Chapters
 
