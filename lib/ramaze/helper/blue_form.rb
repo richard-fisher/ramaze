@@ -5,8 +5,10 @@ module Ramaze
   module Helper
     ##
     # The BlueForm helper tries to be an even better way to build forms
-    # programmatically.  By using a simple block you can quickly create all the
+    # programmatically. By using a simple block you can quickly create all the
     # required elements for your form.
+    #
+    # See {Ramaze::Helper::BlueForm::Form} for all the available methods.
     #
     # ## Form Data
     #

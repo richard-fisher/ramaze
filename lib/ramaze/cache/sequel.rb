@@ -26,6 +26,18 @@ module Ramaze
     # Massive thanks to Lars Olsson for patching the original Sequel cache so
     # that it supports multiple connections and other useful features.
     #
+    # @example Setting a custom database connection
+    #  Ramaze::Cache.options.names.push(:sequel)
+    #  Ramaze::Cache.options.sequel = Ramaze::Cache::Sequel.using(
+    #    :connection => Sequel.connect(
+    #      :adapter  => 'mysql2',
+    #      :host     => 'localhost',
+    #      :username => 'cache',
+    #      :password => 'cache123',
+    #      :database => 'ramaze_cache'
+    #    )
+    #  )
+    #
     # @author Lars Olsson
     # @since  18-04-2011
     #

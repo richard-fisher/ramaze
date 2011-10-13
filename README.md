@@ -39,9 +39,9 @@ For more information see the chapter {file:installation Installation}.
 
 Ramaze is dual licensed under the GPL/Ruby license and is copyrighted 2009 -
 2011 by Michael Fellinger (m.fellinger@gmail.com). A copy of the Ruby license
-can be found in the file "RUBY_LICENSE", a copy of the GPL license can be found
-in the file "GPL_LICENSE". Both these files can be displayed by clicking the
-"Files" button at the top right.
+can be found in the file "guide/RUBY_LICENSE", a copy of the GPL license can be
+found in the file "guide/GPL_LICENSE". Both these files can be displayed by
+clicking the "Files" button at the top right.
 
 <div class="note todo">
     <p>

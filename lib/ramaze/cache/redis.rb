@@ -19,6 +19,13 @@ module Ramaze
     #
     #     Ramaze::Cache.options.session = Ramaze::Cache::Redis.using(...)
     #
+    # @example Using a custom Redis host
+    #  Ramaze::Cache.options.names.push(:redis)
+    #  Ramaze::Cache.options.redis = Ramaze::Cache::Redis.using(
+    #    :host => '123.124.125.126',
+    #    :port => 6478
+    #  )
+    #
     # @author Michael Fellinger
     # @since  09-10-2011
     #
