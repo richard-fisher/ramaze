@@ -1,3 +1,61 @@
+[be1b000 | Thu Oct 13 17:24:31 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the YARD task to include Innate.
+
+    The Rake task ``yard`` can now optionally include Innate when a valid path is
+    specified.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[2dac2cd | Thu Oct 13 17:05:24 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Cache examples and documented RotatingInformer.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[a8174d2 | Thu Oct 13 16:23:15 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Autoload Growl/RotatinInformer
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[8853778 | Thu Oct 13 13:33:29 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Documented logging and creating custom loggers
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[e9567e7 | Thu Oct 13 10:34:02 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the Special thanks and fixed a typo.
+
+    I added Loren Segal to the Special Thanks page, without him we wouldn't be using
+    YARD. Also fixed a spelling error in the README reported by huma.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[3228a6d | Thu Oct 13 09:00:10 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed the old README
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[830d599 | Thu Oct 13 08:57:14 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Moved some chapters around.
+
+    The chapters on helpers and logging data have been moved to their own file
+    instead of being displayed in the README. Next up is writing the actual
+    documentation on logging data.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[4c8d0d2 | Wed Oct 12 22:48:02 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Initial setup for the YARD based user guide.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [8ee60cd | Mon Oct 10 19:20:12 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Fixed an HTML validation error.

@@ -12,11 +12,11 @@ mechanisms such as Memcache or Sequel using the same syntax.
 * {Ramaze::Cache::MemCache}
 * {Ramaze::Cache::Redis}
 * {Ramaze::Cache::LocalMemCache}
-* Innate::Cache::FileBased
-* Innate::Cache::DRb
-* Innate::Cache::Marshal
-* Innate::Cache::Memory
-* Innate::Cache::YAML
+* {Innate::Cache::FileBased}
+* {Innate::Cache::DRb}
+* {Innate::Cache::Marshal}
+* {Innate::Cache::Memory}
+* {Innate::Cache::YAML}
 
 ## Manually Caching Data
 
