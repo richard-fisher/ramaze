@@ -95,13 +95,11 @@ ask it and you'll get (hopefully) get the answer you're looking for. However,
 keep in mind that most of us are located in different timezones so it may
 sometimes take a while before you get a reply.
 
-## Table of Contents
+## Chapters
 
 If you're viewing this file in your editor or from Github it's likely that the
 table of contents isn't rendered. You can find all these files in the ``guide/``
 directory.
-
-### General
 
 * {file:general/installation Installation}
 * {file:general/principles Principles}
@@ -111,59 +109,14 @@ directory.
 * {file:general/controllers Controllers}
 * {file:general/models Models}
 * {file:general/views Views}
+* {file:general/helpers Helpers}
 * {file:general/middlewares Rack Middlewares}
 * {file:general/routes Routes}
 * {file:general/sessions Sessions}
 * {file:general/cache Caching Data}
+* {file:general/logging Logging Information}
 
-### Helpers
-
-* {Ramaze::Helper::Auth}: basic authentication without a model.
-* {Ramaze::Helper::Bench}: basic benchmarking of your code.
-* {Ramaze::Helper::BlueForm}: makes building forms fun again.
-* {Ramaze::Helper::Cache}: caching of entire actions and custom values in your
-  controllers.
-* {Ramaze::Helper::CSRF}: protect your controllers from CSRF attacks.
-* {Ramaze::Helper::Disqus}
-* {Ramaze::Helper::Email}: quick and easy way to send Emails.
-* {Ramaze::Helper::Erector}
-* {Ramaze::Helper::Flash}
-* {Ramaze::Helper::Gestalt}: helper for {Ramaze::Gestalt}.
-* {Ramaze::Helper::Gravatar}: easily generate Gravatars.
-* {Ramaze::Helper::Identity}: helper for OpenID authentication.
-* {Ramaze::Helper::Layout}: easily set layouts for specific actions.
-* {Ramaze::Helper::Link}
-* {Ramaze::Helper::Localize}
-* {Ramaze::Helper::Markaby}
-* {Ramaze::Helper::Maruku}
-* {Ramaze::Helper::Paginate}: easily paginate rows of data.
-* {Ramaze::Helper::Remarkably}
-* {Ramaze::Helper::RequestAccessor}
-* {Ramaze::Helper::SendFile}
-* {Ramaze::Helper::SimpleCaptcha}: captches using simple mathematical questions.
-* {Ramaze::Helper::Stack}
-* {Ramaze::Helper::Tagz}
-* {Ramaze::Helper::Thread}
-* {Ramaze::Helper::Ultraviolet}
-* {Ramaze::Helper::Upload}: uploading files made easy.
-* {Ramaze::Helper::UserHelper}: authenticate users using a model.
-* {Ramaze::Helper::XHTML}
-
-### Loggers
-
-* {Ramaze::Logger::Analogger}
-* {Ramaze::Logger::Growl}: uses Growl for log messages (requires Mac OS).
-* {Ramaze::Logger::LogHub}
-* {Ramaze::Logger::Informer}
-* {Ramaze::Logger::Knotify}
-* {Ramaze::Logger::Logger}: wrapper around the Logger class from the Stdlib.
-* {Ramaze::Logging}: basic skeleton for your own loggers.
-* {Ramaze::Logger::RotatingInformer}: logger that rotates log files based on the
-  current date.
-* {Ramaze::Logger::Syslog}: logger that uses syslog.
-* {Ramaze::Logger::Xosd}
-
-### Tutorials
+## Tutorials
 
 * {file:tutorials/introduction Introduction Tutorial}
 
