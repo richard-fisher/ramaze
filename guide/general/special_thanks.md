@@ -61,3 +61,7 @@ I would like to thank:
   * \#ruby-de
   * \#ruby-lang
   * \#rubyforce
+
+I'd also like to thank the following people for contributing to the guide:
+
+* [Stas Sușcov](https://github.com/stas)
