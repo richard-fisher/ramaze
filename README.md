@@ -104,6 +104,7 @@ directory.
 * {file:general/installation Installation}
 * {file:general/principles Principles}
 * {file:general/special_thanks Special Thanks}
+* {file:general/contributing Contributing To Ramaze}
 * {file:general/configuration Configuration}
 * {file:general/ramaze_command Ramaze Command}
 * {file:general/controllers Controllers}
