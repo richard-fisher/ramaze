@@ -1,7 +1,5 @@
-require File.expand_path('../../../../lib/ramaze/helper/blue_form', __FILE__)
-
-require 'bacon'
-Bacon.summary_at_exit
+require File.expand_path('../../../../spec/helper', __FILE__)
+require 'ramaze/helper/blue_form'
 
 describe BF = Ramaze::Helper::BlueForm do
   extend BF

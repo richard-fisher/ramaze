@@ -3,7 +3,6 @@ require __DIR__('../../../lib/ramaze/bin/runner')
 require 'open3'
 
 describe('Ramaze::Bin::Start') do
-
   it('Should show a help message') do
     help = `#{Ramaze::BINPATH} start -h`.strip
 
@@ -13,10 +12,14 @@ describe('Ramaze::Bin::Start') do
   it('Start using a directory') do
     output = ''
 
-    Open3.popen3(Ramaze::BINPATH, 'start', Ramaze::BIN_APP) do |sin, sout, serr|
-      output += serr.gets(80).to_s.strip
+    Open3.popen2e(Ramaze::BINPATH, 'start', Ramaze::BIN_APP) do |sin, sout|
+      got = sout.gets(80)
 
-      serr.close
+      if !got.nil?
+        output += got.to_s.strip
+      end
+
+      sout.close
     end
 
     output.should.match /INFO\s+WEBrick/
@@ -26,13 +29,16 @@ describe('Ramaze::Bin::Start') do
     output = ''
     path   = File.join(Ramaze::BIN_APP, 'config.ru')
 
-    Open3.popen3(Ramaze::BINPATH, 'start', path) do |sin, sout, serr|
-      output += serr.gets(80).to_s.strip
+    Open3.popen2e(Ramaze::BINPATH, 'start', path) do |sin, sout|
+      got = sout.gets(80)
 
-      serr.close
+      if !got.nil?
+        output += got.to_s.strip
+      end
+
+      sout.close
     end
 
     output.should.match /INFO\s+WEBrick/
   end
-
 end
