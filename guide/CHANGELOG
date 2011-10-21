@@ -1,3 +1,53 @@
+[dee363c | Fri Oct 21 14:54:24 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Added a Travis configuration file
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[dfb8ca8 | Fri Oct 21 14:01:40 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the AUTHORS file for the upcoming release.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[4aa9706 | Sat Oct 15 13:15:33 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Added a chapter on contributing to Ramaze
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[156e902 | Fri Oct 14 20:35:52 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Added a list of guide contributors.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[4c7996e | Fri Oct 14 20:30:27 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Style changes to the Testing chapter.
+
+    Besides these style changes I've also expanded the chapter a bit.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[0c6e4e3 | Fri Oct 14 20:15:33 UTC 2011] Stas SUȘCOV <stas@net.utcluj.ro>
+
+  * Added a short guide for testing ramaze apps (with simplecov too)
+
+[7c7a2a6 | Fri Oct 14 19:35:17 UTC 2011] Stas SUȘCOV <stas@net.utcluj.ro>
+
+  * Added flashbox trait details.
+
+[791758e | Fri Oct 14 19:28:24 UTC 2011] Stas SUȘCOV <stas@net.utcluj.ro>
+
+  * Updated flash usage details.
+
+[f2f9347 | Thu Oct 13 17:59:12 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated various files.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [be1b000 | Thu Oct 13 17:24:31 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Updated the YARD task to include Innate.
