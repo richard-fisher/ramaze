@@ -14,7 +14,7 @@ describe('Ramaze::Bin::Start') do
     output = ''
 
     Open3.popen3(Ramaze::BINPATH, 'start', Ramaze::BIN_APP) do |sin, sout, serr|
-      output += serr.gets(100).strip
+      output += serr.gets(80).to_s.strip
 
       serr.close
     end
@@ -27,7 +27,7 @@ describe('Ramaze::Bin::Start') do
     path   = File.join(Ramaze::BIN_APP, 'config.ru')
 
     Open3.popen3(Ramaze::BINPATH, 'start', path) do |sin, sout, serr|
-      output += serr.gets(100).strip
+      output += serr.gets(80).to_s.strip
 
       serr.close
     end

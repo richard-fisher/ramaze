@@ -300,7 +300,8 @@ module Ramaze
 
         # Try to deserialize the value. If this fails we'll return a different
         # value
-        deserialized = deserialize(@dataset.select(:value).filter(:key => nkey)
+        deserialized = deserialize(@dataset.select(:value) \
+          .filter(:key => nkey) \
           .limit(1).first[:value])
 
         if deserialized

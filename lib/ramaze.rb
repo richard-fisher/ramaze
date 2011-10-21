@@ -12,15 +12,15 @@
 module Ramaze
   ROOT = File.expand_path(File.dirname(__FILE__)) unless defined?(Ramaze::ROOT)
 
-  unless $LOAD_PATH.any?{|lp| File.expand_path(lp) == ROOT }
-    $LOAD_PATH.unshift(ROOT)
-  end
-
   # 3rd party
   require 'innate'
 
   @options = Innate.options
   class << self; attr_accessor :options; end
+
+  unless $LOAD_PATH.any?{|lp| File.expand_path(lp) == ROOT }
+    $LOAD_PATH.unshift(ROOT)
+  end
 
   # vendored, will go into rack-contrib
   require 'vendor/route_exceptions'
