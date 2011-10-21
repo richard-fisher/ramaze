@@ -37,7 +37,8 @@ module Ramaze
     DEVELOPMENT_DEPENDENCIES.push({:name => 'lokar', :version => ['>= 0.2.1']})
   end
 
-  if !['darwin', 'java'].include?(RUBY_PLATFORM)
+
+  if !RUBY_PLATFORM.include?('java') and !RUBY_PLATFORM.include?('darwin')
     DEVELOPMENT_DEPENDENCIES.push(
       {:name => 'localmemcache', :version => ['>= 0.4.4']}
     )

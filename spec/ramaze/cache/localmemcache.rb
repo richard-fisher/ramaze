@@ -4,7 +4,7 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_precondition 'User is running a supported OS' do
-  if ['darwin', 'java'].include?(RUBY_PLATFORM)
+  if !RUBY_PLATFORM.include?('darwin') and !RUBY_PLATFORM.include?('java')
     should.flunk "Localmemcache doesn't work on on your Ruby platform"
   else
     spec_require 'localmemcache'
