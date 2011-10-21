@@ -199,7 +199,7 @@ Example:
           params.push("#{opt}#{value}")
         end
 
-        start_server('ruby', rackup_path, rackup_config, *params)
+        start_server(rackup_path, rackup_config, *params)
       end
 
       ##
