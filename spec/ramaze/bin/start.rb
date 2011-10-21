@@ -1,6 +1,16 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 require __DIR__('../../../lib/ramaze/bin/runner')
-require 'open3'
+
+module Ramaze
+  module Bin
+    class Start
+      # Stub the method so that WEBrick doesn't have to be booted up.
+      def start_server(rackup_path, rackup_config, *params)
+        return true
+      end
+    end
+  end
+end
 
 describe('Ramaze::Bin::Start') do
   it('Should show a help message') do
@@ -10,35 +20,15 @@ describe('Ramaze::Bin::Start') do
   end
 
   it('Start using a directory') do
-    output = ''
+    cmd = Ramaze::Bin::Start.new
 
-    Open3.popen2e(Ramaze::BINPATH, 'start', Ramaze::BIN_APP) do |sin, sout|
-      got = sout.gets(80)
-
-      if !got.nil?
-        output += got.to_s.strip
-      end
-
-      sout.close
-    end
-
-    output.should.match /INFO\s+WEBrick/
+    cmd.run([Ramaze::BIN_APP]).should == true
   end
 
   it('Start using a file') do
-    output = ''
-    path   = File.join(Ramaze::BIN_APP, 'config.ru')
+    path = File.join(Ramaze::BIN_APP, 'config.ru')
+    cmd  = Ramaze::Bin::Start.new
 
-    Open3.popen2e(Ramaze::BINPATH, 'start', path) do |sin, sout|
-      got = sout.gets(80)
-
-      if !got.nil?
-        output += got.to_s.strip
-      end
-
-      sout.close
-    end
-
-    output.should.match /INFO\s+WEBrick/
+    cmd.run([path]).should == true
   end
 end

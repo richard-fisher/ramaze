@@ -199,6 +199,21 @@ Example:
           params.push("#{opt}#{value}")
         end
 
+        start_server('ruby', rackup_path, rackup_config, *params)
+      end
+
+      ##
+      # Starts a server baed on the rackup path, rackup configuration file and
+      # additional parameters.
+      #
+      # @author Yorick Peterse
+      # @since  21-10-2011
+      # @param  [String] rackup_path The path to the Rackup executable.
+      # @param  [String] rackup_config The path to the config.ru file to use.
+      # @param  [Array] *params Additional parameters to pass to the ``exec()``
+      #  method.
+      #
+      def start_server(rackup_path, rackup_config, *params)
         exec('ruby', rackup_path, rackup_config, *params)
       end
     end # Start

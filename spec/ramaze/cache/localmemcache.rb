@@ -3,13 +3,11 @@
 
 require File.expand_path('../../../../spec/helper', __FILE__)
 
-spec_precondition 'User is running a supported OS' do
-  if !RUBY_PLATFORM.include?('darwin') and !RUBY_PLATFORM.include?('java')
-    should.flunk "Localmemcache doesn't work on on your Ruby platform"
-  else
-    spec_require 'localmemcache'
-  end
+spec_precondition 'LocalMemcache should be supported' do
+  should.flunk if Ramaze::UNSUPPORTED_GEMS.include?('localmemcache')
 end
+
+spec_require 'localmemcache'
 
 describe Ramaze::Cache::LocalMemCache do
   Ramaze.options.cache.names = [:one, :two]

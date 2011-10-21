@@ -1,4 +1,15 @@
 module Ramaze
+  # Array containing gems that aren't supported for certain reasons. The gems
+  # that are in this array by default will be removed if the current setup
+  # *does* support them.
+  UNSUPPORTED_GEMS = [
+    'lokar',
+    'localmemcache',
+    'ruby-growl',
+    'nagoro',
+    'syslog'
+  ]
+
   # Array containing the names and versions of all the gems required by Ramaze
   # along with the name of how the gem should be required.
   DEPENDENCIES = [
@@ -19,7 +30,6 @@ module Ramaze
     {:name => 'locale'      , :version => ['>= 2.0.5']},
     {:name => 'maruku'      , :version => ['>= 0.6.0']},
     {:name => 'mustache'    , :version => ['>= 0.99.4']},
-    {:name => 'nagoro'      , :version => ['>= 2009.05']},
     {:name => 'rack-contrib', :version => ['>= 1.1.0'], :lib => 'rack/contrib'},
     {:name => 'rack-test'   , :version => ['>= 0.6.0'], :lib => 'rack/test'},
     {:name => 'Remarkably'  , :version => ['>= 0.6.1'], :lib => 'remarkably'},
@@ -33,20 +43,41 @@ module Ramaze
     {:name => 'rdiscount'   , :version => ['>= 1.6.8']}
   ]
 
+  # Lokar requires Ruby >= 1.9
   if RUBY_VERSION.to_f >= 1.9
     DEVELOPMENT_DEPENDENCIES.push({:name => 'lokar', :version => ['>= 0.2.1']})
+    UNSUPPORTED_GEMS.delete('lokar')
   end
 
-
-  if !RUBY_PLATFORM.include?('java') and !RUBY_PLATFORM.include?('darwin')
+  # LocalMemcache doesn't work on Mac OS X or jruby.
+  if RUBY_ENGINE != 'jruby' and !RUBY_PLATFORM.include?('darwin')
     DEVELOPMENT_DEPENDENCIES.push(
       {:name => 'localmemcache', :version => ['>= 0.4.4']}
     )
+
+    UNSUPPORTED_GEMS.delete('localmemcache')
   end
 
+  # Ruby-growl, requiring Growl, only works on Mac OS X.
   if RUBY_PLATFORM.include?('darwin')
     DEVELOPMENT_DEPENDENCIES.push(
       {:name => 'ruby-growl', :version => ['>= 3.0']}
     )
+
+    UNSUPPORTED_GEMS.delete('ruby-growl')
+  end
+
+  # Nagoro doesn't seem to work on Rbx
+  if RUBY_ENGINE != 'rbx'
+    DEVELOPMENT_DEPENDENCIES.push(
+      {:name => 'nagoro', :version => ['>= 2009.05']}
+    )
+
+    UNSUPPORTED_GEMS.delete('nagoro')
+  end
+
+  # Syslog uses forking which apparently isn't available on jruby.
+  if RUBY_ENGINE != 'jruby'
+    UNSUPPORTED_GEMS.delete('syslog')
   end
 end # Ramaze

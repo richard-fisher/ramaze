@@ -2,6 +2,11 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
+
+spec_precondition 'Nagoro should be supported' do
+  should.flunk if Ramaze::UNSUPPORTED_GEMS.include?('nagoro')
+end
+
 spec_require 'nagoro'
 
 Ramaze::App.options.views = 'nagoro'
