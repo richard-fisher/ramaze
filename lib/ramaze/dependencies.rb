@@ -50,7 +50,7 @@ module Ramaze
   end
 
   # LocalMemcache doesn't work on Mac OS X or jruby.
-  if RUBY_ENGINE != 'jruby' and !RUBY_PLATFORM.include?('darwin')
+  if !RUBY_DESCRIPTION.include?('jruby') and !RUBY_PLATFORM.include?('darwin')
     DEVELOPMENT_DEPENDENCIES.push(
       {:name => 'localmemcache', :version => ['>= 0.4.4']}
     )
@@ -68,7 +68,7 @@ module Ramaze
   end
 
   # Nagoro doesn't seem to work on Rbx
-  if RUBY_ENGINE != 'rbx'
+  if !RUBY_DESCRIPTION.include?('rubinius')
     DEVELOPMENT_DEPENDENCIES.push(
       {:name => 'nagoro', :version => ['>= 2009.05']}
     )
@@ -77,7 +77,7 @@ module Ramaze
   end
 
   # Syslog uses forking which apparently isn't available on jruby.
-  if RUBY_ENGINE != 'jruby'
+  if !RUBY_DESCRIPTION.include?('jruby')
     UNSUPPORTED_GEMS.delete('syslog')
   end
 end # Ramaze
