@@ -1,3 +1,72 @@
+[1eb0b71 | Fri Oct 21 20:48:48 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * RUBY_ENGINE isn't available on 1.8.7.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[9727888 | Fri Oct 21 20:07:23 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed the remainder of all platform issues.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[9c8fc8a | Fri Oct 21 19:04:48 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Doh! Last commit broke ramaze start.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[794e075 | Fri Oct 21 19:01:10 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Jruby support and simplified various tests.
+
+    In order to achieve jruby compatibility I had to make some modifications to the
+    development dependencies setup we've been using for a while now. I added a list
+    of unsupported gems (such as lokar) which will be "marked" as supported on
+    certain systems. For example, lokar is only supported if the user isn't running
+    Rubinius.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[c6e328c | Fri Oct 21 17:24:13 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed more 1.8.7 issues.
+
+    Hopefully this fixes all the remaining issues, though it wouldn't surprise me if
+    ``gets()`` still doesn't work on Travis (sadly I can't reproduce this).
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[87d4ab6 | Fri Oct 21 17:12:36 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed a few issues with 1.8.7
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[0d37c8e | Fri Oct 21 16:17:52 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Platform checks and used FileUtils::RUBY directly.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[e04f7f4 | Fri Oct 21 15:41:43 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed various issues with different Rubies.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[33746a4 | Fri Oct 21 14:56:14 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Test commit to see if Travis works
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[2faefd7 | Fri Oct 21 14:54:36 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the changelog
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [dee363c | Fri Oct 21 14:54:24 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Added a Travis configuration file
