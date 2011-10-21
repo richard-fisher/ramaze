@@ -2,6 +2,12 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
+spec_precondition 'Ruby version >= 1.9' do
+  if RUBY_VERSION.to_f < 1.9
+    should.flunk 'Lokar requires Ruby >= 1.9'
+  end
+end
+
 spec_require 'lokar'
 
 Ramaze::App.options.views = 'lokar'

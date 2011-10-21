@@ -4,6 +4,7 @@ task :bacon => :setup do
   require 'scanf'
   require 'matrix'
   require 'pathname'
+  require 'fileutils'
 
   specs       = PROJECT_SPECS
   some_failed = false
@@ -26,6 +27,11 @@ task :bacon => :setup do
   spec_format = "%d specifications (%d requirements), %d failures, %d errors"
 
   load_path = File.expand_path('../../lib', __FILE__)
+
+  # 1.9.3 doesn't define the RUBY constant.
+  unless Object.const_defined?(:RUBY) and FileUtils.const_defined?(:RUBY)
+    RUBY = FileUtils::RUBY
+  end
 
   specs.each_with_index do |spec, idx|
     print(left_format % [idx + 1, specs_size, specs_relative[spec]])

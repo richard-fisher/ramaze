@@ -3,10 +3,9 @@
 
 require File.expand_path('../../../../spec/helper', __FILE__)
 
-# Ignore this test on Mac OS X
-spec_precondition 'User isn\'t running Mac OS X' do
-  if RUBY_PLATFORM.include? 'darwin'
-    should.flunk "Localmemcache doesn't work on Mac OS X and thus this test will be ignored."
+spec_precondition 'User is running a supported OS' do
+  if ['darwin', 'java'].include?(RUBY_PLATFORM)
+    should.flunk "Localmemcache doesn't work on on your Ruby platform"
   else
     spec_require 'localmemcache'
   end

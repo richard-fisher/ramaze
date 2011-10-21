@@ -17,7 +17,6 @@ module Ramaze
     {:name => 'hpricot'     , :version => ['>= 0.8.4']},
     {:name => 'liquid'      , :version => ['>= 2.2.2']},
     {:name => 'locale'      , :version => ['>= 2.0.5']},
-    {:name => 'lokar'       , :version => ['>= 0.2.1']},
     {:name => 'maruku'      , :version => ['>= 0.6.0']},
     {:name => 'mustache'    , :version => ['>= 0.99.4']},
     {:name => 'nagoro'      , :version => ['>= 2009.05']},
@@ -34,7 +33,11 @@ module Ramaze
     {:name => 'rdiscount'   , :version => ['>= 1.6.8']}
   ]
 
-  if !RUBY_PLATFORM.include?('darwin')
+  if RUBY_VERSION.to_f >= 1.9
+    DEVELOPMENT_DEPENDENCIES.push({:name => 'lokar', :version => ['>= 0.2.1']})
+  end
+
+  if !['darwin', 'java'].include?(RUBY_PLATFORM)
     DEVELOPMENT_DEPENDENCIES.push(
       {:name => 'localmemcache', :version => ['>= 0.4.4']}
     )
