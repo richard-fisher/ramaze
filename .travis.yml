@@ -10,6 +10,7 @@ rvm:
 notifications:
   email:
     - yorickpeterse@gmail.com
+    - mf@rubyists.com
 
 branches:
   only:
