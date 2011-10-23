@@ -6,7 +6,6 @@ rvm:
   - rbx
   - rbx-2.0
   - ree
-  - jruby
 
 notifications:
   email:
