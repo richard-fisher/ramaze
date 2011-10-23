@@ -1,3 +1,25 @@
+[7c6cd3d | Sun Oct 23 17:01:27 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Added Michael to the Email list for Travis.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[8bcf6ca | Sun Oct 23 17:00:04 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed jruby from the Travis list.
+
+    It seems jruby is having some trouble on travis when trying to install the
+    SQLite3 gem. While jruby itself runs Ramaze just fine I'm removing it from the
+    list for the time being.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[8d9d169 | Sun Oct 23 16:08:52 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the list of authors and the changelog.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [73f2dbc | Fri Oct 21 21:14:49 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Updated the list of authors and the changelog.
