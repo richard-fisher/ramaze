@@ -1,3 +1,9 @@
+[73f2dbc | Fri Oct 21 21:14:49 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the list of authors and the changelog.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [1eb0b71 | Fri Oct 21 20:48:48 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
 
   * RUBY_ENGINE isn't available on 1.8.7.
