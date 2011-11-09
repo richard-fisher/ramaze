@@ -136,9 +136,9 @@ module Ramaze
         session[:_csrf] = {
           :time  => time.to_i,
           :token => token,
-          :ip    => request.env['REMOTE_ADDR'],
+          :ip    => request.ip,
           :agent => request.env['HTTP_USER_AGENT'],
-          :host  => request.env['REMOTE_HOST'],
+          :host  => request.host,
           :ttl   => ttl
         }
 
@@ -197,8 +197,8 @@ module Ramaze
         # Mirror mirror on the wall, who's the most secure of them all?
         session[:_csrf][:token] == input_token &&
           (Time.now.to_f - _csrf[:time]) <= _csrf[:ttl] &&
-          _csrf[:host] == request.env['REMOTE_HOST'] &&
-          _csrf[:ip] == request.env['REMOTE_ADDR'] &&
+          _csrf[:host]  == request.host &&
+          _csrf[:ip]    == request.ip &&
           _csrf[:agent] == request.env['HTTP_USER_AGENT']
       end
     end # CSRF
