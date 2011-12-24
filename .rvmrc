@@ -1,1 +1,2 @@
-rvm use --create 1.9.2@ramaze
+rvm --install --create use 1.9.3@ramaze
+[[ -s .gems ]] && rvm gemset import .gems
