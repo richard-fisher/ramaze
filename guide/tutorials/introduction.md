@@ -61,7 +61,7 @@ The next step is to create our app.rb file. Note that this file can be named
 anything you like but in all the tutorials "app.rb" will be used, on top of
 that it's somewhat of a standard so it's best to just stick with the name. The
 contents of this file can be anything you like as long as it contains the
-following three lines of code:
+following lines of code:
 
     require 'rubygems' # Only required on Ruby < 1.9
     require 'ramaze'   # Always required
