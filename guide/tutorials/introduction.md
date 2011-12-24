@@ -61,10 +61,14 @@ The next step is to create our app.rb file. Note that this file can be named
 anything you like but in all the tutorials "app.rb" will be used, on top of
 that it's somewhat of a standard so it's best to just stick with the name. The
 contents of this file can be anything you like as long as it contains the
-following two lines of code:
+following three lines of code:
 
     require 'rubygems' # Only required on Ruby < 1.9
     require 'ramaze'   # Always required
+
+    # Sets the root directory to the current directory by default. Feel free to
+    # add more directories when needed.
+    Ramaze.options.roots = [__DIR__]
 
 This will load the Ramaze gem, without it you won't be able to create a Ramaze
 application. Besides this you'll obviously need to load a few more files in
