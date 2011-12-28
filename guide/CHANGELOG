@@ -1,3 +1,55 @@
+[4553e0b | Wed Dec 28 05:13:22 UTC 2011] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Wrap Rack::File so we can continue to use Rack::Cascade
+
+[f52f010 | Wed Dec 28 03:07:49 UTC 2011] Michael Fellinger <m.fellinger@gmail.com>
+
+  * avoid shadow warning in controller
+
+[c64833c | Wed Dec 28 02:58:55 UTC 2011] Michael Fellinger <m.fellinger@gmail.com>
+
+  * fix shadowed variables in Thread#into
+
+[4c66220 | Sat Dec 24 12:32:17 UTC 2011] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update rvmrc to 1.9.3 and new convention
+
+[de1a871 | Sat Dec 24 12:33:11 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Don't specify the exact amount of lines.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[3b17e67 | Sat Dec 24 12:24:29 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Set Ramaze.options.roots in the intro tutorial.
+
+    Without this Ramaze won't be able to properly locate your root directories and
+    thus will fail to load views, layouts, etc.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[88c5a38 | Wed Nov 09 18:26:11 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Use request.ip/request.host instead of request.env
+
+    Using request.env['REMOTE_ADDR'] and request.env['REMOTE_HOST'] can break on
+    certain environments (e.g. Heroku). Thanks to @stas for reporting the issue.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[51c8d43 | Sun Oct 23 18:11:57 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Minor style changes to the Flash documentation.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[2877b07 | Sun Oct 23 17:03:50 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Release 2011.10.23.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [7c6cd3d | Sun Oct 23 17:01:27 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Added Michael to the Email list for Travis.

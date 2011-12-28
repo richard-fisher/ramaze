@@ -7,7 +7,7 @@ path = File.expand_path('../', __FILE__)
 Gem::Specification.new do |s|
   s.name                      = 'ramaze'
   s.version                   = Ramaze::VERSION
-  s.date                      = '2011-10-23'
+  s.date                      = '2011-12-28'
   s.authors                   = ['Michael \'manveru\' Fellinger']
   s.email                     = 'm.fellinger@gmail.com'
   s.summary                   = 'Ramaze is a simple and modular web framework'
