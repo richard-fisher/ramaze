@@ -50,7 +50,7 @@ describe 'Directory listing' do
    files = [
      ["../", "Parent Directory"],
      ["/favicon.ico", "favicon.ico"],
-     ["/file name.txt", "file name.txt"],
+     ["/file+name.txt", "file name.txt"],
      ["/test/", "test/"],
      ["/test_download.css", "test_download.css"]
    ]

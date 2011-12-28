@@ -15,7 +15,7 @@ module Ramaze
     def static(path)
       require 'rack/contrib'
       Rack::ETag.new(
-        Rack::ConditionalGet.new(Rack::File.new(path)), 'public'
+        Rack::ConditionalGet.new(RackFileWrapper.new(path)), 'public'
       )
     end
 
