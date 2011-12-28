@@ -84,8 +84,8 @@ module Ramaze
 
         controller.setup_procedure
       else
-        CONTROLLER_LIST.each do |controller|
-          controller.setup_procedure
+        CONTROLLER_LIST.each do |list_controller|
+          list_controller.setup_procedure
         end
       end
     end
