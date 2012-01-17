@@ -40,7 +40,7 @@ class User < Sequel::Model
     # compared as plain text this is not the case. The bcrypt class
     # automatically converts the given password to a bcrypt hash. If these
     # hashes are the same the specified password is correct.
-    if !user.nil? or user.password == password
+    if !user.nil? and user.password == password
       return user
     else
       return false
