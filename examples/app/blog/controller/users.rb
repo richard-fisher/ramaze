@@ -2,7 +2,6 @@
 # The Users controller is used for managing users and allowing existing users to
 # log in.
 #
-# @author Yorick Peterse
 # @since  26-09-2011
 #
 class Users < BaseController
@@ -20,7 +19,6 @@ class Users < BaseController
   ##
   # Shows an overview of all the users that have been added to the database.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   #
   def index
@@ -31,7 +29,6 @@ class Users < BaseController
   ##
   # Allows users to add another user to the database.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   #
   def new
@@ -45,7 +42,6 @@ class Users < BaseController
   # Edits an existing user. If the specified user ID is invalid the user is
   # redirected back to the previous page.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   # @param  [Fixnum] id The ID of the user to edit.
   #
@@ -67,7 +63,6 @@ class Users < BaseController
   # Posts#save() this method is used for both methods since the actions required
   # for adding/updating the data is pretty much identical.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   #
   def save
@@ -109,7 +104,6 @@ class Users < BaseController
   ##
   # Deletes a single user and redirects the user back to the overview.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   # @param  [Fixnum] id The ID of the user to delete.
   #
@@ -129,7 +123,6 @@ class Users < BaseController
   # Allows a user to log in. Once logged in the user is able to manage existing
   # users and edit posts.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   #
   def login
@@ -148,7 +141,6 @@ class Users < BaseController
   ##
   # Logs the user out and destroys the session.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   #
   def logout

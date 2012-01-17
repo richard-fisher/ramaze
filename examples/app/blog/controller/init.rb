@@ -2,7 +2,6 @@
 # Base controller that provides a few things used by sub controllers throughout
 # this example application.
 #
-# @author Yorick Peterse
 # @since  26-09-2011
 #
 class BaseController < Ramaze::Controller

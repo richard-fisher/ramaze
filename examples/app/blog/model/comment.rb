@@ -1,7 +1,6 @@
 ##
 # The Comment model is used for creating and managing comments.
 #
-# @author Yorick Peterse
 # @since  26-09-2011
 #
 class Comment < Sequel::Model
@@ -14,7 +13,6 @@ class Comment < Sequel::Model
   ##
   # Validates a comment before saving it to the database.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   #
   def validate
@@ -31,7 +29,6 @@ class Comment < Sequel::Model
   # Gets the name of the author from either an associated user or the "name"
   # field.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   # @return [String]
   #

@@ -2,7 +2,6 @@
 # The Posts controller is used to display a list of all the posts that have been
 # added as well as providing a way of adding, removing and updating posts.
 #
-# @author Yorick Peterse
 # @since  26-09-2011
 #
 class Posts < BaseController
@@ -41,7 +40,6 @@ class Posts < BaseController
   # Shows an overview of all the posts that have been added. These posts are
   # paginated using the Paginate helper.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   #
   def index
@@ -52,7 +50,6 @@ class Posts < BaseController
   ##
   # Returns a list of all posts as either an RSS feed or an Atom feed.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   #
   def feed
@@ -64,7 +61,6 @@ class Posts < BaseController
   ##
   # Shows a single post along with all it's comments.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   # @param  [Fixnum] id The ID of the post to view.
   #
@@ -84,7 +80,6 @@ class Posts < BaseController
   ##
   # Allows users to create a new post, given the user is logged in.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   #
   def new
@@ -97,7 +92,6 @@ class Posts < BaseController
   ##
   # Allows a user to edit an existing blog post.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   # @param  [Fixnum] id The ID of the blog post to edit.
   #
@@ -119,7 +113,6 @@ class Posts < BaseController
   # Adds a new comment to an existing post and redirects the user back to the
   # post.
   #
-  # @author Yorick Peterse
   # @since  27-09-2011
   #
   def add_comment
@@ -151,7 +144,6 @@ class Posts < BaseController
   # methods could have their own methods for saving the data the entire process
   # is almost identical and thus this would be somewhat useless.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   #
   def save
@@ -211,7 +203,6 @@ class Posts < BaseController
   ##
   # Removes a single post from the database.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   # @param  [Fixnum] id The ID of the post to remove.
   #

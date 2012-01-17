@@ -3,7 +3,6 @@
 # table is called "posts". For more information on how Sequel works see the
 # following page: http://sequel.rubyforge.org/documentation.html
 #
-# @author Yorick Peterse
 # @since  26-09-2011
 #
 class Post < Sequel::Model
@@ -26,7 +25,6 @@ class Post < Sequel::Model
   # these validation methods can't be used in a model's class declaration, they
   # have to be placed inside the #validate() method.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   #
   def validate

@@ -7,7 +7,6 @@
 # * http://yorickpeterse.com/articles/use-bcrypt-fool/
 # * https://github.com/codahale/bcrypt-ruby
 #
-# @author Yorick Peterse
 # @since  26-09-2011
 #
 class User < Sequel::Model
@@ -22,7 +21,6 @@ class User < Sequel::Model
   # object in case the specified details were correct or something that
   # evaluates to false if this wasn't the case.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   # @param  [Hash] creds A hash containing the username and password of the
   #  currently logged in user.
@@ -54,7 +52,6 @@ class User < Sequel::Model
   # password() methods to return a correct bcrypt hash/object rather than
   # whatever was stored in the database as a String instance.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   # @param  [String] password The new password of a user.
   #
@@ -77,7 +74,6 @@ class User < Sequel::Model
   # containing the bcrypt hash and thus wouldn't be able to properly compare it
   # to other passwords.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   # @return [BCrypt::Password|NilClass]
   #
@@ -95,7 +91,6 @@ class User < Sequel::Model
   # Validates an instance of this model. See Post#validate() for some extra
   # details on how this works.
   #
-  # @author Yorick Peterse
   # @since  26-09-2011
   #
   def validate
