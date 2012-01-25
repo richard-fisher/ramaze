@@ -101,7 +101,8 @@ module Ramaze
         if methods.include?(action.name) or methods.include?(action.name.to_sym)
           # THINK: For now the field name is hard-coded to "csrf_token". While
           # this is perfectly fine in most cases it might be a good idea
-          # to allow developers to change the name of this field (for whatever the reason).
+          # to allow developers to change the name of this field (for whatever
+          # the reason).
           yield unless validate_csrf_token(request.params['csrf_token'])
         end
       end
@@ -141,9 +142,6 @@ module Ramaze
           :host  => request.host,
           :ttl   => ttl
         }
-
-        # Prevent this method from returning any value (it isn't needed anyway)
-        return
       end
 
       ##
@@ -161,7 +159,6 @@ module Ramaze
           self.generate_csrf_token
         end
 
-        # Land ho!
         return session[:_csrf][:token]
       end
 
@@ -194,7 +191,6 @@ module Ramaze
 
         _csrf = session[:_csrf]
 
-        # Mirror mirror on the wall, who's the most secure of them all?
         session[:_csrf][:token] == input_token &&
           (Time.now.to_f - _csrf[:time]) <= _csrf[:ttl] &&
           _csrf[:host]  == request.host &&
