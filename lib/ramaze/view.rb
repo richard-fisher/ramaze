@@ -22,7 +22,7 @@ module Ramaze
     auto_register :Haml,       :haml
     auto_register :Less,       :lss, :less
     auto_register :Liquid,     :liquid
-	  auto_register :Lokar,      :lok
+    auto_register :Lokar,      :lok
     auto_register :Nagoro,     :nag
     auto_register :Remarkably, :rem
     auto_register :Sass,       :sass
