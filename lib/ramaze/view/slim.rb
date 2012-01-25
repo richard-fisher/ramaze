@@ -1,4 +1,6 @@
-require 'slim'
+Ramaze.setup(:verbose => false) do
+  gem 'slim'
+end
 
 module Innate
   module View

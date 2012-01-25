@@ -1,4 +1,7 @@
-require 'nagoro'
+Ramaze.setup(:verbose => false) do
+  gem 'nagoro'
+end
+
 require 'ramaze/view/nagoro/render_partial'
 
 module Ramaze

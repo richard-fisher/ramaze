@@ -1,4 +1,6 @@
-require 'slippers'
+Ramaze.setup(:verbose => false) do
+  gem 'slippers'
+end
 
 module Ramaze
   module View
@@ -35,14 +37,14 @@ module Ramaze
         end
 
         super_group = ::Slippers::TemplateGroup.new(
-          :templates                => subtemplates, 
-          :missing_template_handler => missing_template_handler, 
+          :templates                => subtemplates,
+          :missing_template_handler => missing_template_handler,
           :default_string           => default_string
         )
-        
+
         ::Slippers::TemplateGroupDirectory.new(
-          views, :super_group       => super_group, 
-          :missing_template_handler => missing_template_handler, 
+          views, :super_group       => super_group,
+          :missing_template_handler => missing_template_handler,
           :default_string           => default_string
         )
       end

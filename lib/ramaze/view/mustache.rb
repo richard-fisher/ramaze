@@ -1,4 +1,6 @@
-require 'mustache'
+Ramaze.setup(:verbose => false) do
+  gem 'mustache'
+end
 
 module Ramaze
   module View
