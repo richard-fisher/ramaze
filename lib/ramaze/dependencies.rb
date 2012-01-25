@@ -40,7 +40,8 @@ module Ramaze
     {:name => 'tenjin'      , :version => ['>= 0.6.1']},
     {:name => 'yard'        , :version => ['>= 0.7.2']},
     {:name => 'redis'       , :version => ['>= 2.2.2']},
-    {:name => 'rdiscount'   , :version => ['>= 1.6.8']}
+    {:name => 'rdiscount'   , :version => ['>= 1.6.8']},
+    {:name => 'slim'        , :version => ['>= 1.1.0']}
   ]
 
   # Lokar requires Ruby >= 1.9
