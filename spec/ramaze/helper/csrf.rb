@@ -12,23 +12,19 @@ class SpecHelperCSRF < Ramaze::Controller
     end
   end
 
-  # Generate a new csrf token
   def index
     generate_csrf_token
   end
 
-  # Retrieve the current value of the CSRF token
   def get
     return get_csrf_token
   end
 
-  # Check if the token isn't regenerated
-  def dont_regenerate
+  def regenerate
     $token_sess   = session[:_csrf][:token]
     $token_method = get_csrf_token
   end
 
-  # Check the TTL
   def check_ttl
     generate_csrf_token :ttl => 3
     $old_token = get_csrf_token
@@ -36,11 +32,13 @@ class SpecHelperCSRF < Ramaze::Controller
     $new_token = get_csrf_token
   end
 
-  # Check if the before_all block works
   def check_post
     "POST allowed."
   end
 
+  def get_token
+    get_csrf_token
+  end
 end
 
 describe Ramaze::Helper::CSRF do
@@ -60,11 +58,11 @@ describe Ramaze::Helper::CSRF do
     got.body.length.should.equal 128
   end
 
-  it 'do not generate a new token' do
-    got = get '/dont_regenerate'
+  it 'generate a new token if the previous one is valid' do
+    got = get '/regenerate'
 
-    got.status.should.equal 200
-    $token_sess.should.equal $token_method
+    got.status.should.equal      200
+    $token_sess.should.not.equal $token_method
   end
 
   it 'expire token after 3 seconds' do
@@ -78,8 +76,9 @@ describe Ramaze::Helper::CSRF do
     methods = [:get, :post, :put, :delete]
 
     methods.each do |method|
+      token       = get('/get_token').body
       got_invalid = self.send(method, '/check_post', :name => "Yorick Peterse")
-      got_valid   = self.send(method, '/check_post', :csrf_token => $new_token)
+      got_valid   = self.send(method, '/check_post', :csrf_token => token)
 
       got_invalid.status.should.equal 401
       got_invalid.body.should.equal "The specified CSRF token is incorrect."

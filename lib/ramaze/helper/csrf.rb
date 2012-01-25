@@ -132,6 +132,8 @@ module Ramaze
           :host  => request.host,
           :ttl   => ttl
         }
+
+        return
       end
 
       ##
@@ -179,11 +181,18 @@ module Ramaze
 
         _csrf = session[:_csrf]
 
-        session[:_csrf][:token] == input_token &&
+        valid = session[:_csrf][:token] == input_token &&
           (Time.now.to_f - _csrf[:time]) <= _csrf[:ttl] &&
           _csrf[:host]  == request.host &&
           _csrf[:ip]    == request.ip &&
           _csrf[:agent] == request.env['HTTP_USER_AGENT']
+
+        if valid
+          generate_csrf_token
+          return true
+        else
+          return false
+        end
       end
     end # CSRF
   end # Helper
