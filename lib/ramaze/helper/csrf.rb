@@ -75,8 +75,6 @@ module Ramaze
     #       end
     #     end
     #
-    # @author Yorick Peterse
-    #
     module CSRF
       ##
       # Method that can be used to protect the specified methods against CSRF
@@ -84,7 +82,6 @@ module Ramaze
       # a field called "csrf_token". This method will then validate that token
       # against the current token in the session.
       #
-      # @author Yorick Peterse
       # @param  [Strings/Symbol] *methods Methods that will be
       #  protected/unprotected.
       # @param  [Block] Block that will be executed if the token is invalid.
@@ -118,8 +115,7 @@ module Ramaze
       #
       # Note that this method will be automatically called if no CSRF token exists.
       #
-      # @author Yorick Peterse
-      # @param  [Hash] Additional arguments that can be set such as the TTL.
+      # @param [Hash] Additional arguments that can be set such as the TTL.
       #
       def generate_csrf_token(args = {})
         # Default TTL is 15 minutes
@@ -147,7 +143,6 @@ module Ramaze
       ##
       # Retrieves the current value of the CSRF token.
       #
-      # @author Yorick Peterse
       # @return [String] The current CSRF token.
       # @example
       #  form(@data, :method => :post) do |f|
@@ -172,7 +167,6 @@ module Ramaze
       # If any of these checks fail this method will return FALSE. It's your
       # job to take action based on the results of this method.
       #
-      # @author Yorick Peterse
       # @param  [String] input_token The CSRF token to validate.
       # @return [TrueClass|FalseClass]
       # @example
