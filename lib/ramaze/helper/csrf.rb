@@ -118,16 +118,10 @@ module Ramaze
       # @param [Hash] Additional arguments that can be set such as the TTL.
       #
       def generate_csrf_token(args = {})
-        # Default TTL is 15 minutes
-        ttl = args[:ttl] || (15 * 60)
-
-        # Get some good entropy
+        ttl    = args[:ttl] || (15 * 60)
         random = SecureRandom.random_bytes(512)
-        # and some not so good entropy
-        time = Time.now.to_f
-
-        # Hash it together
-        token = Digest::SHA512.hexdigest(random + time.to_s)
+        time   = Time.now.to_f
+        token  = Digest::SHA512.hexdigest(random + time.to_s)
 
         # Time to store all the data we want to check later.
         session[:_csrf] = {

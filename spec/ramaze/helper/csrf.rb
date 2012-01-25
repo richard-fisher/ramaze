@@ -1,14 +1,6 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 require 'ramaze/helper/csrf'
 
-##
-# A quick note on this controller.
-# I decided to user global variables ($foo) instead of sending
-# certain data to the "browser", this makes it much easier to compare
-# certain values.
-#
-# - Yorick Peterse
-#
 class SpecHelperCSRF < Ramaze::Controller
 
   engine :none
