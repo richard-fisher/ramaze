@@ -75,8 +75,6 @@ module Ramaze
     #       end
     #     end
     #
-    # @author Yorick Peterse
-    #
     module CSRF
       ##
       # Method that can be used to protect the specified methods against CSRF
@@ -84,7 +82,6 @@ module Ramaze
       # a field called "csrf_token". This method will then validate that token
       # against the current token in the session.
       #
-      # @author Yorick Peterse
       # @param  [Strings/Symbol] *methods Methods that will be
       #  protected/unprotected.
       # @param  [Block] Block that will be executed if the token is invalid.
@@ -101,7 +98,8 @@ module Ramaze
         if methods.include?(action.name) or methods.include?(action.name.to_sym)
           # THINK: For now the field name is hard-coded to "csrf_token". While
           # this is perfectly fine in most cases it might be a good idea
-          # to allow developers to change the name of this field (for whatever the reason).
+          # to allow developers to change the name of this field (for whatever
+          # the reason).
           yield unless validate_csrf_token(request.params['csrf_token'])
         end
       end
@@ -117,20 +115,13 @@ module Ramaze
       #
       # Note that this method will be automatically called if no CSRF token exists.
       #
-      # @author Yorick Peterse
-      # @param  [Hash] Additional arguments that can be set such as the TTL.
+      # @param [Hash] Additional arguments that can be set such as the TTL.
       #
       def generate_csrf_token(args = {})
-        # Default TTL is 15 minutes
-        ttl = args[:ttl] || (15 * 60)
-
-        # Get some good entropy
+        ttl    = args[:ttl] || (15 * 60)
         random = SecureRandom.random_bytes(512)
-        # and some not so good entropy
-        time = Time.now.to_f
-
-        # Hash it together
-        token = Digest::SHA512.hexdigest(random + time.to_s)
+        time   = Time.now.to_f
+        token  = Digest::SHA512.hexdigest(random + time.to_s)
 
         # Time to store all the data we want to check later.
         session[:_csrf] = {
@@ -142,14 +133,12 @@ module Ramaze
           :ttl   => ttl
         }
 
-        # Prevent this method from returning any value (it isn't needed anyway)
         return
       end
 
       ##
       # Retrieves the current value of the CSRF token.
       #
-      # @author Yorick Peterse
       # @return [String] The current CSRF token.
       # @example
       #  form(@data, :method => :post) do |f|
@@ -161,7 +150,6 @@ module Ramaze
           self.generate_csrf_token
         end
 
-        # Land ho!
         return session[:_csrf][:token]
       end
 
@@ -175,7 +163,6 @@ module Ramaze
       # If any of these checks fail this method will return FALSE. It's your
       # job to take action based on the results of this method.
       #
-      # @author Yorick Peterse
       # @param  [String] input_token The CSRF token to validate.
       # @return [TrueClass|FalseClass]
       # @example
@@ -194,12 +181,18 @@ module Ramaze
 
         _csrf = session[:_csrf]
 
-        # Mirror mirror on the wall, who's the most secure of them all?
-        session[:_csrf][:token] == input_token &&
+        valid = session[:_csrf][:token] == input_token &&
           (Time.now.to_f - _csrf[:time]) <= _csrf[:ttl] &&
           _csrf[:host]  == request.host &&
           _csrf[:ip]    == request.ip &&
           _csrf[:agent] == request.env['HTTP_USER_AGENT']
+
+        if valid
+          generate_csrf_token
+          return true
+        else
+          return false
+        end
       end
     end # CSRF
   end # Helper
