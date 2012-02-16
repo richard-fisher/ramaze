@@ -1,6 +1,6 @@
 module Ramaze
   module Helper
-
+    ##
     # This helper provides a convenience wrapper for handling authentication
     # and persistence of users.
     #
@@ -99,11 +99,10 @@ module Ramaze
       # Use this method in your application, but do not use it in conditionals
       # as it will never be nil or false.
       #
+      # @api    external
+      # @author manveru
       # @return [Ramaze::Helper::User::Wrapper] wrapped return value from
       #  model or callback
-      #
-      # @api external
-      # @author manveru
       #
       def user
         env = request.env
@@ -116,48 +115,59 @@ module Ramaze
       end
 
       ##
-      # shortcut for user._login but default argument are request.params
+      # Rhortcut for user._login but default the default argument is
+      # request.params.
       #
-      # @param [Hash] creds the credentials that will be passed to callback or
-      #  model
-      # @return [nil Hash] the given creds are returned on successful login
+      # This method returns the value value as
+      # {Ramaze::Helper::User::Wrapper#_login()}.
       #
-      # @api external
-      # @see Ramaze::Helper::User::Wrapper#_login
+      # @example
+      #  if user_login
+      #    respond 'You have been logged in', 200
+      #  else
+      #    respond 'You could not be logged in', 401
+      #  end
+      #
       # @author manveru
+      # @api    external
+      # @see    Ramaze::Helper::User::Wrapper#_login
+      # @param  [Hash] creds the credentials that will be passed to the callback
+      #  or model.
+      # @return [Ramaze::Helper::User::Wrapper]
       #
       def user_login(creds = request.params)
         user._login(creds)
       end
 
       ##
-      # shortcut for user._logout
+      # Shortcut for user._logout
       #
-      # @return [nil]
-      #
-      # @api external
-      # @see Ramaze::Helper::User::Wrapper#_logout
       # @author manveru
+      # @api    external
+      # @see    Ramaze::Helper::User::Wrapper#_logout
+      # @return [NilClass]
       #
       def user_logout
         user._logout
       end
 
       ##
-      # @return [true false] whether the user is logged in already.
+      # Checks if the user is logged in and returns true if this is the case and
+      # false otherwise.
       #
-      # @api external
-      # @see Ramaze::Helper::User::Wrapper#_logged_in?
       # @author manveru
+      # @api    external
+      # @see    Ramaze::Helper::User::Wrapper#_logged_in?
+      # @return [TrueClass|FalseClass] whether the user is logged in already.
       #
       def logged_in?
         user._logged_in?
       end
 
       ##
-      # Wrapper for the ever-present "user" in your application.
-      # It wraps around an arbitrary instance and worries about authentication
-      # and storing information about the user in the session.
+      # Wrapper for the ever-present "user" in your application. It wraps
+      # around an arbitrary instance and worries about authentication and
+      # storing information about the user in the session.
       #
       # In order to not interfere with the wrapped instance/model we start our
       # methods with an underscore.
@@ -174,12 +184,13 @@ module Ramaze
         end
 
         ##
-        # @param [Hash] creds this hash will be stored in the session on
+        # @author manveru
+        # @see    Ramaze::Helper::User#user_login
+        # @param  [Hash] creds this hash will be stored in the session on
         #  successful login
         # @return [Ramaze::Helper::User::Wrapper] wrapped return value from
         #  model or callback
-        # @see Ramaze::Helper::User#user_login
-        # @author manveru
+        #
         def _login(creds = nil)
           if creds
             if @_user = _would_login?(creds)
@@ -191,11 +202,13 @@ module Ramaze
           end
         end
 
+        ##
         # The callback should return an instance of the user, otherwise it
         # should answer with nil.
         #
         # This will not actually login, just check whether the credentials
         # would result in a user.
+        #
         def _would_login?(creds)
           return unless creds
 
@@ -204,23 +217,31 @@ module Ramaze
           elsif _model.respond_to?(:authenticate)
             _model.authenticate(creds)
           else
-            Log.warn("Helper::User has no callback and there is no %p::authenticate" % _model)
+            Log.warn(
+              "Helper::User has no callback and there is no %p::authenticate" \
+                % _model
+            )
+
             nil
           end
         end
 
-        # @api internal
-        # @see Ramaze::Helper::User#user_logout
+        ##
         # @author manveru
+        # @api    internal
+        # @see    Ramaze::Helper::User#user_logout
+        #
         def _logout
           (_persistence || {}).clear
           Current.request.env['ramaze.helper.user'] = nil
         end
 
-        # @return [true false] whether the current user is logged in.
-        # @api internal
-        # @see Ramaze::Helper::User#logged_in?
+        ##
         # @author manveru
+        # @api    internal
+        # @see    Ramaze::Helper::User#logged_in?
+        # @return [true false] whether the current user is logged in.
+        #
         def _logged_in?
           !!_user
         end
@@ -233,8 +254,10 @@ module Ramaze
           Current.session[:USER]
         end
 
+        ##
         # Refer everything not known
         # THINK: This might be quite confusing... should we raise instead?
+        #
         def method_missing(meth, *args, &block)
           return unless _user
           _user.send(meth, *args, &block)
