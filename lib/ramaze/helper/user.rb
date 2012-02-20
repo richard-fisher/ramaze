@@ -115,17 +115,23 @@ module Ramaze
       end
 
       ##
-      # This method is used to authenticate a user against the supplied credentials (which default to 'request.params').
+      # This method is used to authenticate a user against the supplied
+      # credentials (which default to ``request.params``).
       #
-      # This method is a proxy to  user._login which returns the value as returned by {Ramaze::Helper::User::Wrapper#_login()}.
+      # This method is a proxy to  user._login which returns the value as
+      # returned by ``Ramaze::Helper::User::Wrapper#_login``.
       #
-      # The supplied argument should be a hash with the user's credentials.
-      # The credentials hash may use any naming for the hash keys as long as they are consistent with the 
-      # model which authenticates them (through the 'authenticate(Hash)' method) such as:
-      # {"username" =>"name", "password" => "the_passwd"}
+      # The supplied argument should be a hash with the user's credentials.  The
+      # credentials hash may use any naming for the hash keys as long as they
+      # are consistent with the model which authenticates them (through the
+      # ``authenticate()`` method) such as:
       #
-      # On success it returns a hash of the credentials embedded within a hash whose only key is ':credentials'
-      # e.g., {:credentials=>{"username"=>"myuser", "password"=>"mypassword"}}
+      #     {"username" =>"name", "password" => "the_passwd"}
+      #
+      # On success it returns a hash of the credentials embedded within a hash
+      # whose only key is ':credentials' such as the following:
+      #
+      #     {:credentials=>{"username"=>"myuser", "password"=>"mypassword"}}
       #
       # On failure to authenticate this method returns nil.
       #
