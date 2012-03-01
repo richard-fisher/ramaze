@@ -32,7 +32,7 @@ be set as following:
 
 This particular example tells Ramaze to use Memcached for storing session
 related data. Where you set this doesn't really matter as long as it's done
-before calling {Ramaze.start}. Generally you'd want to put this in a
+before calling ``Ramaze.start``. Generally you'd want to put this in a
 configuration file that's loaded in your app.rb file, if your application is a
 small one you can just put it in the app.rb file directly.
 
