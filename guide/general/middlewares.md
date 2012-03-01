@@ -101,8 +101,8 @@ Assuming we're running in "dev" mode our call will look like the following:
     end
 
 Note that when you use Ramaze#middleware! you also replace the previously setup
-stack of middlewares. Therefore in order to add your new middleware on top of the
-existing ones you either have to read-in each one using
-Innate#MiddlewareCompiler#middlewares and re-add it to the newly created
+stack of middlewares. Therefore in order to add your new middleware on top of
+the existing ones you either have to read-in each one using
+``Innate#MiddlewareCompiler#middlewares`` and re-add it to the newly created
 middleware stack or simply copy (lets say in your app.rb) what has been setup
-inside {file:lib/ramaze.rb ramaze.rb}.
+inside ``lib/ramaze.rb``.
