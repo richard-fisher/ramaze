@@ -64,10 +64,21 @@ request][pull requests] page on Github.
 
 ## Writing Documentation
 
-The documentation (both the guides and the API documentation) use
+The documentation (both the guides and the API documentation) uses
 [Markdown][markdown] as its markup engine. All the text should be written in
 English. Try writing as clear as possible and remove as much spelling/grammar
 errors as you can find before submitting it to Ramaze.
+
+When writing guides (or modifying existing ones) make sure that each line is no
+longer than 80 characters and that there is no trailing whitespace in the file.
+If you're using Vim you can configure it to automatically insert
+characters/words on new lines using the following settings:
+
+    set nowrap
+    set tw=80
+
+Other editors will have different settings so refer to the documentation of your
+editor for more information.
 
 Linking to classes and methods can be done by wrapping the namespace/method in
 ``{}``:
@@ -79,10 +90,67 @@ instead:
 
     {file:path/to/file Title}
 
+<div class="note todo">
+    <p>
+        Keep in mind that the above syntax for linking to files does not work
+        for files located outside of the guide/ directory.
+    </p>
+</div>
+
 Markdown files should be lower cased, spaces should be replaced with
 underscores. Examples of this are ``ramaze_command.md`` and
 ``special_thanks.md``. Just like the Ruby code the text for the guide should be
 wrapped at 80 characters.
+
+### Testing Documentation
+
+After you've made some changes you'll have to test it. Building the
+documentation can be done in two different ways, either by building the Ramaze
+only documentation or the documentation of both Ramaze and Innate.
+
+Lets assume that you don't have a local copy of Ramaze' Git repository yet, you
+can add such a copy by running the following Git command:
+
+    $ git clone git://github.com/Ramaze/ramaze.git
+
+Once the cloning process has been completed you'll have to ``cd`` into the
+"ramaze" directory. If you happen to have RVM installed doing this will most
+likely trigger a warning about an untrusted .rvmrc file being detected. If you
+decide to trust this file RVM will load it and automatically install all the
+required gems (these can be found in the .gems file in the root directory of the
+repository).
+
+If you don't have RVM installed you'll have to install the dependencies of
+Ramaze yourself, but fear not for it is very easy and only requires you to run
+the following command:
+
+    $ rake setup
+
+Similar to using RVM this command installs all required gems with a small
+difference: it only installs what is supported by your platform. For example, on
+OS X the "localmemcache" gem is not installed since it doesn't support this
+operating system.
+
+Once installed you can build the documentaton using the command ``rake yard``.
+This command optionally takes a parameter that can be used to specify the path
+to the **lib** directory of Innate. When specifying this path Innate's
+documentation will be included as well (this is what we use for
+<http://ramaze.net/>).
+
+Of course for this to work you'll need to have a local copy of Innate as well.
+Assuming you're still in the "ramaze" directory you can get a local copy of
+Innate by running the following commands:
+
+    $ cd ..
+    $ git clone git://github.com/Ramaze/innate.git
+    $ cd ramaze
+
+Now run the ``rake yard`` task as following:
+
+    $ rake yard[../innate/lib]
+
+Once the documentation has been built (either by including or excluding Innate)
+you can simply point your browser to the "doc" directory to view it.
 
 ## Spreading The Word
 
