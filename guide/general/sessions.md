@@ -19,6 +19,36 @@ session until the client's session is destroyed (or the data is removed) it's
 best to use session, if you only want to store something until the client is
 redirected to another page (or just visits a page himself) you should use flash.
 
+## Changing Drivers
+
+Out of the box Ramaze uses the driver {Ramaze::Cache::LRU}. This driver
+stores all session related data in the memory of the current process. While this
+is fine during development it's something you most likely don't want to use in a
+multi process based environment as data stored in a process' memory isn't
+shared. To work around this you can use an alternative driver, such a driver can
+be set as following:
+
+    Ramaze::Cache.options.session = Ramaze::Cache::MemCache
+
+This particular example tells Ramaze to use Memcached for storing session
+related data. Where you set this doesn't really matter as long as it's done
+before calling {Ramaze.start}. Generally you'd want to put this in a
+configuration file that's loaded in your app.rb file, if your application is a
+small one you can just put it in the app.rb file directly.
+
+## Available Drivers
+
+* {Ramaze::Cache::Sequel}
+* {Ramaze::Cache::LRU}
+* {Ramaze::Cache::MemCache}
+* {Ramaze::Cache::Redis}
+* {Ramaze::Cache::LocalMemCache}
+* {Innate::Cache::FileBased}
+* {Innate::Cache::DRb}
+* {Innate::Cache::Marshal}
+* {Innate::Cache::Memory}
+* {Innate::Cache::YAML}
+
 ## The Session Object
 
 As mentioned earlier session is used for data that should be stored until the
@@ -61,7 +91,7 @@ has a few extra methods besides [] and []=. These methods are delete(), clear(),
 flush(), resid!() and sid(). We're not going to cover all methods but we will
 look at the delete() and resid() methods.
 
-## Session.delete
+### session.delete
 
 The method Session.delete can be used to remove a chunk of data from the
 client's session. In order to delete our amount of visits all we'd have to do
@@ -72,7 +102,7 @@ is the following:
 From this point on the "visits" key is set to nil until the user visits the
 index page again.
 
-## Session.resid!
+### session.resid!
 
 Session.resid! can be used to regenerate the client's session ID without
 destroying the session data. This method is extremely useful for authentication
@@ -83,16 +113,14 @@ following to be done:
 
     session.resid!
 
-## The Flash
+## Flashdata
 
-First of all, this has nothing to do with Adobe's Flash or
-[The Flash][the flash]. Flashdata is a form of session data that is removed as
-soon as the client requests a new resource. This means that if something is
-stored in the flash and the user is redirected the data will be automatically
-removed. One of the things the flash data can be used for is storing
-notifications that are displayed if a blog post has been saved successfully.
-Storing data in the flash works similar to storing data in the session and can
-be done by calling the flash object:
+Flashdata is a form of session data that is removed as soon as the client
+requests a new resource. This means that if something is stored in the flash and
+the user is redirected the data will be automatically removed. One of the things
+the flash data can be used for is storing notifications that are displayed if a
+blog post has been saved successfully.  Storing data in the flash works similar
+to storing data in the session and can be done by calling the flash object:
 
     flash[:message] = "Hello, Ramaze!"
 
@@ -137,5 +165,3 @@ displayed because the flash data isn't there yet. As soon as the client visits
 "Hello, Ramaze!" would be displayed. Refreshing the page would clear the flash
 data and the message would no longer be displayed until the client visits
 /set\_message again.
-
-[the flash]: http://en.wikipedia.org/wiki/The_Flash_(comic_book)
