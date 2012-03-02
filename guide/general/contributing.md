@@ -4,6 +4,10 @@ Everybody is welcome to contribute to Ramaze and/or the guide. This guide is
 meant to be a starting point for those interested in contributing code, writing
 documentation or advertising Ramaze.
 
+A small guide containing details about the general workflow of Github projects
+can be found [here][workflow]. If you're new to Github/Git it's recommended to
+read this guide (as well as the various Github help pages).
+
 ## Coding Standards
 
 * 2 spaces per indentation level for Ruby code.
@@ -174,3 +178,4 @@ file and a PNG of which both are displayed below.
 [cc license]: http://creativecommons.org/licenses/by-sa/3.0/
 [logo svg]: _static/logo.svg "The logo in SVG format"
 [logo png]: _static/logo.png "The logo in PNG format"
+[workflow]: https://github.com/thessaloniki/rb/wiki/Workflow
