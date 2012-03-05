@@ -37,12 +37,6 @@ Installing Ramaze is as easy as the following command:
 
 For more information see the chapter {file:installation Installation}.
 
-Ramaze is dual licensed under the GPL/Ruby license and is copyrighted 2009 -
-2011 by Michael Fellinger (m.fellinger@gmail.com). A copy of the Ruby license
-can be found in the file "guide/RUBY_LICENSE", a copy of the GPL license can be
-found in the file "guide/GPL_LICENSE". Both these files can be displayed by
-clicking the "Files" button at the top right.
-
 <div class="note todo">
     <p>
         <strong>Note:</strong> if you spot any mistakes made such as spelling
@@ -83,6 +77,14 @@ This starts a WEBRick server listening on localhost:7000.
 * A Ruby implementation based on Ruby 1.8 or newer (1.9.2, Rubinius, etc).
 * A Rack server such as Thin or Unicorn.
 * Basic knowledge of Ruby.
+
+## License
+
+Ramaze is licensed under the MIT license, a copy of this license can be found in
+``guide/LICENSE``. If you happen to view this README using YARD (this is what
+you see on <http://ramaze.net/documentation/index.html>) you can also view this
+license by clicking the "Files" button at the top right and then clicking on the
+"LICENSE" item.
 
 ## Community
 

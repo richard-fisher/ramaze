@@ -1,5 +1,5 @@
 #          Copyright (c) 2008 rob@rebeltechnologies.nl
-# All files in this distribution are subject to the terms of the Ruby license.
+# All files in this distribution are subject to the terms of the MIT license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
 
