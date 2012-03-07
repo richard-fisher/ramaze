@@ -13,7 +13,7 @@ module Ramaze
   # Array containing the names and versions of all the gems required by Ramaze
   # along with the name of how the gem should be required.
   DEPENDENCIES = [
-    {:name => 'innate', :version => ['>= 2011.12']}
+    {:name => 'innate', :version => ['>= 2012.03']}
   ]
 
   # Array containing all the development dependencies.
