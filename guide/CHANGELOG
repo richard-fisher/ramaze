@@ -1,3 +1,206 @@
+[aa5d48f | Mon Mar 05 19:08:01 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the list of authors and the changelog.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[8040c21 | Mon Mar 05 19:04:17 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Ramaze is now licensed under the MIT license.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[b1e5d5c | Fri Mar 02 15:21:37 UTC 2012] John Pagonis <john@pagonis.org>
+
+  * Explains how to reuse the existing middlewares stack with own middleware.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[556597f | Fri Mar 02 12:41:53 UTC 2012] John Pagonis <john@pagonis.org>
+
+  * Added a reference to the popular default Innate helpers to ramaze, to stop us wasting time looking for them.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[df6bd77 | Fri Mar 02 11:01:37 UTC 2012] Yorick Peterse <yorick@isset.nl>
+
+  * Added a general Git workflow link.
+
+    As suggested by @pagojo I've added a link to a guide that describes the various
+    steps of contributing to Github projects.
+    
+    Issue: #33
+    
+    Signed-off-by: Yorick Peterse <yorick@isset.nl>
+
+[5ecdb93 | Thu Mar 01 19:05:56 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Woops, YARD can't resolve to Ramaze.start.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[3f6168a | Thu Mar 01 18:58:17 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Expanded the sessions guide.
+
+    It now includes a list of the available drivers (copied from the caching guide)
+    as well as some instructions on how to change the adapter to use for session
+    data.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[7d5f8a0 | Thu Mar 01 18:48:42 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Describe how to write/test documentation.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[d8a3cc4 | Thu Mar 01 13:46:44 UTC 2012] Yorick Peterse <yorick@isset.nl>
+
+  * Small formatting changes for the middlewares guide
+
+    See #33
+    
+    Signed-off-by: Yorick Peterse <yorick@isset.nl>
+
+[346a202 | Thu Mar 01 13:45:02 UTC 2012] Yorick Peterse <yorick@isset.nl>
+
+  * Removed trailing whitespace.
+
+    See #33 for more information.
+    
+    Signed-off-by: Yorick Peterse <yorick@isset.nl>
+
+[e125277 | Thu Mar 01 12:17:21 UTC 2012] John Pagonis <john@pagonis.org>
+
+  * Clarified the middlewares documentation a bit.
+
+    Signed-off-by: Yorick Peterse <yorick@isset.nl>
+
+[5e9f80d | Wed Feb 29 20:12:54 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the list of authors.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[cd11c7f | Mon Feb 20 20:45:12 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed the formatting of the User helper docs.
+
+    See #32 for more information.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[e9225b4 | Fri Feb 17 13:31:21 UTC 2012] John Pagonis <john@pagonis.org>
+
+  * Corrected the user_login documentation.
+
+    Signed-off-by: Yorick Peterse <yorick@isset.nl>
+
+[846a4b3 | Thu Feb 16 19:22:14 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Improved the docs for the User helper a bit.
+
+    See #30 for more information.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[2475a04 | Sat Feb 04 13:04:04 UTC 2012] Michael Fellinger <m.fellinger@gmail.com>
+
+  * update travis config
+
+[4cfea2b | Wed Jan 25 14:35:19 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Re-generate CSRF tokens for valid requests.
+
+    Re-generating the CSRF tokens on each valid request fixes the annoying issue of
+    the tokens *always* expiring after 15 minutes. This is very annoying if you're
+    trying to edit some content and all of a sudden you're unable to submit a form
+    as the token has expired.
+    
+    See #27 for more information.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[2e98ff1 | Wed Jan 25 14:29:20 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed a few more useless comments.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[5cdc51c | Wed Jan 25 14:28:44 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * No need to brush my ego that much.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[b24669f | Wed Jan 25 14:26:27 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed some useless code.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[e435ceb | Wed Jan 25 14:10:21 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Use Ramaze.setup for the view adapters.
+
+    Using Ramaze.setup() for installing and loading the gems required for various
+    view adapters should make it easier for developers to get started as they no
+    longer have to deal with errors related to certain Gems not being installed.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[17c909e | Wed Jan 25 14:03:37 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Added a few specifications for Slim.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[969a02c | Wed Jan 25 13:42:20 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Docs for the Slim engine and cleaned it up a bit.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[023d6cd | Wed Jan 25 13:35:36 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed a tab.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[37f0f73 | Thu Jan 19 05:52:52 UTC 2012] Marc Weber <marco-oweber@gmx.de>
+
+  * adding support for slim template engine
+
+    thanks to yorickpeterse, manveru
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[561d528 | Tue Jan 17 18:23:19 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed a small statement bug in the blog example.
+
+    This bug would cause an exception to be raised whenever a user would try to log
+    in with invalid details. Thanks to MarcWeber for reporting the issue.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[e8b3786 | Tue Jan 17 17:14:52 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * No need to boost my ego that much.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[b33c13c | Tue Jan 17 17:04:10 UTC 2012] Michael Fellinger <m.fellinger@gmail.com>
+
+  * fix some wikore bugs
+
+[fb84aea | Wed Dec 28 17:29:21 UTC 2011] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Release 2011.12.28
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [4553e0b | Wed Dec 28 05:13:22 UTC 2011] Michael Fellinger <m.fellinger@gmail.com>
 
   * Wrap Rack::File so we can continue to use Rack::Cascade

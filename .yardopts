@@ -9,5 +9,6 @@
 --asset ./guide/css/common.css:css/common.css
 -
 ./guide/**/*.md
-./guide/GPL_LICENSE
-./guide/RUBY_LICENSE
+./guide/AUTHORS
+./guide/CHANGELOG
+./guide/LICENSE
