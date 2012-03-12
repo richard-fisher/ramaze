@@ -52,6 +52,35 @@ module Ramaze
       #
       #     Sequel.extension :pagination
       #
+      # Customizing the classes to use for the various HTML elements of the
+      # page list can be done by passing a key ``:css`` to the list of options.
+      # In this hash you can set the following keys:
+      #
+      # * first, defaults to "first"
+      # * prev, defaults to "prev"
+      # * next, defaults to "next"
+      # * last, defaults to "last"
+      # * current, defaults to "current"
+      # * number, empty by default
+      # * disabled, defaults to "grey"
+      #
+      # These options can also be specified globally in the trait ``:paginate``
+      # as following:
+      #
+      #     class Posts < Ramaze::Controller
+      #       map '/'
+      #
+      #       trait :paginate => {
+      #         :limit => 10,
+      #         :var   => 'page',
+      #         :css   => {
+      #           :first => 'first_item',
+      #           :prev  => 'prev_item',
+      #           # and so on.
+      #         }
+      #       }
+      #     end
+      #
       # @param [Sequel::Dataset|Array] dataset May be a Sequel dataset or an
       #  Array
       # @param [Hash] options A hash containing custom options that takes
@@ -64,6 +93,9 @@ module Ramaze
       # @option options [Fixnum] :page The page you are currently on, if not
       #  given it will be retrieved from current request variables. Defaults to
       #  1 if neither exists.
+      # @option options [Hash] :css A hash containing various options that can
+      #  be used to customize the HTML classes to use for the various page
+      #  links.
       #
       def paginate(dataset, options = {})
         options = ancestral_trait[:paginate].merge(options)
