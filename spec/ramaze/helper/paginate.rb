@@ -15,7 +15,7 @@ class SpecHelperPaginateArray < Ramaze::Controller
     pager = paginate(ALPHA)
     pager.navigation
   end
-  
+
   def custom_navigation
     css = {:first => "TheFirst", :prev => "ThePrevious", :next => "TheNext",
            :last => "TheLast", :number => "TheNumber",
@@ -80,7 +80,7 @@ describe Ramaze::Helper::Paginate do
     it 'sets default css elements on page 1' do
       doc = Hpricot(get('/array/navigation').body)
       # Paginator outputs spans for disabled elements
-      # Since we're on the first page, the first two 
+      # Since we're on the first page, the first two
       # elements are spans, then a's
       # Note that this is only valid for the first page since
       # it doens't need lonks to first and prev
@@ -92,7 +92,7 @@ describe Ramaze::Helper::Paginate do
 
       prev = spans[1][:class]
       prev.should == "prev grey"
-      
+
       # Looking for a elements
       as =  doc.search("//a")
       current = as.first[:class]
@@ -122,7 +122,7 @@ describe Ramaze::Helper::Paginate do
 
       prev = as[1][:class]
       prev.should == "prev"
-      
+
       pg1 = as[2][:class]
       pg1.should == ""
 
@@ -152,7 +152,7 @@ describe Ramaze::Helper::Paginate do
 
       prev = as[1][:class]
       prev.should == "prev"
-      
+
       pg1 = as[2][:class]
       pg1.should == ""
 
@@ -175,7 +175,7 @@ describe Ramaze::Helper::Paginate do
     it 'sets our custom css elements for page 1' do
       doc = Hpricot(get('/array/custom_navigation').body)
       # Paginator outputs spans for disabled elements
-      # Since we're on the first page, the first two 
+      # Since we're on the first page, the first two
       # elements are spans, then a's
       # Note that this is only valid for the first page since
       # it doens't need lonks to first and prev
@@ -191,7 +191,7 @@ describe Ramaze::Helper::Paginate do
       prev.should.include? "Severely"
       prev.should.include? "Disabled"
       prev.should.include? "ThePrevious"
-      
+
       # Looking for a elements
       as =  doc.search("//a")
       current = as.first[:class]
@@ -222,7 +222,7 @@ describe Ramaze::Helper::Paginate do
 
       prev = as[1][:class]
       prev.should == "ThePrevious"
-      
+
       pg1 = as[2][:class]
       pg1.should == "TheNumber"
 
@@ -252,7 +252,7 @@ describe Ramaze::Helper::Paginate do
 
       prev = as[1][:class]
       prev.should == "ThePrevious"
-      
+
       pg1 = as[2][:class]
       pg1.should == "TheNumber"
 

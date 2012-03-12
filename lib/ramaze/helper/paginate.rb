@@ -14,7 +14,7 @@ module Ramaze
       trait :paginate => {
         :limit => 10,
         :var   => 'pager',
-        :css   => { 
+        :css   => {
             :first    => 'first',
             :prev     => 'prev',
             :next     => 'next',
@@ -49,7 +49,6 @@ module Ramaze
       #     @pager.each{|e| puts(e)
       #
       # Note that you must first extend Sequel with the pagination extension"
-      #
       #
       #     Sequel.extension :pagination
       #
@@ -90,7 +89,7 @@ module Ramaze
           @page = @page > page_count ? page_count : @page
           @pager = pager_for(data)
         end
-        
+
         ##
         # Returns String with navigation div.
         #
@@ -137,7 +136,7 @@ module Ramaze
               link(g, n, n, :class => @css[:number])
             end
 
-            link(g, current_page, current_page, 
+            link(g, current_page, current_page,
               :class => "#{@css[:current]} #{@css[:number]}" )
 
             if last_page?
