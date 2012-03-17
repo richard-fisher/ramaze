@@ -10,7 +10,7 @@ give you the ultimate tools, but you have to use them yourself to achieve
 perfect custom-tailored results.
 
 Another one of the goals during development of Ramaze was to make every part as
-modular and therefor reusable as possible, not only to provide a basic
+modular and therefore reusable as possible, not only to provide a basic
 understanding after the first glance, but also to make it as simple as possible
 to reuse parts of the code.
 
