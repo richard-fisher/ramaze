@@ -25,7 +25,7 @@ in their own way rather than being forced to work in a way that the framework
 importantly: it puts you back in control of your code. An example of this is the
 default file structure of new Ramaze projects.  Out of the box a new project
 uses the MVC pattern. The cool thing about Ramaze however is that you're not
-forced to use this pattern. If you prever HMVC, PAC or something else you can
+forced to use this pattern. If you prefer HMVC, PAC or something else you can
 simply apply it. Another example is the use of a database toolkit. Ramaze does
 not ship with one for a very simple reason: nobody likes the same toolkit. Some
 people prefer Sequel, others use Datamapper. With Ramaze you can use any tool
