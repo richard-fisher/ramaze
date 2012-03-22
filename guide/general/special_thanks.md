@@ -65,3 +65,4 @@ I would like to thank:
 I'd also like to thank the following people for contributing to the guide:
 
 * [Stas Sușcov](https://github.com/stas)
+* [John Pagonis](https://github.com/pagojo)
