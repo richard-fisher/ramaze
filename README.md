@@ -118,7 +118,7 @@ directory.
 * {file:general/sessions Sessions}
 * {file:general/cache Caching Data}
 * {file:general/logging Logging Information}
-* {file:general/testing Testing with Ramaze}
+* {file:general/testing Testing Ramaze}
 
 ## Tutorials
 
