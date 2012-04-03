@@ -1,6 +1,6 @@
 # .gems generated gem export file. Note that any env variable settings will be missing. Append these after using a ';' field separator
 bacon -v1.1.0
-dalli -v1.1.5
+dalli -v2.0.2
 erector -v0.8.3
 erubis -v2.7.0
 ezamar -v2009.06
@@ -22,8 +22,8 @@ rdiscount -v1.6.8
 redis -v2.2.2
 Remarkably -v0.6.1
 sass -v3.1.15
-sequel -v3.33.0
-slim -v1.1.1
+sequel -v3.34.1
+slim -v1.2.0
 slippers -v0.0.14
 sqlite3 -v1.3.5
 syntax -v1.0.0
