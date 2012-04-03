@@ -1,5 +1,5 @@
 Ramaze.setup(:verbose => false) do
-  gem 'dalli'
+  gem 'dalli', ['>= 2.0.2']
 end
 
 # Kgio gives a nice performance boost but it isn't required
@@ -62,7 +62,7 @@ module Ramaze
         :expires_in => 604800,
 
         # Compresses everything with Gzip if it's over 1K
-        :compression => true,
+        :compress => true,
 
         # Array containing all default Memcache servers
         :servers => ['localhost:11211']
