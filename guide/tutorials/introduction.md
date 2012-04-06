@@ -6,7 +6,7 @@ a bit of an understanding what Ramaze really is and what it does. It's required
 that you've read the following chapters before reading this tutorial (or any of
 the other tutorials):
 
-* {file:README READE}
+* {file:README README}
 * {file:general/installation Installation}
 
 In this tutorial we'll cover te following:
@@ -31,7 +31,7 @@ we'll use the last approach as it teaches more about what each file does. If
 you're interested in learning more about the executable read the chapter
 {file:general/ramaze_command Ramaze Command}.
 
-The first step is to create our project directory, let's call it "tutorial"::
+The first step is to create our project directory, let's call it "tutorial":
 
     $ mkdir tutorial
     $ cd tutorial
