@@ -141,10 +141,10 @@ module Ramaze
       def cache_fetch(key, default = nil)
         value = @client.get(key)
 
-        if value
-          return ::Marshal.load(value)
+        if value.nil?
+          default
         else
-          return default
+          ::Marshal.load(value)
         end
       end
 
