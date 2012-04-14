@@ -125,7 +125,7 @@ module Ramaze
       # @param  [Array] *keys An array of key names to remove.
       #
       def cache_delete(*keys)
-        @client.del(*keys)
+        @client.del(*keys.map{|key| namespaced_key(key) })
       end
 
       ##
@@ -139,7 +139,7 @@ module Ramaze
       #
       def cache_fetch(key, default = nil)
         value = @client.get(namespaced_key(key))
-        value.nil? ? default : Marshal.load(value)
+        value.nil? ? default : ::Marshal.load(value)
       end
 
       ##
@@ -155,7 +155,7 @@ module Ramaze
       def cache_store(key, value, ttl = nil, options = {})
         ttl = options[:ttl] || @options[:expires_in]
 
-        @client.setex(namespaced_key(key), ttl, Marshal.dump(value))
+        @client.setex(namespaced_key(key), ttl, ::Marshal.dump(value))
 
         return value
       end
