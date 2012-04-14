@@ -1,6 +1,3 @@
-#          Copyright (c) 2011 Michael Fellinger m.fellinger@gmail.com
-# All files in this distribution are subject to the terms of the MIT license.
-
 require File.expand_path('../../../../spec/helper', __FILE__)
 spec_require 'redis'
 
@@ -41,7 +38,7 @@ describe Ramaze::Cache::Redis do
   should 'store with ttl' do
     cache.store(:hello, @hello, :ttl => 0.2)
     cache.fetch(:hello).should == @hello
-    sleep 0.3
+    sleep 0.2
     cache.fetch(:hello).should == nil
   end
 
@@ -59,4 +56,3 @@ describe Ramaze::Cache::Redis do
     klass.new.options[:answer].should == 42
   end
 end
-
