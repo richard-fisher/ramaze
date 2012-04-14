@@ -1,13 +1,5 @@
-#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
-# All files in this distribution are subject to the terms of the MIT license.
-
 require File.expand_path('../../../../spec/helper', __FILE__)
-require 'dalli'
-
-spec_precondition 'memcached is running' do
-  cache = Dalli::Client.new('localhost:11211')
-  cache.set('active', true)
-end
+spec_require 'sequel'
 
 class SpecSession < Ramaze::Controller
   map '/'
@@ -38,9 +30,9 @@ class SpecSession < Ramaze::Controller
   end
 end
 
-Ramaze::Cache.options.session = Ramaze::Cache::MemCache
+Ramaze::Cache.options.session = Ramaze::Cache::LocalMemCache
 
-describe 'Sessions with Ramaze::Cache::MemCache' do
+describe 'Sessions with Ramaze::Cache::LocalMemCache' do
   behaves_like :rack_test
 
   should 'initiate session as needed' do

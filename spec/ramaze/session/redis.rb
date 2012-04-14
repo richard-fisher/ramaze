@@ -6,7 +6,7 @@ spec_precondition 'Redis is running' do
   cache['active'] = true
 end
 
-class SpecRedisSession < Ramaze::Controller
+class SpecSession < Ramaze::Controller
   map '/'
   engine :None
 
@@ -37,7 +37,7 @@ end
 
 Ramaze::Cache.options.session = Ramaze::Cache::Redis
 
-describe Innate::Session do
+describe 'Sessions with Ramaze::Cache::Redis' do
   behaves_like :rack_test
 
   should 'initiate session as needed' do
