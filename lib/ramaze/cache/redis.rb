@@ -140,7 +140,12 @@ module Ramaze
       #
       def cache_fetch(key, default = nil)
         value = @client.get(key)
-        value.nil? ? default : value
+
+        if value
+          return ::Marshal.load(value)
+        else
+          return default
+        end
       end
 
       ##
@@ -155,7 +160,8 @@ module Ramaze
       #
       def cache_store(key, value, ttl = nil, options = {})
         ttl = options[:ttl] || @options[:expires_in]
-        @client.setex(key, ttl, value)
+
+        @client.setex(key, ttl, ::Marshal.dump(value))
 
         return value
       end
