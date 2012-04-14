@@ -81,9 +81,8 @@ module Ramaze
       #  information.
       #
       def initialize(options = {})
-        self.class.options ||= Ramaze::Cache::Redis.trait[:default].merge(
-          options
-        )
+        self.class.options ||=
+          Ramaze::Cache::Redis.trait[:default].merge(options)
 
         @options = options.merge(self.class.options)
       end
@@ -103,8 +102,8 @@ module Ramaze
       #
       def cache_setup(hostname, username, appname, cachename)
         options[:namespace] = [
-          hostname, username, appname, cachename
-        ].compact.join('-')
+          'ramaze', hostname, username, appname, cachename
+        ].compact.join(':')
 
         @client = ::Redis.new(options)
       end
@@ -139,13 +138,8 @@ module Ramaze
       # @return [Mixed]
       #
       def cache_fetch(key, default = nil)
-        value = @client.get(key)
-
-        if value.nil?
-          default
-        else
-          ::Marshal.load(value)
-        end
+        value = @client.get(namespaced_key(key))
+        value.nil? ? default : Marshal.load(value)
       end
 
       ##
@@ -161,9 +155,13 @@ module Ramaze
       def cache_store(key, value, ttl = nil, options = {})
         ttl = options[:ttl] || @options[:expires_in]
 
-        @client.setex(key, ttl, ::Marshal.dump(value))
+        @client.setex(namespaced_key(key), ttl, Marshal.dump(value))
 
         return value
+      end
+
+      def namespaced_key(key)
+        [options[:namespace], key].join(':')
       end
     end # Redis
   end # Cache
