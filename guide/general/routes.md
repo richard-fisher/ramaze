@@ -1,3 +1,4 @@
+# @title Routes
 # Routes
 
 While in many cases the default route system that comes with Ramaze is good

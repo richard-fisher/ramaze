@@ -1,3 +1,4 @@
+# @title Rack Middlewares
 # Rack Middlewares
 
 Ramaze is a Rack based framework and thus allows you to create so called Rack
@@ -112,8 +113,8 @@ inside ``lib/ramaze.rb``.
   	  current_mw.each do |mw|
 	    mode.use(mw[0],*mw[1], &mw[2]) # middleware, args, block
 	  end
-	
+
 	  mode.use(Banlist)
 	  mode.run(Ramaze::AppMap)
 	end
-	
+

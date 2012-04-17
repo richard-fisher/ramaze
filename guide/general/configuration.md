@@ -1,3 +1,4 @@
+# @title Configuration
 # Configuration
 
 Ramaze provides two ways of setting configuration options, using

@@ -1,3 +1,4 @@
+# @title Logging
 # Logging
 
 Similar to the caching system Ramaze makes it easy to log information using a

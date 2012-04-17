@@ -1,3 +1,4 @@
+# @title Helpers
 # Helpers
 
 Helpers are simple modules that can be used in controllers to prevent developers
@@ -77,14 +78,14 @@ load all helpers the Ramaze way.
 
 ## Innate Helpers
 
-Note that you may also find some popular helpers, that are used by default in 
+Note that you may also find some popular helpers, that are used by default in
 Ramaze, under the Innate project.
 
 * {Innate::Helper::Aspect}: provides before/after wrappers for actions.
 * {Innate::Helper::CGI}: gives shortcuts to some CGI methods.
-* {Innate::Helper::Flash}: gives simple access to session.flash. 
+* {Innate::Helper::Flash}: gives simple access to session.flash.
 * {Innate::Helper::Link}: provides the path to a given Node and action.
-* {Innate::Helper::Redirect}: provides the request redirect, raw_redirect 
-and respond convenience methods. 
-* {Innate::Helper::Render}: provides variants for partial, custom, full 
+* {Innate::Helper::Redirect}: provides the request redirect, raw_redirect
+and respond convenience methods.
+* {Innate::Helper::Render}: provides variants for partial, custom, full
 view rendering.

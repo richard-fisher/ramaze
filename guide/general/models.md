@@ -1,3 +1,4 @@
+# @title Models
 # Models
 
 Unlike other frameworks Ramaze does not ship with a database toolkit. One of the

@@ -1,4 +1,5 @@
-## Ramaze Command
+# @title Ramaze Command
+# Ramaze Command
 
 Ramaze ships with a relatively simple command, named "ramaze". This command can
 be used to create new applications as well as starting them. To make reading

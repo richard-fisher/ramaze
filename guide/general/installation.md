@@ -1,3 +1,4 @@
+# @title Installation
 # Installation
 
 Ramaze can be installed by using [Rubygems][rubygems], direct download or by

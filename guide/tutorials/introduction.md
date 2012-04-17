@@ -1,3 +1,4 @@
+# @title Introduction Tutorial
 # Introduction Tutorial
 
 This tutorial focuses on teaching the basics of Ramaze. Before reading this
@@ -85,7 +86,7 @@ method provided by Ramaze that basically does the same as the following:
     File.expand_path("../#{some_path}", __FILE__)
 
 Whenever you want to load something relative to a file it's best to use
-__DIR__ (or require_relative if you're on 1.9).
+__DIR__ (or `require_relative` if you're on 1.9).
 
 Right, time to create the controller we just loaded (don't actually start the
 application, it will trigger an error!)::

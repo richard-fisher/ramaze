@@ -1,3 +1,4 @@
+# @title Views
 # Views
 
 Views are the last step in the process of a request to a MVC framework such as
@@ -62,10 +63,10 @@ The first way is passing a block to the layout() method:
       end
     end
 
-In this example two layouts are used, "index_layout" for the index() method and
-"alternative_layout" for all other methods.
+In this example two layouts are used, `index_layout` for the index() method and
+`alternative_layout` for all other methods.
 
-The second way is using the method "set_layout". This method works almost
+The second way is using the method `set_layout`. This method works almost
 identical to layout() but has one big advantage: it can set method specific
 layouts. Changing the code posted above so that it uses this method would look
 like the following:
@@ -78,7 +79,7 @@ like the following:
       set_layout 'index_layout' => [:index]
     end
 
-The set_layout method takes a hash where the keys are the names of the layouts
+The `set_layout` method takes a hash where the keys are the names of the layouts
 to use and the values the methods for which to use each layout. Below is another
 example that specifies a few extra layout/method combinations.
 
@@ -122,18 +123,18 @@ because Ramaze will use the return value of a controller method as the body for
 the response that will be sent back to the visitor.
 
 Let's take a look at the other() method in our controller. As you can see it
-calls a method "render_view". This method is used to render a different view
+calls a method `render_view`. This method is used to render a different view
 (in this case foobar.xhtml) but without calling it's action, once this is done
 the contents of the view will be returned to the controller. When calling custom
 views you can use any of the following methods:
 
-* render_view
-* render_partial
-* render_file
-* render_custom
-* render_full
+* render\_view
+* render\_partial
+* render\_file
+* render\_custom
+* render\_full
 
-### render_view
+### render\_view
 
 As mentioned earlier this method is used to render a view without calling it's
 action. This can be useful if you have several methods that share the same view
@@ -148,13 +149,13 @@ variables to send to the view (more on this later).
     # Render "foo.xhtml" and send some extra data to it
     render_view :foo, :name => "Ramaze"
 
-### render_partial
+### render\_partial
 
-The render_partial method works very similar to the render_view method, the
-difference is that the render_partial method will not render a layout while
-render_view will. This makes the render_partial method useful for responses to
-Ajax calls that don't need (or don't want to) load both the view and the layout.
-This method has the same arguments as the render_view method.
+The `render_partial` method works very similar to the `render_view` method, the
+difference is that the `render_partial` method will not render a layout while
+`render_view` will. This makes the `render_partial` method useful for responses
+to Ajax calls that don't need (or don't want to) load both the view and the
+layout. This method has the same arguments as the `render_view` method.
 
     # Render the view "partial.xhtml"
     render_partial :partial
@@ -162,10 +163,10 @@ This method has the same arguments as the render_view method.
     # Render the partial "partial.xhtml" and send some extra data to it
     render_partial :partial, :name => "Ramaze"
 
-### render_file
+### render\_file
 
 There comes a time when you may want to render a file that's located somewhere
-else. For this there is the render_file() method. This method takes a path,
+else. For this there is the `render_file()`` method. This method takes a path,
 either relative or absolute to a file that should be rendered. This can be
 useful if you have a cache  directory located outside of your project directory
 and you want to load a view from it.
@@ -187,7 +188,7 @@ action.
       action.layout = nil
     end
 
-### render_custom
+### render\_custom
 
 The render_custom() method can be used to create your personal render method and
 is actually used by methods such as the render_partial method. The syntax is the
@@ -202,7 +203,7 @@ argument should be the name of the action to render.
       action.method = nil
     end
 
-### render_full
+### render\_full
 
 Last but not least there's the render_full() method. This is the method Ramaze
 uses for calling a controller along with it's views and such. This method takes

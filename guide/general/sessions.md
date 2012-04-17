@@ -1,3 +1,4 @@
+# @title Sessions
 # Sessions
 
 The term sessions is used for data associated to a specific client. The easiest
@@ -61,7 +62,7 @@ simple and works a bit like you're storing data in a hash:
     session[:logged_in] = true
 
 In the above example we stored a boolean with a value of "true" in the current
-client's session under the name ":logged_in". If we want to retrieve this data
+client's session under the name `:logged_in`. If we want to retrieve this data
 somewhere else in the application all we'd have to do is the following:
 
     session[:logged_in] # => true
@@ -161,7 +162,7 @@ application:
 
 If a client were to visit the index method for the first time nothing would be
 displayed because the flash data isn't there yet. As soon as the client visits
-/set_message he would be redirected back to the index method and the message
+`/set_message` he would be redirected back to the index method and the message
 "Hello, Ramaze!" would be displayed. Refreshing the page would clear the flash
 data and the message would no longer be displayed until the client visits
 /set\_message again.
