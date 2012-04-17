@@ -33,7 +33,7 @@ Let's walk through this snippet step by step. The first line declares a new
 class that extends {Ramaze::Controller}. Extending this base class is very
 important, without it we won't be able to call controller specific methods such
 as the `map()` method. This method, which is called on line 2, is used to instruct
-Ramaze what controller is bound to what URI(Uniform Resource Identifier). The
+Ramaze what controller is bound to what URI (Uniform Resource Identifier). The
 argument of this method should be a string starting with a /. The reason for
 this is that the URIs are relative to URL the application is running on. For
 example, if our application was running at ramaze.net a URI of "/blog" would
