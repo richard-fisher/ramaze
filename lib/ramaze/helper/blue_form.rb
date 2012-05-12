@@ -33,7 +33,7 @@ module Ramaze
     # The form helper uses Gestalt, Ramaze's custom HTML builder that works
     # somewhat like Erector. The output is very minimalistic, elements such as
     # legends and fieldsets have to be added manually. Each combination of a
-    # label and input element will be wrapped in <p> tags.
+    # label and input element will be wrapped in &lt;p&gt; tags.
     #
     # When using the form helper as a block in your templates it's important to
     # remember that the result is returned and not displayed in the browser
