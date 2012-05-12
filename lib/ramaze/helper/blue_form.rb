@@ -32,8 +32,21 @@ module Ramaze
     #
     # The form helper uses Gestalt, Ramaze's custom HTML builder that works
     # somewhat like Erector. The output is very minimalistic, elements such as
-    # legends and fieldsets have to be added manually. Each combination of a
-    # label and input element will be wrapped in `<p>` tags.
+    # legends and fieldsets have to be added manually.
+    #
+    # If you need to add elements not covered by Form methods (e.g. `<div>`
+    # tags)
+    # You can access the form Gestalt instance with the g() method and generate
+    # your tags like this :
+    #
+    #     form_for(@result, :method => :post) do |f|
+    #       f.g.div(:class => "awesome") do
+    #         ...
+    #       end
+    #     end
+    #
+    # Each combination of a label and input element will be wrapped in
+    # `<p>` tags.
     #
     # When using the form helper as a block in your templates it's important to
     # remember that the result is returned and not displayed in the browser
@@ -47,6 +60,16 @@ module Ramaze
     # @example Creating a basic form
     #  form_for(@data, :method => :post) do |f|
     #    f.input_text 'Username', :username
+    #  end
+    #
+    # @example Adding custom elements inside a form
+    #  form_for(@result, :method => :post) do |f|
+    #    f.fieldset do
+    #      f.g.div(:class => "control-group") do
+    #        f.input_text 'Text label', :textname, { :placeholder => 'Chunky bacon!',
+    #                                                :class       => :bigsize }
+    #      end
+    #    end
     #  end
     #
     module BlueForm
