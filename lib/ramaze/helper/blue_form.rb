@@ -25,6 +25,11 @@ module Ramaze
     #       f.input_text 'Username', :username
     #     end
     #
+    # The object comes handy when you want to do server-side form validation:
+    # if the form can not be validated, just send back the object with keys
+    # containing what the user has filled. The fields will be populated with
+    # these values, so the user doesn't have to retype everything.
+    #
     # If you don't want to use an object you can simply set the first parameter
     # to nil.
     #
@@ -35,9 +40,8 @@ module Ramaze
     # legends and fieldsets have to be added manually.
     #
     # If you need to add elements not covered by Form methods (e.g. `<div>`
-    # tags)
-    # You can access the form Gestalt instance with the g() method and generate
-    # your tags like this :
+    # tags), you can access the form Gestalt instance with the g() method and
+    # generate your tags like this :
     #
     #     form_for(@result, :method => :post) do |f|
     #       f.g.div(:class => "awesome") do
