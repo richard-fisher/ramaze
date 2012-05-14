@@ -14,6 +14,27 @@ module Ramaze
     autoload :Redis,         'ramaze/cache/redis'
 
     ##
+    # Overwrites {Innate::Cache#initialize} to make cache classes application
+    # aware. This prevents different applications running on the same host and
+    # user from overwriting eachothers data.
+    #
+    # @since 14-05-2012
+    # @see   Innate::Cache#initialize
+    #
+    def initialize(name, klass = nil)
+      @name      = name.to_s.dup.freeze
+      klass    ||= options[@name.to_sym]
+      @instance  = klass.new
+
+      @instance.cache_setup(
+        ENV['HOSTNAME'],
+        ENV['USER'],
+        Ramaze.options.app.name.to_s,
+        @name
+      )
+    end
+
+    ##
     # Clears the cache after a file has been reloaded.
     #
     # @author Michael Fellinger
