@@ -151,11 +151,15 @@ variables to send to the view (more on this later).
 
 ### render\_partial
 
-The `render_partial` method works very similar to the `render_view` method, the
-difference is that the `render_partial` method will not render a layout while
-`render_view` will. This makes the `render_partial` method useful for responses
-to Ajax calls that don't need (or don't want to) load both the view and the
-layout. This method has the same arguments as the `render_view` method.
+The `render_partial` method works similar to the `render_view` method but with
+two differences:
+
+1. This method *does* execute a matching action.
+2. This method *does not* render a layout.
+
+This makes the `render_partial` method useful for responses to Ajax calls that
+don't need (or don't want to) load both the view and the layout. This method has
+the same arguments as the `render_view` method.
 
     # Render the view "partial.xhtml"
     render_partial :partial
