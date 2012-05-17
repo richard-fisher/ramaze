@@ -44,6 +44,10 @@ describe 'Controller::generate_mapping' do
     gen('Controller').should == nil
   end
 
+  it "doesn't map Module::Controller" do
+    gen('Module::Controller').should == nil
+  end
+
   it "doesn't map anonymous classes" do
     gen(Class.new.name).should == nil
   end
