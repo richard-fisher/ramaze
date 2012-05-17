@@ -20,6 +20,10 @@ describe 'Controller::generate_mapping' do
     gen('Module::ClassController').should == '/module/class'
   end
 
+  it 'maps Module::MainController to /module' do
+    gen('Module::MainController').should == '/module'
+  end
+
   it 'maps Class to /class' do
     gen('Class').should == '/class'
   end
