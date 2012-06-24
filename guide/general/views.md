@@ -91,6 +91,14 @@ example that specifies a few extra layout/method combinations.
       set_layout 'main' => [:index, :edit], 'extra' => [:add, :synchronize]
     end
 
+<div class="note todo">
+    <p>
+        <strong>Note:</strong> layouts should be set <strong>outside</strong>
+        controller actions. Doing so can lead to unexpected behaviour as the
+        layout won't be visible until the next request.
+    </p>
+</div>
+
 ## Loading Views
 
 Loading views can be done in two different ways. When not explicitly calling a
