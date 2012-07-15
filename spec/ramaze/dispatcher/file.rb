@@ -10,7 +10,8 @@ spec_require 'rack/contrib'
 
 # minimal middleware, no exception handling
 Ramaze.middleware(:spec) do |m|
-  m.apps Rack::ConditionalGet, Rack::ETag
+  m.use Rack::ConditionalGet
+  m.use Rack::ETag
   m.run Ramaze::AppMap
 end
 
