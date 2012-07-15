@@ -8,7 +8,10 @@ spec_require 'hpricot'
 module Ramaze
   # minimal middleware, no exception handling
   middleware(:spec){|m|
-    m.run m.directory(__DIR__('public'))
+    m.run Rack::ETag.new(
+      Rack::ConditionalGet.new(Rack::Directory.new(__DIR__('public'))),
+      'public'
+    )
   }
 end
 
