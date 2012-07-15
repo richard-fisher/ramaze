@@ -37,7 +37,6 @@ module Ramaze
   require 'ramaze/setup'
   require 'ramaze/app'
   require 'ramaze/files'
-  require 'ramaze/middleware_compiler'
   require 'ramaze/plugin'
   require 'ramaze/request'
   require 'ramaze/current'
@@ -57,9 +56,21 @@ module Ramaze
 
   extend Innate::SingletonMethods
 
-  options[:middleware_compiler] = Ramaze::MiddlewareCompiler
+  ##
+  # Sets up the Rack middlewares to use for the specified mode.
+  #
+  # @since 2012-07-15
+  # @param [#to_sym] mode The mode for which to use the middlewares.
+  # @param [Proc] block A proc that is evaluated in the context of a new
+  #  `Rack::Builder` instance.
+  #
+  def self.middleware(mode, &block)
+    return if options.mode != mode.to_sym
 
-  middleware! :dev do |m|
+    @middleware = Rack::Builder.new(&block)
+  end
+
+  middleware :dev do |m|
     m.use Rack::Lint
     m.use Rack::CommonLogger, Ramaze::Log
     m.use Rack::ShowExceptions
@@ -79,7 +90,7 @@ module Ramaze
     m.run Ramaze::AppMap
   end
 
-  middleware! :live do |m|
+  middleware :live do |m|
     m.use Rack::CommonLogger, Ramaze::Log
     m.use Rack::RouteExceptions
     m.use Rack::ShowStatus

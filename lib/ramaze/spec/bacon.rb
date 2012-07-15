@@ -26,7 +26,7 @@ rescue Exception => ex
 end
 
 # minimal middleware, no exception handling
-Ramaze.middleware!(:spec) do |m|
+Ramaze.middleware(:spec) do |m|
   m.run(Ramaze::AppMap)
 end
 
@@ -34,7 +34,7 @@ shared :rack_test do
   Ramaze.setup_dependencies
   extend Rack::Test::Methods
 
-  def app; Ramaze.middleware; end
+  def app; Ramaze; end
 end
 
 shared :webrat do
