@@ -17,7 +17,7 @@ Ramaze::App[:core].options.publics = 'files/public_1'
 Ramaze::App[:other].location = '/other'
 Ramaze::App[:other].options.publics = 'files/public_2'
 
-Ramaze.middleware!(:spec){|m| m.run(Ramaze::AppMap) }
+Ramaze.middleware(:spec){|m| m.run(Ramaze::AppMap) }
 
 describe Ramaze::Files do
   behaves_like :rack_test

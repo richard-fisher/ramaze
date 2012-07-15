@@ -9,7 +9,7 @@ require File.expand_path('../../../../spec/helper', __FILE__)
 spec_require 'rack/contrib'
 
 # minimal middleware, no exception handling
-Ramaze.middleware!(:spec) do |m|
+Ramaze.middleware(:spec) do |m|
   m.apps Rack::ConditionalGet, Rack::ETag
   m.run Ramaze::AppMap
 end
