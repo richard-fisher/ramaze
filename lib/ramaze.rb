@@ -77,16 +77,10 @@ module Ramaze
     m.use Rack::ShowStatus
     m.use Rack::RouteExceptions
     m.use Rack::ConditionalGet
-
-    # FIXME: This works around differences between Rack 1.2.1 and the git HEAD
-    if Rack::ETag.instance_method(:initialize).arity == 1
-      m.use Rack::ETag
-    else
-      m.use Rack::ETag, 'public'
-    end
-
+    m.use Rack::ETag, 'public'
     m.use Rack::Head
     m.use Ramaze::Reloader
+
     m.run Ramaze::AppMap
   end
 
@@ -95,15 +89,9 @@ module Ramaze
     m.use Rack::RouteExceptions
     m.use Rack::ShowStatus
     m.use Rack::ConditionalGet
-
-    # FIXME: This works around differences between Rack 1.2.1 and the git HEAD
-    if Rack::ETag.instance_method(:initialize).arity == 1
-      m.use Rack::ETag
-    else
-      m.use Rack::ETag, 'public'
-    end
-
+    m.use Rack::ETag, 'public'
     m.use Rack::Head
+
     m.run Ramaze::AppMap
   end
 end
