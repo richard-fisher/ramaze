@@ -52,8 +52,8 @@ module Ramaze
     # @since  14-03-2009
     #
     def sync
-      file_apps = @roots.map{|root| RackFileWrapper.new(root) }
-      @cascade = Rack::Cascade.new(file_apps)
+      file_apps = @roots.map { |root| Rack::File.new(root) }
+      @cascade  = Rack::Cascade.new(file_apps)
     end
   end # Files
 end # Ramaze
