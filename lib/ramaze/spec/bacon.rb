@@ -1,11 +1,14 @@
-begin
-  require 'bacon'
-rescue LoadError
-  require 'rubygems'
-  require 'bacon'
-end
+require 'bacon'
 
 require File.expand_path('../../../ramaze', __FILE__)
+
+# minimal middleware, no exception handling
+def Ramaze.middleware_spec
+  Rack::Builder.new do
+    run Ramaze::AppMap
+  end
+end
+
 require 'innate/spec/bacon'
 
 def spec_requires(*libs)
@@ -25,12 +28,8 @@ rescue Exception => ex
   exit 0
 end
 
-# minimal middleware, no exception handling
-Ramaze.middleware(:spec) do |m|
-  m.run(Ramaze::AppMap)
-end
-
 shared :rack_test do
+  Ramaze.options.mode = :spec
   Ramaze.setup_dependencies
   extend Rack::Test::Methods
 

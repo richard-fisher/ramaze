@@ -7,12 +7,13 @@ spec_require 'hpricot'
 
 module Ramaze
   # minimal middleware, no exception handling
-  middleware(:spec){|m|
-    m.run Rack::ETag.new(
-      Rack::ConditionalGet.new(Rack::Directory.new(__DIR__('public'))),
-      'public'
-    )
-  }
+  def self.middleware_spec
+    Rack::Builder.new do
+      run Rack::ETag.new(
+        Rack::ConditionalGet.new(Rack::Directory.new(__DIR__('public'))),
+        'public')
+    end
+  end
 end
 
 describe 'Directory listing' do
@@ -33,6 +34,7 @@ describe 'Directory listing' do
   end
 
   Ramaze.map('/', lambda{|env| [404, {}, ['not found']]})
+  Ramaze.recompile_middleware(:spec)
 
   def build_listing(path)
     get('path').body

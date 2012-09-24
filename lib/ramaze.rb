@@ -54,44 +54,55 @@ module Ramaze
     end
   end
 
+  options.trigger(:mode){|value| recompile_middleware(value) }
+
+  def recompile_middleware(mode = ENV['RACK_ENV'])
+    self.app = send("middleware_#{mode}")
+  end
+
   extend Innate::SingletonMethods
 
-  ##
-  # Sets up the Rack middlewares to use for the specified mode.
-  #
-  # @since 2012-07-15
-  # @param [#to_sym] mode The mode for which to use the middlewares.
-  # @param [Proc] block A proc that is evaluated in the context of a new
-  #  `Rack::Builder` instance.
-  #
-  def self.middleware(mode, &block)
-    return if options.mode != mode.to_sym
+  module_function
 
-    @middleware = Rack::Builder.new(&block)
+  def call(env)
+    app.call(env)
   end
 
-  middleware :dev do |m|
-    m.use Rack::Lint
-    m.use Rack::CommonLogger, Ramaze::Log
-    m.use Rack::ShowExceptions
-    m.use Rack::ShowStatus
-    m.use Rack::RouteExceptions
-    m.use Rack::ConditionalGet
-    m.use Rack::ETag, 'public'
-    m.use Rack::Head
-    m.use Ramaze::Reloader
+  def middleware_core
+    roots, publics = options[:roots], options[:publics]
+    joined = roots.map{|root| publics.map{|public| ::File.join(root, public)}}
 
-    m.run Ramaze::AppMap
+    Rack::Cascade.new(
+      joined.flatten.map{|public_root| Rack::File.new(public_root) } <<
+      Current.new(Route.new(AppMap), Rewrite.new(AppMap)), [404, 405])
   end
 
-  middleware :live do |m|
-    m.use Rack::CommonLogger, Ramaze::Log
-    m.use Rack::RouteExceptions
-    m.use Rack::ShowStatus
-    m.use Rack::ConditionalGet
-    m.use Rack::ETag, 'public'
-    m.use Rack::Head
+  def middleware_dev
+    Rack::Builder.new do
+      use Rack::Lint
+      use Rack::CommonLogger, Ramaze::Log
+      use Rack::ShowExceptions
+      use Rack::ShowStatus
+      use Rack::RouteExceptions
+      use Rack::ConditionalGet
+      use Rack::ETag, 'public'
+      use Rack::Head
+      use Ramaze::Reloader
 
-    m.run Ramaze::AppMap
+      run Ramaze::AppMap
+    end
+  end
+
+  def middleware_live
+    Rack::Builder.new do
+      use Rack::CommonLogger, Ramaze::Log
+      use Rack::RouteExceptions
+      use Rack::ShowStatus
+      use Rack::ConditionalGet
+      use Rack::ETag, 'public'
+      use Rack::Head
+
+      run Ramaze::AppMap
+    end
   end
 end

@@ -9,10 +9,14 @@ require File.expand_path('../../../../spec/helper', __FILE__)
 spec_require 'rack/contrib'
 
 # minimal middleware, no exception handling
-Ramaze.middleware(:spec) do |m|
-  m.use Rack::ConditionalGet
-  m.use Rack::ETag
-  m.run Ramaze::AppMap
+module Ramaze
+  def self.middleware_spec
+    Rack::Builder.new do
+      use Rack::ConditionalGet
+      use Rack::ETag
+      run Ramaze::AppMap
+    end
+  end
 end
 
 class Main < Ramaze::Controller
@@ -24,6 +28,8 @@ end
 
 describe 'Serving static files' do
   behaves_like :rack_test
+
+  Ramaze.recompile_middleware :spec
 
   it 'serves from public root' do
     css = File.read(__DIR__('public/test_download.css'))
