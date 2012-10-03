@@ -56,16 +56,12 @@ module Ramaze
 
   options.trigger(:mode){|value| recompile_middleware(value) }
 
-  def recompile_middleware(mode = ENV['RACK_ENV'])
-    self.app = send("middleware_#{mode}")
-  end
-
   extend Innate::SingletonMethods
 
   module_function
 
   def call(env)
-    app.call(env)
+    Innate.app.call(env)
   end
 
   def middleware_core
@@ -73,8 +69,10 @@ module Ramaze
     joined = roots.map{|root| publics.map{|public| ::File.join(root, public)}}
 
     Rack::Cascade.new(
-      joined.flatten.map{|public_root| Rack::File.new(public_root) } <<
-      Current.new(Route.new(AppMap), Rewrite.new(AppMap)), [404, 405])
+      joined.flatten.map { |public_root| Rack::File.new(public_root) } <<
+      Current.new(Route.new(AppMap), Rewrite.new(AppMap)),
+      [404, 405]
+    )
   end
 
   def middleware_dev
@@ -89,7 +87,7 @@ module Ramaze
       use Rack::Head
       use Ramaze::Reloader
 
-      run Ramaze::AppMap
+      run Ramaze.middleware_core
     end
   end
 
@@ -102,7 +100,7 @@ module Ramaze
       use Rack::ETag, 'public'
       use Rack::Head
 
-      run Ramaze::AppMap
+      run Ramaze.middleware_core
     end
   end
 end

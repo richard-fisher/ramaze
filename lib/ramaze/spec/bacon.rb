@@ -5,7 +5,7 @@ require File.expand_path('../../../ramaze', __FILE__)
 # minimal middleware, no exception handling
 def Ramaze.middleware_spec
   Rack::Builder.new do
-    run Ramaze::AppMap
+    run Ramaze.middleware_core
   end
 end
 
@@ -31,6 +31,7 @@ end
 shared :rack_test do
   Ramaze.options.mode = :spec
   Ramaze.setup_dependencies
+
   extend Rack::Test::Methods
 
   def app; Ramaze; end
