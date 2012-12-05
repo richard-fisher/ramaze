@@ -1,15 +1,8 @@
 require 'bacon'
-
 require File.expand_path('../../../ramaze', __FILE__)
-
-# minimal middleware, no exception handling
-def Ramaze.middleware_spec
-  Rack::Builder.new do
-    run Ramaze.middleware_core
-  end
-end
-
 require 'innate/spec/bacon'
+
+Ramaze.middleware(:spec) { run Ramaze.core }
 
 def spec_requires(*libs)
   spec_precondition 'require' do
@@ -29,7 +22,6 @@ rescue Exception => ex
 end
 
 shared :rack_test do
-  Ramaze.options.mode = :spec
   Ramaze.setup_dependencies
 
   extend Rack::Test::Methods

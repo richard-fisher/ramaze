@@ -22,6 +22,8 @@ module Ramaze
     $LOAD_PATH.unshift(ROOT)
   end
 
+  extend Innate::SingletonMethods
+
   # vendored, will go into rack-contrib
   require 'vendor/route_exceptions'
 
@@ -54,53 +56,18 @@ module Ramaze
     end
   end
 
-  options.trigger(:mode){|value| recompile_middleware(value) }
-
-  extend Innate::SingletonMethods
-
-  module_function
-
-  def call(env)
-    Innate.app.call(env)
-  end
-
-  def middleware_core
+  ##
+  # @see Innate.core
+  #
+  def self.core
     roots, publics = options[:roots], options[:publics]
-    joined = roots.map{|root| publics.map{|public| ::File.join(root, public)}}
 
-    Rack::Cascade.new(
-      joined.flatten.map { |public_root| Rack::File.new(public_root) } <<
-      Current.new(Route.new(AppMap), Rewrite.new(AppMap)),
-      [404, 405]
-    )
+    joined  = roots.map { |r| publics.map { |p| File.join(r, p) } }
+    joined  = joined.flatten.map { |p| Rack::File.new(p) }
+    current = Current.new(Route.new(AppMap), Rewrite.new(AppMap))
+
+    return Rack::Cascade.new(joined << current, [404, 405])
   end
 
-  def middleware_dev
-    Rack::Builder.new do
-      use Rack::Lint
-      use Rack::CommonLogger, Ramaze::Log
-      use Rack::ShowExceptions
-      use Rack::ShowStatus
-      use Rack::RouteExceptions
-      use Rack::ConditionalGet
-      use Rack::ETag, 'public'
-      use Rack::Head
-      use Ramaze::Reloader
-
-      run Ramaze.middleware_core
-    end
-  end
-
-  def middleware_live
-    Rack::Builder.new do
-      use Rack::CommonLogger, Ramaze::Log
-      use Rack::RouteExceptions
-      use Rack::ShowStatus
-      use Rack::ConditionalGet
-      use Rack::ETag, 'public'
-      use Rack::Head
-
-      run Ramaze.middleware_core
-    end
-  end
+  require 'ramaze/default_middleware'
 end

@@ -8,15 +8,11 @@ require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_require 'rack/contrib'
 
-# minimal middleware, no exception handling
-module Ramaze
-  def self.middleware_spec
-    Rack::Builder.new do
-      use Rack::ConditionalGet
-      use Rack::ETag
-      run Ramaze::AppMap
-    end
-  end
+Ramaze.middleware(:spec) do
+  use Rack::ConditionalGet
+  use Rack::ETag
+
+  run Ramaze.core
 end
 
 class Main < Ramaze::Controller

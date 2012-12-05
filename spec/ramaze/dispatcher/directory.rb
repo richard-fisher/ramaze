@@ -5,15 +5,11 @@ require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_require 'hpricot'
 
-module Ramaze
-  # minimal middleware, no exception handling
-  def self.middleware_spec
-    Rack::Builder.new do
-      run Rack::ETag.new(
-        Rack::ConditionalGet.new(Rack::Directory.new(__DIR__('public'))),
-        'public')
-    end
-  end
+Ramaze.middleware(:spec) do
+  run Rack::ETag.new(
+    Rack::ConditionalGet.new(Rack::Directory.new(__DIR__('public'))),
+    'public'
+  )
 end
 
 describe 'Directory listing' do

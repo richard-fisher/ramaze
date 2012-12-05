@@ -84,7 +84,7 @@ banned". Our final middleware looks like the following:
 ## Using Middlewares
 
 Now it's time to tell Ramaze to actually use the middleware. This can be done
-by calling Ramaze#middleware!. This method accepts a block in which one defines
+by calling Ramaze#middleware. This method accepts a block in which one defines
 which middlewares to use for a specific mode and the name for this Ramaze mode
 (Ramaze comes with "live" and "dev").
 
@@ -92,29 +92,20 @@ In the block you can call two Innate#MiddlewareCompiler methods
 ```use()``` and ```run()```. The ```use()``` method is used in order to add and
 configure a middleware, while ```run()``` is used to determine what class is used
 to run our Ramaze application. Unless you're using a custom class this should
-always be set to {Ramaze::AppMap}.
+always be set to `Ramaze.core`.
 
 Assuming we're running in "dev" mode our call will look like the following:
 
-    Ramaze.middleware! :dev do |m|
-      m.use(Banlist)
-      m.run(Ramaze::AppMap)
+    Ramaze.middleware :dev do
+      use Banlist
+      run Ramaze.core
     end
 
-Note that when you use Ramaze#middleware! you also replace the previously setup
-stack of middlewares. Therefore in order to add your new middleware on top of
-the existing ones you either have to read-in each one using
-``Innate#MiddlewareCompiler#middlewares`` and re-add it to the newly created
-middleware stack or simply copy (lets say in your app.rb) what has been setup
-inside ``lib/ramaze.rb``.
-
-	current_mw = Ramaze.middleware(:dev).middlewares
-	Ramaze.middleware! :dev do |mode|
-  	  current_mw.each do |mw|
-	    mode.use(mw[0],*mw[1], &mw[2]) # middleware, args, block
-	  end
-
-	  mode.use(Banlist)
-	  mode.run(Ramaze::AppMap)
-	end
-
+<div class="note todo">
+    <p>
+        The method <code>Ramaze.middleware</code> can no longer be used to
+        retrieve the used middleware, instead it can only be used to set
+        these. The method <code>Ramaze.middleware!</code> also no longer
+        exists.
+    </p>
+</div>
