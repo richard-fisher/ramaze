@@ -22,7 +22,6 @@ module Ramaze
   #
   module Logger
     autoload :Analogger       , 'ramaze/log/analogger'
-    autoload :Growl           , 'ramaze/log/growl'
     autoload :LogHub          , 'ramaze/log/hub'
     autoload :Knotify         , 'ramaze/log/knotify'
     autoload :RotatingInformer, 'ramaze/log/rotatinginformer'

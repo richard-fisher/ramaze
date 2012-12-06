@@ -88,7 +88,6 @@ whatever you want.
 ## Available Loggers
 
 * {Ramaze::Logger::Analogger}
-* {Ramaze::Logger::Growl}: uses Growl for log messages (requires Mac OS).
 * {Ramaze::Logger::LogHub}
 * {Ramaze::Logger::Informer}
 * {Ramaze::Logger::Knotify}

@@ -49,11 +49,6 @@ Gem::Specification.new do |s|
     s.add_development_dependency 'lokar'
   end
 
-  # Ruby-growl, requiring Growl, only works on Mac OS X.
-  if RUBY_PLATFORM.include?('darwin')
-    s.add_development_dependency 'ruby-growl'
-  end
-
   # Nagoro doesn't seem to work on Rbx
   if !RUBY_DESCRIPTION.include?('rubinius')
     s.add_development_dependency 'nagoro'
