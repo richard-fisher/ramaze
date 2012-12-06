@@ -1,3 +1,396 @@
+[b9d1294 | Wed Dec 05 23:27:38 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * New way of setting middleware.
+
+    Middleware are now set similar to how it's done in Innate HEAD.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[2f52ae6 | Wed Oct 03 22:37:16 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed Ramaze's middleware handling.
+
+    Turns out that calls such as `self.app` (see the various commits I made in the
+    Innate repository) can be a bit of a pain. While Ramaze "mirrors" the various
+    Innate constants it would apparently create a clone of `Innate.app` instead of
+    a reference (maybe something else equally weird was going on though).
+    
+    Fixing this was rather easy, after I found out what the heck was going on. I
+    removed `Ramaze.recompile_middleware` since it offers no benefits over
+    `Innate.recompile_middleware` as well as having changed a few references to
+    `Innate.app`. This along with the various changes I made to the Innate code
+    means that Ramaze now plays along nicely with Innate.
+    
+    Since I'm currently on a plane somewhere high in the sky (insert Top Gun tune
+    here) there's a chance my way of thinking has gone wack. Because of that I'm
+    asking @manveru and @leucos to take a look at this commit for some much needed
+    feedback.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[2deb0c5 | Mon Sep 24 16:04:46 UTC 2012] Michael Fellinger <m.fellinger@gmail.com>
+
+  * fix middlewares
+
+[1887faa | Wed Sep 19 10:00:45 UTC 2012] Isak Andersson <IcePapih@lavabit.com>
+
+  * Fixes small grammatic typo in configuration.md
+
+    "Ramaze does not automatically tries to" -> "Ramaze does not automatically try to"
+
+[523ade0 | Thu Jul 19 10:14:07 UTC 2012] Arnaud Meuret <arnaud@meuret.name>
+
+  * Escape % sequences before handing messages to ::Syslog
+
+[2baf79c | Sun Jul 15 18:30:49 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Simplified loading of Rack::ETag.
+
+    Checking for the arity of Rack::ETag is no longer needed.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[abd969b | Sun Jul 15 18:25:14 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed the file dispatcher specification.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[f9fb78c | Sun Jul 15 18:24:10 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed the directory dispatcher specification.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[723bc3c | Sun Jul 15 18:18:57 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Use Ramaze.middleware instead of .middleware!
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[d0c4ef2 | Sun Jul 15 18:18:52 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Remove the dependency on RackFileWrapper.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[6f0be19 | Sun Jul 15 18:18:51 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Remove the dependency on RackFileWrapper.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[a7ca4e7 | Sun Jul 15 17:57:29 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Initial steps for Ramaze 2.0.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[f46eb24 | Sun Jun 24 22:39:53 UTC 2012] Michel Blanc <mb@mbnet.fr>
+
+  * Fixes issue #43
+
+    Closes uploaded file, since leaving it opened doesn't seem to be
+    required, and it might lead to issues on Win32.
+    Added spec to check that file has been closed.
+
+[2b59453 | Sun Jun 24 14:52:16 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Clarify that layouts should be set outside actions
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[6fb93b5 | Fri Jun 15 20:38:20 UTC 2012] Michel Blanc <mb@mbnet.fr>
+
+  * Adds sid regenration on user logout
+
+    When Ramaze::Helper::UserHelper#_logout is called, the session.sid is
+    not regenerated. This can confuse session tracking libraries that rely
+    on session IDs.
+    This patch forces _logout to regenerate a sid.
+    A test is included to ensure sid rotation at logout.
+
+[724bb3f | Thu May 17 18:58:41 UTC 2012] Claudemiro <dimiro1@gmail.com>
+
+  * Ramaze::Controller.generate_mapping must respect custom irregular mappings.
+
+[f0a1423 | Wed May 16 20:13:18 UTC 2012] Claudemiro <dimiro1@gmail.com>
+
+  * Spec doesn't map Module::Controller
+
+    This spec was missing.
+
+[deafc3b | Wed May 16 19:57:57 UTC 2012] Claudemiro <dimiro1@gmail.com>
+
+  * Fix generate_mapping method in Ramaze::Controller
+
+    This method should generate the URI for the full namespace of the class:
+    
+    Irregular:
+    
+    1. Controller should map to nil
+    2. Module::Controller should map to nil
+    3. MainController should map to /
+    4. Module::MainController should map to /module
+    
+    Regular:
+    
+    1. ClassController should map to /class
+    2. Class should map to /class
+    3. Module::ClassController should map to /module/class
+
+[edabd3c | Mon May 14 17:53:04 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Make Ramaze::Cache app aware.
+
+    Innate used a hardcoded value of "pristine" for cache namespaces due to not
+    having a concept of applications such as Ramaze has. This meant that if you had
+    two applications running on the same host and user as well as using the same
+    cache (e.g. Memcached) you'd end up with the problem of data being overwritten
+    by these applications.
+    
+    For example, assume you have two applications:
+    
+    1. "a"
+    2. "b"
+    
+    If you were to run these applications on host "myhost" and user "myuser" you'd
+    end up with the following cache keys, regardless of the value of
+    `Ramaze.options.app.name`:
+    
+    1. myhost-myuser-pristine-memcached
+    2. myhost-myuser-pristine-memcached
+    
+    This commit will change those keys to the following:
+    
+    1. myhost-myuser-a-memcached
+    2. myhost-myuser-b-memcached
+    
+    Of course this assumes you've properly set the application names. If these are
+    not set the code will default to "pristine".
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[9c4e39c | Mon May 14 17:20:26 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * render_partial() does call an action.
+
+    The documentation has been updated to clarify that render_partial() does call an
+    action opposed to render_view() which does not.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[4f7651e | Sat May 12 19:04:02 UTC 2012] Michel Blanc <mb@mbnet.fr>
+
+  * Fixes typo from last commit and adds blueform object paramter explanation
+
+    Last commit introduced typos, which this patch corrects.
+    A small blurb is added to explain one of the coolest thing that can be
+    done with blueform: memoizing user entry and redisplay the form after
+    server side form (in)validation.
+
+[67a0acd | Sat May 12 18:52:03 UTC 2012] Michel Blanc <mb@mbnet.fr>
+
+  * Adds blue form examples and #g hint
+
+    It wasn't obvious how one had to do to generate tags not covered by
+    current Form methods. This patch gives a hint on using Form#g to get a
+    Gestalt instance back, and use it as usual.
+    
+    An example is added to illustrate this and show how to use additional
+    arguments to set attibutes.
+
+[e017cbc | Sat May 12 15:53:42 UTC 2012] Michel Blanc <mb@mbnet.fr>
+
+  * Fixes blue_form html doc tags and code syntax
+
+    HTML tags referenced in the documentation were not escaped. Thus, when
+    rendered as HTML, those tags weren't displayed properly in the browser.
+    This patch escapes them as suggested by yorickpeterse.
+    
+    One of the examples wasn't syntactically correct, and had an extra do
+    before the block. This is not removed and the example parses properly.
+
+[c6a332c | Sat May 12 13:32:54 UTC 2012] Michel Blanc <mb@mbnet.fr>
+
+  * Fixes rendering of in-documentation html tag
+
+    The <p> tag cited in documentation is not escaped by Yard.
+    May be yard has an option to handle this, but for now this patch solves
+    this by escaping < and > to html entities
+
+[f163277 | Sun Apr 29 00:16:58 UTC 2012] Diego Viola <diego.viola@gmail.com>
+
+  * more small fix/details
+
+[a9b32d0 | Sun Apr 29 00:05:19 UTC 2012] Diego Viola <diego.viola@gmail.com>
+
+  * use : only once for text
+
+[8cd6ed3 | Thu Apr 26 11:33:51 UTC 2012] Diego Viola <diego.viola@gmail.com>
+
+  * spell fix
+
+[d498217 | Wed Apr 25 21:33:26 UTC 2012] Diego Viola <diego.viola@gmail.com>
+
+  * fix spelling error
+
+[eab77b1 | Tue Apr 17 10:03:12 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Custom titles for all static markdown files.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[5df6b75 | Tue Apr 17 09:41:21 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed a minor formatting issue in controllers.md.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[b672513 | Tue Apr 17 09:38:46 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Described method parameters and routing.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[f61d3da | Sat Apr 14 17:29:21 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Ramaze 2012.04.14.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[ced58a0 | Sat Apr 14 16:54:15 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Sessions specs for Sequel, LRU and LocalMemCache.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[27cab7f | Sat Apr 14 12:08:50 UTC 2012] Michael Fellinger <m.fellinger@gmail.com>
+
+  * also make sure we use namespaced keys in cache_delete
+
+[487aee1 | Sat Apr 14 12:03:21 UTC 2012] Michael Fellinger <m.fellinger@gmail.com>
+
+  * namespace keys in redis
+
+[28add0c | Sat Apr 14 12:00:12 UTC 2012] Michael Fellinger <m.fellinger@gmail.com>
+
+  * only use default when value is nil
+
+[be0b31e | Sat Apr 14 11:56:07 UTC 2012] Michael Fellinger <m.fellinger@gmail.com>
+
+  * speed up redis cache spec a bit
+
+[f419146 | Sat Apr 14 11:15:56 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Encode session data when using Redis.
+
+    The cache adapter Ramaze::Cache::Redis would store raw values opposed to
+    encoding them using Marshal. This would make it impossible for this adapter to
+    be used for sessions as session data is stored in a hash opposed to a simple
+    string.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[467b5b5 | Fri Apr 06 12:21:07 UTC 2012] Michel Blanc <mb@mbnet.fr>
+
+  * Fixes typos in tutorial
+
+[da08072 | Tue Apr 03 19:24:42 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Update for Cache::MemCache and Dalli 2.
+
+    Dalli 2 deprecated the :compression option in favor of simply :compress. The
+    code of Ramaze::Cache::MemCache has been updated to use the new option along
+    with a minimum version of Dalli (2.0.2).
+    
+    This commit fixes #36.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[97d5967 | Tue Apr 03 19:22:20 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the .gems file.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[31bab37 | Fri Mar 23 15:20:25 UTC 2012] Yorick Peterse <yorick@isset.nl>
+
+  * Title update in the README.
+
+    The title for testing Ramaze code was changed from "Testing with Ramaze" to
+    simply "Testing Ramaze".
+    
+    Signed-off-by: Yorick Peterse <yorick@isset.nl>
+
+[528ce2d | Thu Mar 22 19:27:24 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the special thanks page.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[0b1537f | Thu Mar 22 19:24:57 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Re-wrote and expanded the testing guide.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[f45ad1f | Thu Mar 22 18:25:48 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Use specific version numbers for the .gems file.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[92b1f26 | Sat Mar 17 11:20:14 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed another typo in the README.
+
+    Again thanks to dotbaiki for reporting it.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[9bffef4 | Sat Mar 17 10:56:49 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed a typo, thanks dotbaiki for reporting it.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[13a0945 | Mon Mar 12 17:37:58 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Document the ability to customize the pager HTML.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[510cb54 | Mon Mar 12 17:32:37 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed some useless whitespace.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[95abb19 | Sun Mar 11 19:24:21 UTC 2012] leucos <leucos@michel.erasme.lan>
+
+  * Added customization for css classes in the Paginate helper
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[b215063 | Mon Mar 12 08:28:00 UTC 2012] Yorick Peterse <yorick@isset.nl>
+
+  * Updated the .mailmap file.
+
+    Signed-off-by: Yorick Peterse <yorick@isset.nl>
+
+[64224c8 | Mon Mar 12 08:27:25 UTC 2012] Yorick Peterse <yorick@isset.nl>
+
+  * Updated the list of Gems in the .gems file.
+
+    Signed-off-by: Yorick Peterse <yorick@isset.nl>
+
+[6be53eb | Wed Mar 07 18:41:59 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Release 2012.03.07.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [aa5d48f | Mon Mar 05 19:08:01 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Updated the list of authors and the changelog.

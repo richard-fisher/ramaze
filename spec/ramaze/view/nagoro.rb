@@ -4,7 +4,7 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_precondition 'Nagoro should be supported' do
-  should.flunk if Ramaze::UNSUPPORTED_GEMS.include?('nagoro')
+  should.flunk if RUBY_DESCRIPTION.include?('rubinius')
 end
 
 spec_require 'nagoro'

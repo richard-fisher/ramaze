@@ -11,3 +11,4 @@ database.db
 .idea/*
 *.iml
 .rbenv-version
+Gemfile.lock

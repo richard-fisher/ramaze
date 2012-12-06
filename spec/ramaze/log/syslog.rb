@@ -5,7 +5,7 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_precondition 'Syslog should be supported' do
-  if Ramaze::UNSUPPORTED_GEMS.include?('syslog')
+  if RUBY_DESCRIPTION.include?('jruby')
     should.flunk 'Forking/Syslog is not supported'
   end
 end

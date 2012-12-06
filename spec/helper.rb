@@ -5,7 +5,6 @@ if caller_line = caller.grep(%r!spec/ramaze/!).first
 end
 
 require File.expand_path('../../lib/ramaze/spec/bacon', __FILE__)
-require File.expand_path('../../lib/ramaze/dependencies', __FILE__)
 
 Ramaze.options.roots = [caller_root] if caller_root
 

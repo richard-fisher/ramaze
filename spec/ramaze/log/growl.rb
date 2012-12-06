@@ -1,9 +1,5 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 
-spec_precondition 'ruby-growl should be supported' do
-  should.flunk if Ramaze::UNSUPPORTED_GEMS.include?('ruby-growl')
-end
-
 spec_require 'ruby-growl'
 
 spec_precondition 'Growl should be running' do

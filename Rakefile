@@ -1,33 +1,22 @@
-begin; require 'rubygems'; rescue LoadError; end
+require 'rubygems'
 require 'rake'
-require 'rake/clean'
 require 'date'
 require 'time'
+require 'rubygems/package_task'
 
-# All the bacon specifications
 PROJECT_SPECS = Dir.glob(File.expand_path('../spec/ramaze/**/*.rb', __FILE__))
 
-# Load the gemspec so it's details can be used in all the Rake tasks
 GEMSPEC = Gem::Specification::load(
   File.expand_path('../ramaze.gemspec', __FILE__)
 )
 
-CLEAN.include %w[
-  **/.*.sw?
-  *.gem
-  .config
-  **/*~
-  **/{data.db,cache.yaml}
-  *.yaml
-  pkg
-  rdoc
-  ydoc
-  *coverage*
-]
-
-Dir.glob(File.expand_path('../tasks/*.rake', __FILE__)).each do |f|
-  import(f)
+Gem::PackageTask.new(GEMSPEC) do |pkg|
+  pkg.need_tar = false
+  pkg.need_zip = false
 end
 
-# Set the default task to running all the bacon specifications
-task :default => [:bacon]
+Dir.glob(File.expand_path('../tasks/*.rake', __FILE__)).each do |task|
+  import task
+end
+
+task :default => :bacon

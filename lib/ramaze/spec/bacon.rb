@@ -1,5 +1,5 @@
-require 'bacon'
 require File.expand_path('../../../ramaze', __FILE__)
+require 'bacon'
 require 'innate/spec/bacon'
 
 Ramaze.middleware(:spec) { run Ramaze.core }

@@ -3,10 +3,6 @@
 
 require File.expand_path('../../../../spec/helper', __FILE__)
 
-spec_precondition 'LocalMemcache should be supported' do
-  should.flunk if Ramaze::UNSUPPORTED_GEMS.include?('localmemcache')
-end
-
 spec_require 'localmemcache'
 
 describe Ramaze::Cache::LocalMemCache do

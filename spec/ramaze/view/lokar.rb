@@ -4,7 +4,7 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_precondition 'Lokar should be supported' do
-  should.flunk if Ramaze::UNSUPPORTED_GEMS.include?('lokar')
+  should.flunk if RUBY_VERSION.to_f < 1.9
 end
 
 spec_require 'lokar'
