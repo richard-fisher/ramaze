@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'tagz'
-end
+require 'tagz'
 
 module Ramaze
   module View

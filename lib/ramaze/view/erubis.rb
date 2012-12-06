@@ -1,8 +1,6 @@
 #          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the MIT license.
-Ramaze.setup(:verbose => false) do
-  gem 'erubis'
-end
+require 'erubis'
 
 module Ramaze
   module View

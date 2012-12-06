@@ -36,10 +36,8 @@ module Ramaze
   require 'ramaze/controller'
   require 'ramaze/cache'
   require 'ramaze/reloader'
-  require 'ramaze/setup'
   require 'ramaze/app'
   require 'ramaze/files'
-  require 'ramaze/plugin'
   require 'ramaze/request'
   require 'ramaze/current'
 

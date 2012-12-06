@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'redis'
-end
+require 'redis'
 
 module Ramaze
   class Cache

@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'ezamar'
-end
+require 'ezamar'
 
 module Ramaze
   module View

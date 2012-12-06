@@ -1,8 +1,5 @@
-Ramaze.setup(:verbose => false) do
-  gem 'haml'
-  gem 'sass'
-end
-
+require 'haml'
+require 'sass'
 require 'haml/util'
 
 module Ramaze

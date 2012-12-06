@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'dalli', ['>= 2.0.2']
-end
+require 'dalli'
 
 # Kgio gives a nice performance boost but it isn't required
 begin; require 'kgio'; rescue LoadError => e; end

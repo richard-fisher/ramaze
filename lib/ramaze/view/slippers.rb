@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'slippers'
-end
+require 'slippers'
 
 module Ramaze
   module View

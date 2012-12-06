@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'erector'
-end
+require 'erector'
 
 module Ramaze
   module View

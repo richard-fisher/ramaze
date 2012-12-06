@@ -1,10 +1,6 @@
 require 'rubygems'
 require 'ramaze'
-
-Ramaze.setup do
-  gem 'sequel'
-end
-
+require 'sequel'
 require __DIR__'controller/init'
 require __DIR__'model/init'
 

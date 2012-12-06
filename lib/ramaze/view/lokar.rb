@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'lokar'
-end
+require 'lokar'
 
 module Ramaze
   module View

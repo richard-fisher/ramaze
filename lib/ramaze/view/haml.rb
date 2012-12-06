@@ -1,7 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'haml'
-end
-
+require 'haml'
 require 'haml/util'
 require 'haml/engine'
 

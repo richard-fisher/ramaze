@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'tenjin'
-end
+require 'tenjin'
 
 module Ramaze
   module View

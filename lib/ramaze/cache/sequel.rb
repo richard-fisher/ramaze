@@ -1,6 +1,4 @@
-Ramaze.setup(:verbose => false) do
-  gem 'sequel'
-end
+require 'sequel'
 
 module Ramaze
   class Cache
