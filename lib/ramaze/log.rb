@@ -26,7 +26,6 @@ module Ramaze
     autoload :Knotify         , 'ramaze/log/knotify'
     autoload :RotatingInformer, 'ramaze/log/rotatinginformer'
     autoload :Syslog          , 'ramaze/log/syslog'
-    autoload :Growl           , 'ramaze/log/growl'
     autoload :Xosd            , 'ramaze/log/xosd'
     autoload :Logger          , 'ramaze/log/logger'
   end
