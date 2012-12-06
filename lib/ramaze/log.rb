@@ -21,12 +21,9 @@ module Ramaze
   # @since  11-08-2009
   #
   module Logger
-    autoload :Analogger       , 'ramaze/log/analogger'
     autoload :LogHub          , 'ramaze/log/hub'
-    autoload :Knotify         , 'ramaze/log/knotify'
     autoload :RotatingInformer, 'ramaze/log/rotatinginformer'
     autoload :Syslog          , 'ramaze/log/syslog'
-    autoload :Xosd            , 'ramaze/log/xosd'
     autoload :Logger          , 'ramaze/log/logger'
   end
 end
