@@ -15,7 +15,7 @@ namespace :release do
   end
 
   desc 'Pushes a new release to Rubygems'
-  task :push do
+  task :rubygems => :gem do
     name = "#{GEMSPEC.name}-#{GEMSPEC.version}.gem"
     gem  = File.expand_path("../../pkg/#{name}", __FILE__)
 
