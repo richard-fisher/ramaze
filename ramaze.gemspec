@@ -5,7 +5,7 @@ path = File.expand_path('../', __FILE__)
 Gem::Specification.new do |s|
   s.name        = 'ramaze'
   s.version     = Ramaze::VERSION
-  s.date        = '2012-04-14'
+  s.date        = Time.now.strftime('%Y-%m-%d')
   s.authors     = ['Michael \'manveru\' Fellinger', 'Yorick Peterse']
   s.email       = ['m.fellinger@gmail.com', 'yorickpeterse@gmail.com']
   s.summary     = 'Ramaze is a simple and modular web framework'
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.has_rdoc                  = 'yard'
   s.executables               = ['ramaze']
 
-  s.add_dependency 'innate', '>= 2012.03'
+  s.add_dependency 'innate', '>= 2012.12'
   s.add_dependency 'rake'
 
   s.add_development_dependency 'Remarkably'
