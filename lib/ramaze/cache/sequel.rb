@@ -210,7 +210,7 @@ module Ramaze
           @dataset.filter(:key => nkey).delete
         # Remove multiple keys
         else
-          nkeys  = [key, keys].flatten.map! { |nkey| namespaced(nkey) }
+          nkeys  = [key, keys].flatten.map! { |n| namespaced(n) }
           result = dataset.select(:value).filter(:key => nkeys)
 
           result.map! do |row|
@@ -283,7 +283,8 @@ module Ramaze
           serialized_value = serialize(value)
 
           if serialized_value
-            @dataset.update(:value => serialize(value), :expires => expires)
+            @dataset.filter(:key => nkey) \
+              .update(:value => serialize(value), :expires => expires)
           end
         # The row doesn't exist yet.
         else
