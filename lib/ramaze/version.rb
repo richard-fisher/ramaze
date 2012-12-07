@@ -1,3 +1,3 @@
 module Ramaze
-  VERSION = '2.0.0b'
+  VERSION = '3.0.0b'
 end
