@@ -1,3 +1,36 @@
+[d94938b | Fri Dec 07 23:27:39 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Switch back to dates for versions.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[c57c6e8 | Fri Dec 07 23:22:56 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Use 3.0.0 for the next version.
+
+    Due to the way Rubygems sorts Gem versions using the version number "2.0.0"
+    would producte unreliable results.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[30abe12 | Fri Dec 07 22:07:54 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Strip newlines of the confirmation message.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[1cf5ce9 | Fri Dec 07 22:06:36 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Build the gem before pushing it.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[e8ff001 | Fri Dec 07 22:05:03 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Release 2.0.0b
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [f73e5c4 | Fri Dec 07 22:04:43 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Uncommented the Git commands in the release task.
