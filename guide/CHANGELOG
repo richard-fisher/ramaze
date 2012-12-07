@@ -1,3 +1,9 @@
+[f73e5c4 | Fri Dec 07 22:04:43 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Uncommented the Git commands in the release task.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [95bcea8 | Fri Dec 07 22:03:54 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Updated the release Rake tasks.
