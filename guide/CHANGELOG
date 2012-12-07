@@ -1,3 +1,146 @@
+[45cbb80 | Fri Dec 07 21:49:25 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * New setup for writing Ramaze applications.
+
+    Most of the code from the `ramaze` command has been removed from the executable
+    into individual Rake tasks located in the prototype. This makes it easier for
+    developers to customize these parts (e.g. by using a custom REPL) as well as
+    making it easier to maintain Ramaze itself.
+    
+    With these changes I've also removed the tutorials section from the userguide.
+    It hasn't been updated in a while and with these changes was no longer really
+    useful.
+    
+    In short the following changes:
+    
+    * ramaze start   => rake ramaze:start
+    * ramaze console => rake ramaze:irb or rake ramaze:pry
+    * Rake is now a dependency of Ramaze so that it's installed when installing
+      Ramaze
+    * ramaze stop, status and restart have been removed
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[8d53dca | Fri Dec 07 20:22:16 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fixed a bunch of YARD formatting errors.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[938a9c4 | Fri Dec 07 20:11:34 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the documentation on logging.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[03352e5 | Fri Dec 07 20:04:35 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * CSRF expiration and custom field names.
+
+    CSRF tokens are no longer expired during a existing session. Automatically
+    expiring them doesn't make things a whole lot more secure. It also makes it
+    impossible to use the same session in multiple browser windows/tabs, this is
+    due to the token being re-generated upon successful requests which in turn
+    would invalidate existing tokens.
+    
+    Developers are now also able to specify a custom name for the field containing
+    the CSRF token. This can be done by setting
+    `Ramaze::Helper::CSRF.options.field_name`.
+    
+    This commit fixes #31.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[900d4e7 | Fri Dec 07 19:52:36 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Fix for storing data using the Sequel cache.
+
+    Due to a bug the Sequel cache would store data for all users, this has been
+    fixed by filtering out records based on the unique namespaced key for each
+    user.
+    
+    This commit fixes #54. thanks to @joegsn for reporting it.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[f79efba | Fri Dec 07 19:47:20 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the version number.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[4758a06 | Thu Dec 06 23:41:39 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the Travis configuration.
+
+    Ruby versions based on 1.8 will no longer be tested.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[b1df1f5 | Thu Dec 06 23:37:08 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed more useless helpers/loggers.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[b3662f0 | Thu Dec 06 23:10:37 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed ramaze/spec.rb.
+
+    This file has been deprecated for a long time.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[2024702 | Thu Dec 06 23:07:56 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed Ramaze.setup, Plugin and AppGraph.
+
+    Ramaze.setup was removed due to the lack of tests and Bundler (and similar
+    tools) being a much better tool to solve this problem. Ramaze::Plugin and
+    Ramaze::AppGraph were also removed due to the lack of tests and not being used
+    internally.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[7e966dc | Thu Dec 06 22:53:25 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed a ton of snippets.
+
+    Most of these snippets were either unused by Ramaze itself or were originally
+    added to provide compatibility between Ruby 1.8/1.9. There also werent any
+    tests for quite a few of these snippets.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[86cc398 | Thu Dec 06 21:50:43 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed a left over reference to Growl.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[0e45ce9 | Thu Dec 06 21:44:51 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Removed the Growl logger.
+
+    This logger was fairly useless for both development and production
+    environments. It was also a pain to test, even on OS X.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[dfbb949 | Thu Dec 06 21:40:31 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Cleaning up shop.
+
+    To make it easier for developers to hack on Ramaze I've started changing
+    several parts of Ramaze related to how it handles dependencies and how the
+    release process is executed.
+    
+    To make things easier I've added a Gemfile to the project (as well as an
+    updated .gems file). This means people can install the development gems by
+    simply running `bundle install`.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [b9d1294 | Wed Dec 05 23:27:38 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
 
   * New way of setting middleware.

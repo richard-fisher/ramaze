@@ -1,24 +1,21 @@
 namespace :release do
-  desc 'Prepares a release'
-  task :prepare => [:authors, :changelog, :gems] do
-    puts <<-INSTRUCTIONS
-Prepared version #{GEMSPEC.version} set to be released
-on #{GEMSPEC.date.strftime('%Y-%m-%d')}. Once you have committed the changed
-files (if any) you can release a new Gem as following:
+  message = "Release #{GEMSPEC.version}"
 
-    $ rake release:push
+  desc 'Releases a new version in the Git repo'
+  task :git => [:authors, :changelog] do
+    sh("# git checkout master")
 
-    INSTRUCTIONS
-  end
+    sh("# git add guide/AUTHORS")
+    sh("# git add guide/CHANGELOG")
+    sh("# git commit -m '#{message}' --sign")
+    sh("# git tag -a -m '#{message}' #{GEMSPEC.version}")
 
-  desc 'Tags a new release'
-  task :tag do
-    sh("git tag -a -m 'Release #{GEMSPEC.version}' -s #{GEMSPEC.version}")
-    sh("git push origin : #{GEMSPEC.version}")
+    sh("# git push origin master")
+    sh("# git push origin : #{GEMSPEC.version}")
   end
 
   desc 'Pushes a new release to Rubygems'
-  task :push => :tag do
+  task :push do
     name = "#{GEMSPEC.name}-#{GEMSPEC.version}.gem"
     gem  = File.expand_path("../../pkg/#{name}", __FILE__)
 
