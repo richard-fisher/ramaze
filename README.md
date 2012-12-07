@@ -120,9 +120,5 @@ directory.
 * {file:general/logging Logging Information}
 * {file:general/testing Testing Ramaze}
 
-## Tutorials
-
-* {file:tutorials/introduction Introduction Tutorial}
-
 [mailing list]: https://groups.google.com/forum/#!forum/ramaze
 [website]: http://ramaze.net/

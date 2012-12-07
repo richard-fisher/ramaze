@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.executables               = ['ramaze']
 
   s.add_dependency 'innate', '>= 2012.03'
+  s.add_dependency 'rake'
 
   s.add_development_dependency 'Remarkably'
   s.add_development_dependency 'bacon'

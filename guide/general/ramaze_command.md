@@ -26,39 +26,6 @@ directory name. If the application was named "blog" there would now be a
 directory called "blog" in the current one. This directory will contain all
 basic files that can be used for a Ramaze powered application.
 
-Each new application has the following structure:
-
-    .__ app.rb
-    |__ config.ru
-    |__ controller
-    |   |__ init.rb
-    |   |__ main.rb
-    |
-    |__ layout
-    |   |__ default.xhtml
-    |
-    |__ model
-    |   |__ init.rb
-    |
-    |__ public
-    |   |
-    |   |__ css
-    |   |   |__ screen.css
-    |   |
-    |   |__ dispatch.fcgi
-    |   |__ favicon.ico
-    |   |__ js
-    |   |   |__ jquery.js
-    |   |
-    |   |__ ramaze.png
-    |
-    |__ spec
-    |   |__ main.rb
-    |
-    |__ start.rb
-    |__ view
-        |__ index.xhtml
-
 ## Application Prototypes
 
 Due to Ramaze's nature it's very easy to create your own application prototype
@@ -110,7 +77,6 @@ This is only a basic example of the flexibility of Ramaze, I highly recommend
 you playing around with your own prototypes as it's a great way to learn the
 basics of Ramaze and to really understand how flexible Ramaze is.
 
-
 <div class="note todo">
     <p>
         <strong>Note</strong>: This prototype does not come with Ramaze, it's
@@ -122,19 +88,12 @@ basics of Ramaze and to really understand how flexible Ramaze is.
 
 When you've created an application there are three ways of running it. You can
 either use your server's command such as `thin` or `unicorn` but you can also
-use bin/ramaze. When starting your application with bin/ramaze it will use the
-appropriate server according to the settings set in "config.ru" or "star.rb".
-An example of using this command is as simple as the following:
+use a supplied Rake task:
 
-    $ ramaze start
+    $ rake ramaze:start
 
-On top of these two ways you can also start your Ramaze application by calling
-the "start.rb" file using the ruby binary:
-
-    $ ruby start.rb
-
-If you want to stop the running application you can simply close it by using the
-key combination Ctrl+C.
+If you want to stop the running application you can simply close it by using
+the key combination Ctrl+C.
 
 <div class="note todo">
     <p>
@@ -146,11 +105,6 @@ key combination Ctrl+C.
 
 ## Ramaze Console
 
-The bin/ramaze command allows you to run an interactive Ramaze session just
-like IRB. In fact, Ramaze actually uses IRB. To invoke the Ramaze console simple
-execute `ramaze console` and you're good to go. This console gives you full
-access to your application and thus can be very useful for debugging purposes.
-
-An example of a Ramaze console session can be seen in the image below.
-
-![Ramaze Console](_static/ramaze_console.png)
+By default Ramaze allows you to start a console using either IRB or Pry. These
+consoles can be started by running `rake ramaze:irb` and `rake ramaze:pry`
+respectively.

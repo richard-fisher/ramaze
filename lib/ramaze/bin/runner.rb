@@ -1,13 +1,7 @@
 require 'optparse'
 require 'pathname'
 
-require __DIR__('helper')
-require __DIR__('start')
-require __DIR__('restart')
-require __DIR__('stop')
 require __DIR__('create')
-require __DIR__('status')
-require __DIR__('console')
 
 module Ramaze
   #:nodoc:
@@ -28,18 +22,10 @@ module Ramaze
     # @since  21-07-2011
     #
     module Runner
-      # Hash containing all the available commands, their names and their
-      # classes.
       Commands = {
-        :start   => Ramaze::Bin::Start,
-        :stop    => Ramaze::Bin::Stop,
-        :restart => Ramaze::Bin::Restart,
-        :status  => Ramaze::Bin::Status,
         :create  => Ramaze::Bin::Create,
-        :console => Ramaze::Bin::Console,
       }
 
-      # String containing the banner of the main command.
       Banner = <<-TXT.strip
 Ramaze is a simple, light and modular open-source web application
 framework written in Ruby.

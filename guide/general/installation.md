@@ -24,7 +24,7 @@ install all required gems and optionally set up an RVM environment in case
 you're using RVM:
 
     $ cd ramaze
-    $ rake setup
+    $ bundle install
 
 Once installed you can build a gem manually or just require the local
 installation manually:

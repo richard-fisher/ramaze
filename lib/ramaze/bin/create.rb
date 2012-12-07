@@ -15,10 +15,8 @@ module Ramaze
     # @since  21-07-2011
     #
     class Create
-      # The description of this command as shown in the global help message.
-      Description = 'Allows developers to easily create new Ramaze applications.'
+      Description = 'Creates a new Ramaze application'
 
-      # The banner of this command.
       Banner = <<-TXT.strip
 Allows developers to easily create new Ramaze applications based on the
 prototype that ships with Ramaze.
