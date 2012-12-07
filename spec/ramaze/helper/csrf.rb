@@ -20,18 +20,6 @@ class SpecHelperCSRF < Ramaze::Controller
     return get_csrf_token
   end
 
-  def regenerate
-    $token_sess   = session[:_csrf][:token]
-    $token_method = get_csrf_token
-  end
-
-  def check_ttl
-    generate_csrf_token :ttl => 3
-    $old_token = get_csrf_token
-    sleep 4
-    $new_token = get_csrf_token
-  end
-
   def check_post
     "POST allowed."
   end
@@ -56,20 +44,6 @@ describe Ramaze::Helper::CSRF do
 
     got.status.should.equal 200
     got.body.length.should.equal 128
-  end
-
-  it 'generate a new token if the previous one is valid' do
-    got = get '/regenerate'
-
-    got.status.should.equal      200
-    $token_sess.should.not.equal $token_method
-  end
-
-  it 'expire token after 3 seconds' do
-    got = get '/check_ttl'
-
-    got.status.should.equal 200
-    $old_token.should.not.equal $new_token
   end
 
   it 'validate all HTTP requests' do
