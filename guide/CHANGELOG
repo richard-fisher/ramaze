@@ -1,3 +1,15 @@
+[95bcea8 | Fri Dec 07 22:03:54 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Updated the release Rake tasks.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[720daea | Fri Dec 07 22:03:34 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Auto generate the release date.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [45cbb80 | Fri Dec 07 21:49:25 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
 
   * New setup for writing Ramaze applications.

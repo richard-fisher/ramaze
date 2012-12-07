@@ -3,15 +3,15 @@ namespace :release do
 
   desc 'Releases a new version in the Git repo'
   task :git => [:authors, :changelog] do
-    sh("# git checkout master")
+    sh("git checkout master")
 
-    sh("# git add guide/AUTHORS")
-    sh("# git add guide/CHANGELOG")
-    sh("# git commit -m '#{message}' --sign")
-    sh("# git tag -a -m '#{message}' #{GEMSPEC.version}")
+    sh("git add guide/AUTHORS")
+    sh("git add guide/CHANGELOG")
+    sh("git commit -m '#{message}' --sign")
+    sh("git tag -a -m '#{message}' #{GEMSPEC.version}")
 
-    sh("# git push origin master")
-    sh("# git push origin : #{GEMSPEC.version}")
+    sh("git push origin master")
+    sh("git push origin : #{GEMSPEC.version}")
   end
 
   desc 'Pushes a new release to Rubygems'
