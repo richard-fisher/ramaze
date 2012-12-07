@@ -246,8 +246,8 @@ module Ramaze
         #     handle_uploads_for :baz, [:qux, /^up.*/]
         #   end
         #
-        # @param *args An arbitrary long list of arguments with action names
-        #  (and optionally patterns) that should handle file uploads
+        # @param [Array] args An arbitrary long list of arguments with action
+        #  names (and optionally patterns) that should handle file uploads
         #  automatically. Each argument can either be a symbol or a two-element
         #  array consisting of a symbol and a reqexp.
         # @see #handle_all_uploads
@@ -391,7 +391,7 @@ module Ramaze
         # but if you provide a complete path this method it will try to identify
         # the filename and use that instead.
         #
-        # @param [String] The new suggested filename.
+        # @param [String] name The new suggested filename.
         #
         def filename=(name)
           @filename = File.basename(name)

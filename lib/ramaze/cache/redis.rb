@@ -120,7 +120,7 @@ module Ramaze
       # Removes a number of keys from the cache.
       #
       # @author Michael Fellinger
-      # @param  [Array] *keys An array of key names to remove.
+      # @param  [Array] keys An array of key names to remove.
       #
       def cache_delete(*keys)
         @client.del(*keys.map{|key| namespaced_key(key) })

@@ -4,7 +4,7 @@
 module Ramaze
   ##
   # This module provides a basic skeleton for your own loggers to be compatible.
-  # 
+  #
   # @example
   #   class MyLogger
   #     include Logging
@@ -22,7 +22,7 @@ module Ramaze
     # If you include this module you have to define #log or it will raise.
     #
     # @param [String] tag The level of the log message.
-    # @param [String] method 
+    # @param [String] meth
     # @param [Array] msgs The data that should be logged.
     #
     def tag_log(tag, meth, *msgs)
@@ -35,7 +35,7 @@ module Ramaze
     ##
     # Converts everything given to strings and passes them on with :info
     #
-    # @param [Array] objects An array of objects that need to be converted to 
+    # @param [Array] objects An array of objects that need to be converted to
     #  strings.
     #
     def info(*objects)
@@ -45,7 +45,7 @@ module Ramaze
     ##
     # Converts everything given to strings and passes them on with :warn
     #
-    # @param [Array] objects An array of objects that need to be converted to 
+    # @param [Array] objects An array of objects that need to be converted to
     #  strings.
     #
     def warn(*objects)

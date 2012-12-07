@@ -51,7 +51,6 @@ load all helpers the Ramaze way.
 * {Ramaze::Helper::Cache}: caching of entire actions and custom values in your
   controllers.
 * {Ramaze::Helper::CSRF}: protect your controllers from CSRF attacks.
-* {Ramaze::Helper::Disqus}
 * {Ramaze::Helper::Email}: quick and easy way to send Emails.
 * {Ramaze::Helper::Erector}
 * {Ramaze::Helper::Flash}
@@ -71,7 +70,6 @@ load all helpers the Ramaze way.
 * {Ramaze::Helper::Stack}
 * {Ramaze::Helper::Tagz}
 * {Ramaze::Helper::Thread}
-* {Ramaze::Helper::Ultraviolet}
 * {Ramaze::Helper::Upload}: uploading files made easy.
 * {Ramaze::Helper::UserHelper}: authenticate users using a model.
 * {Ramaze::Helper::XHTML}

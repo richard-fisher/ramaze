@@ -88,9 +88,9 @@ module Ramaze
       # a field called "csrf_token". This method will then validate that token
       # against the current token in the session.
       #
-      # @param  [Strings/Symbol] *methods Methods that will be
-      #  protected/unprotected.
-      # @param  [Block] Block that will be executed if the token is invalid.
+      # @param [Array] methods Array of method names that should be checked.
+      # @param [Proc] block Block that will be executed if the token is
+      #  invalid.
       # @example
       #  # Protect "create" and "save" against CSRF exploits
       #  before_all do
@@ -115,7 +115,8 @@ module Ramaze
       # Note that this method will be automatically called if no CSRF token
       # exists.
       #
-      # @param [Hash] Additional arguments that can be set such as the TTL.
+      # @param [Hash] args Additional arguments that can be set such as the
+      #  TTL.
       #
       def generate_csrf_token(args = {})
         random = SecureRandom.random_bytes(512)

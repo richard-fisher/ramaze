@@ -26,7 +26,7 @@ module Ramaze
     # The default way to start building your markup.
     # Takes a block and returns the markup.
     #
-    # @param [Block] block
+    # @param [Proc] block
     #
     def self.build(&block)
       self.new(&block).to_s
@@ -39,7 +39,7 @@ module Ramaze
     #
     # Useful for distributed building of one page.
     #
-    # @param [Block] block
+    # @param [Proc] block
     #
     def initialize(&block)
       @out = []
@@ -49,9 +49,9 @@ module Ramaze
     ##
     # Catching all the tags. passing it to _gestalt_build_tag
     #
-    # @param [String] method The method that was called.
+    # @param [String] meth The method that was called.
     # @param [Hash] args Additional arguments passed to the called method.
-    # @param [Block] block
+    # @param [Proc] block
     #
     def method_missing(meth, *args, &block)
       _gestalt_call_tag meth, args, &block
@@ -62,7 +62,7 @@ module Ramaze
     #
     # @param [Hash] args Extra arguments that should be processed before
     #  creating the paragraph tag.
-    # @param [Block] block
+    # @param [Proc] block
     #
     def p(*args, &block)
       _gestalt_call_tag :p, args, &block
@@ -71,9 +71,9 @@ module Ramaze
     ##
     # Workaround for Kernel#select to make <select></select> work.
     #
-    # @param [Hash] args Extra arguments that should be processed before
+    # @param [Array] args Extra arguments that should be processed before
     #  creating the select tag.
-    # @param [Block] block
+    # @param [Proc] block
     #
     def select(*args, &block)
       _gestalt_call_tag(:select, args, &block)
@@ -84,7 +84,7 @@ module Ramaze
     #
     # @param [String] name
     # @param [Hash] args
-    # @param [Block] block
+    # @param [Proc] block
     #
     def _gestalt_call_tag(name, args, &block)
       if args.size == 1 and args[0].kind_of? Hash
@@ -140,8 +140,8 @@ module Ramaze
     # Shortcut for building tags,
     #
     # @param [String] name
-    # @param [Hash] args
-    # @param [Block] block
+    # @param [Array] args
+    # @param [Proc] block
     #
     def tag(name, *args, &block)
       _gestalt_call_tag(name.to_s, args, &block)

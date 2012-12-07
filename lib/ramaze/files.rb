@@ -8,12 +8,12 @@ module Ramaze
   #
   class Files
     ##
-    # Creates a new instance of the class, stores the given root directories and
-    # syncs the changes with Rack::Cascade.
+    # Creates a new instance of the class, stores the given root directories
+    # and syncs the changes with Rack::Cascade.
     #
     # @author Michael Fellinger
     # @since  14-03-2009
-    # @param  [Array] *roots A set of root directories that contain a number of
+    # @param  [Array] roots A set of root directories that contain a number of
     #  public directories.
     #
     def initialize(*roots)

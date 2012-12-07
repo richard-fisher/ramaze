@@ -22,7 +22,7 @@ module Ramaze
     # @param  [Fixnum] status The HTPP status code for the response.
     # @param  [Hash] header A hash containing additional headers and their
     #  values.
-    # @param  [Proc] &block
+    # @param  [Proc] block
     #
     def initialize(body = [], status = 200, header = {}, &block)
       modified_header = Ramaze.options.header.merge(header)

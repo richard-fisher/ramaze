@@ -211,7 +211,7 @@ module Ramaze
         ##
         # Generate a fieldset tag.
         #
-        # @param [Block] &block The form elements to display inside the fieldset.
+        # @param [Proc] block The form elements to display inside the fieldset.
         # @example
         #  form_for(@data, :method => :post) do |f|
         #    f.fieldset do

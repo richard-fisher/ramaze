@@ -40,15 +40,15 @@ module Ramaze
       #   Informer.new          # => logs to stdout with all levels being shown.
       #   Informer.new($stderr) # => same, but to stderr
       #
-      #   # same, but logs to the file foo.log (or creates it if it doesn't 
+      #   # same, but logs to the file foo.log (or creates it if it doesn't
       #   # exist yet)
       #   Informer.new("foo.log")
       #
       #   Informer.new($stdout, [:info]) #=> show only #info messages to stdout.
       #
-      # @param [String] out Specifies where the output should go. By default 
+      # @param [String] out Specifies where the output should go. By default
       #  this is set to STDOUT.
-      # @param [Array] log_leves Array containing the levels that should be 
+      # @param [Array] log_levels Array containing the levels that should be
       #  logged.
       #
       def initialize(out = $stdout, log_levels = [:debug, :error, :info, :warn])
