@@ -23,6 +23,7 @@ namespace :release do
     print 'Are you really sure you want to continue? y/n: '
 
     confirmed = STDIN.gets
+    confirmed = confirmed.strip if confirmed
 
     if !confirmed or confirmed != 'y'
       abort 'Aborting'
