@@ -1,3 +1,52 @@
+[679c415 | Sat Dec 08 18:16:36 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Added a note about upgrading.
+
+    [ci skip]
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[6191bdf | Sat Dec 08 17:35:15 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Disable syslog tests on jruby.
+
+    The Syslog tests can not be executed on jruby due to the use of Process.fork.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[5be0d61 | Sat Dec 08 17:27:21 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Enable syslog and disable localmemcache for jruby.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[d8fdd3d | Sat Dec 08 17:16:47 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Don't install C extensions for jruby.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[8c271b7 | Sat Dec 08 17:08:22 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Replaced hpricot with Nokogiri.
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[c35a729 | Sat Dec 08 01:21:43 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Don't install localmemcache for jruby.
+
+    Localmemcache is a C extension and these don't work reliably on Jruby. C
+    extension support is also disabled on Travis CI.
+    
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
+[aad4e3e | Fri Dec 07 23:28:01 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
+
+  * Release 2012.12.08b
+
+    Signed-off-by: Yorick Peterse <yorickpeterse@gmail.com>
+
 [d94938b | Fri Dec 07 23:27:39 UTC 2012] Yorick Peterse <yorickpeterse@gmail.com>
 
   * Switch back to dates for versions.
