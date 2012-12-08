@@ -2,7 +2,8 @@
 # All files in this distribution are subject to the terms of the MIT license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
-spec_require 'hpricot'
+
+spec_require 'nokogiri'
 
 class SpecHelperPaginateArray < Ramaze::Controller
   map '/array'
@@ -38,8 +39,9 @@ describe Ramaze::Helper::Paginate do
     behaves_like :rack_test
 
     it 'shows navigation for page 1' do
-      doc = Hpricot(get("/array/navigation").body)
-      (doc/:a).map{|a| [a.inner_text, a[:href]] }.
+      doc = Nokogiri::HTML(get("/array/navigation").body)
+
+      doc.css('a').map{|a| [a.inner_text, a[:href]] }.
         should == [
           ['1', '/array/navigation?pager=1'],
           ['2', '/array/navigation?pager=2'],
@@ -49,8 +51,9 @@ describe Ramaze::Helper::Paginate do
     end
 
     it 'shows navigation for page 2' do
-      doc = Hpricot(get("/array/navigation?pager=2").body)
-      (doc/:a).map{|a| [a.inner_text, a[:href]] }.
+      doc = Nokogiri::HTML(get("/array/navigation?pager=2").body)
+
+      doc.css('a').map{|a| [a.inner_text, a[:href]] }.
         should == [
           ['<<', '/array/navigation?pager=1'],
           ['<', '/array/navigation?pager=1'],
@@ -62,8 +65,8 @@ describe Ramaze::Helper::Paginate do
     end
 
     it 'shows navigation for page 3' do
-      doc = Hpricot(get("/array/navigation?pager=3").body)
-      (doc/:a).map{|a| [a.inner_text, a[:href]] }.
+      doc = Nokogiri::HTML(get("/array/navigation?pager=3").body)
+      doc.css('a').map{|a| [a.inner_text, a[:href]] }.
         should == [
           ['<<', '/array/navigation?pager=1'],
           ['<', '/array/navigation?pager=2'],
@@ -78,7 +81,7 @@ describe Ramaze::Helper::Paginate do
     end
 
     it 'sets default css elements on page 1' do
-      doc = Hpricot(get('/array/navigation').body)
+      doc = Nokogiri::HTML(get('/array/navigation').body)
       # Paginator outputs spans for disabled elements
       # Since we're on the first page, the first two
       # elements are spans, then a's
@@ -109,7 +112,7 @@ describe Ramaze::Helper::Paginate do
     end
 
     it 'sets default css elements on page 2' do
-      doc = Hpricot(get('/array/navigation?pager=2').body)
+      doc = Nokogiri::HTML(get('/array/navigation?pager=2').body)
       # Paginator outputs spans for disabled elements
       # Since we're on the second page, none are disabled
       # Note that this is only valid for the second page since
@@ -140,7 +143,7 @@ describe Ramaze::Helper::Paginate do
     end
 
     it 'sets default css elements on page 3' do
-      doc = Hpricot(get('/array/navigation?pager=3').body)
+      doc = Nokogiri::HTML(get('/array/navigation?pager=3').body)
       # Paginator outputs spans for disabled elements
       # Since we're on the last page, last and next will be disabled
       # Note that this is only valid for the third page
@@ -173,7 +176,7 @@ describe Ramaze::Helper::Paginate do
     end
 
     it 'sets our custom css elements for page 1' do
-      doc = Hpricot(get('/array/custom_navigation').body)
+      doc = Nokogiri::HTML(get('/array/custom_navigation').body)
       # Paginator outputs spans for disabled elements
       # Since we're on the first page, the first two
       # elements are spans, then a's
@@ -209,7 +212,7 @@ describe Ramaze::Helper::Paginate do
     end
 
     it 'sets our custom css elements on page 2' do
-      doc = Hpricot(get('/array/custom_navigation?pager=2').body)
+      doc = Nokogiri::HTML(get('/array/custom_navigation?pager=2').body)
       # Paginator outputs spans for disabled elements
       # Since we're on the second page, none are disabled
       # Note that this is only valid for the second page since
@@ -240,7 +243,7 @@ describe Ramaze::Helper::Paginate do
     end
 
     it 'sets our custom css elements on page 3' do
-      doc = Hpricot(get('/array/custom_navigation?pager=3').body)
+      doc = Nokogiri::HTML(get('/array/custom_navigation?pager=3').body)
       # Paginator outputs spans for disabled elements
       # Since we're on the last page, last and next will be disabled
       # Note that this is only valid for the third page

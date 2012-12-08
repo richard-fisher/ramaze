@@ -3,7 +3,7 @@
 
 require File.expand_path('../../../../spec/helper', __FILE__)
 
-spec_require 'hpricot'
+spec_require 'nokogiri'
 
 Ramaze.middleware(:spec) do
   run Rack::ETag.new(
@@ -38,23 +38,25 @@ describe 'Directory listing' do
 
   def check(url, title, list)
     got = get(url)
-    got.status.should == 200
+
+    got.status.should          == 200
     got['Content-Type'].should == 'text/html; charset=utf-8'
 
-    doc = Hpricot(got.body)
+    doc = Nokogiri::HTML(got.body)
+
     doc.at(:title).inner_text.should == title
 
-    (doc/'td.name/a').map{|a| [a[:href], a.inner_text] }.should == list
+    doc.css('td.name a').map{|a| [a[:href], a.inner_text] }.should == list
   end
 
   should 'dry serve root directory' do
-   files = [
-     ["../", "Parent Directory"],
-     ["/favicon.ico", "favicon.ico"],
-     ["/file+name.txt", "file name.txt"],
-     ["/test/", "test/"],
-     ["/test_download.css", "test_download.css"]
-   ]
+    files = [
+      ["../", "Parent Directory"],
+      ["/favicon.ico", "favicon.ico"],
+      ["/file+name.txt", "file name.txt"],
+      ["/test/", "test/"],
+      ["/test_download.css", "test_download.css"]
+    ]
 
     check '/', '/', files
   end
@@ -66,6 +68,7 @@ describe 'Directory listing' do
       ["/test/five.txt", "five.txt"],
       ["/test/six.txt", "six.txt"]
     ]
+
     check '/test', '/test', files
   end
 

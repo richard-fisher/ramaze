@@ -27,7 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'erubis'
   s.add_development_dependency 'ezamar'
   s.add_development_dependency 'haml'
-  s.add_development_dependency 'hpricot'
   s.add_development_dependency 'liquid'
   s.add_development_dependency 'locale'
   s.add_development_dependency 'maruku'
@@ -51,6 +50,7 @@ Gem::Specification.new do |s|
 
   if !RUBY_DESCRIPTION.include?('jruby')
     s.add_development_dependency 'localmemcache'
+    s.add_development_dependency 'nokogiri'
   end
 
   # Nagoro doesn't seem to work on Rbx
