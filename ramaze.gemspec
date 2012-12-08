@@ -33,13 +33,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mustache'
   s.add_development_dependency 'rack-contrib'
   s.add_development_dependency 'rack-test'
-  s.add_development_dependency 'rdiscount'
   s.add_development_dependency 'redis'
   s.add_development_dependency 'sass'
   s.add_development_dependency 'sequel'
   s.add_development_dependency 'slim'
   s.add_development_dependency 'slippers'
-  s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'tagz'
   s.add_development_dependency 'tenjin'
   s.add_development_dependency 'yard'
@@ -48,9 +46,13 @@ Gem::Specification.new do |s|
     s.add_development_dependency 'lokar'
   end
 
+  # C extensions don't work reliably on jruby and Travis CI doesn't have them
+  # enabled.
   if !RUBY_DESCRIPTION.include?('jruby')
     s.add_development_dependency 'localmemcache'
     s.add_development_dependency 'nokogiri'
+    s.add_development_dependency 'rdiscount'
+    s.add_development_dependency 'sqlite3'
   end
 
   # Nagoro doesn't seem to work on Rbx

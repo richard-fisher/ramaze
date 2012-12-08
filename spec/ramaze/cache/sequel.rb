@@ -2,6 +2,8 @@
 # All files in this distribution are subject to the terms of the MIT license.
 
 require File.expand_path('../../../../spec/helper', __FILE__)
+
+spec_require 'sqlite3'
 spec_require 'sequel'
 
 DB = Sequel.sqlite(':memory:')
