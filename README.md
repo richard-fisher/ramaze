@@ -104,6 +104,7 @@ table of contents isn't rendered. You can find all these files in the ``guide/``
 directory.
 
 * {file:general/installation Installation}
+* {file:general/upgrading Upgrading}
 * {file:general/principles Principles}
 * {file:general/special_thanks Special Thanks}
 * {file:general/contributing Contributing To Ramaze}
