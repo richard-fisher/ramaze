@@ -44,10 +44,13 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'tagz'
   s.add_development_dependency 'tenjin'
   s.add_development_dependency 'yard'
-  s.add_development_dependency 'localmemcache'
 
   if RUBY_VERSION.to_f >= 1.9
     s.add_development_dependency 'lokar'
+  end
+
+  if !RUBY_DESCRIPTION.include?('jruby')
+    s.add_development_dependency 'localmemcache'
   end
 
   # Nagoro doesn't seem to work on Rbx
