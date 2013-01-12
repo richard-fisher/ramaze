@@ -46,12 +46,16 @@ describe 'Directory listing' do
 
     doc.at(:title).inner_text.should == title
 
-    doc.css('td.name a').map{|a| [a[:href], a.inner_text] }.should == list
+    urls = doc.css('td.name a').map do |a|
+      ["/#{a[:href]}".squeeze('/'), a.inner_text]
+    end
+
+    urls.should == list
   end
 
   should 'dry serve root directory' do
     files = [
-      ["../", "Parent Directory"],
+      ["/../", "Parent Directory"],
       ["/favicon.ico", "favicon.ico"],
       ["/file+name.txt", "file name.txt"],
       ["/test/", "test/"],
@@ -63,7 +67,7 @@ describe 'Directory listing' do
 
   should 'serve hierarchies' do
     files = [
-      ["../", "Parent Directory"],
+      ["/../", "Parent Directory"],
       ["/test/deep/", "deep/"],
       ["/test/five.txt", "five.txt"],
       ["/test/six.txt", "six.txt"]
