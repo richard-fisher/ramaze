@@ -174,9 +174,9 @@ data and the message would no longer be displayed until the client visits
 /set\_message again.
 
 In the above example, the content of the flash is returned by a method in the
-controller. However, the most common scenario is to addres the flash object
-directly in the layouts or viems. You can display flash data (in your layout for
-instance), just line any other variable :
+controller. However, the most common scenario is to address the flash object
+directly in the layouts or viems. You can display flash data (in your
+layout for instance), just like any other variable :
 
     #{flash[:message]}
 
