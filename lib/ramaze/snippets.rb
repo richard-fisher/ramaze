@@ -4,7 +4,6 @@
 require 'ramaze/snippets/blankslate'
 require 'ramaze/snippets/object/__dir__'
 require 'ramaze/snippets/ramaze/deprecated'
-require 'ramaze/snippets/ramaze/lru_hash'
 require 'ramaze/snippets/string/camel_case'
 require 'ramaze/snippets/string/color'
 require 'ramaze/snippets/string/esc'
