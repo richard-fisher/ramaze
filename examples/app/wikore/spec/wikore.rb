@@ -1,7 +1,7 @@
 require 'ramaze'
 require 'ramaze/spec/bacon'
 
-spec_requires 'hpricot', 'sequel'
+spec_requires 'sequel'
 
 $LOAD_PATH.unshift base = __DIR__('..')
 require 'start'
