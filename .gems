@@ -1,29 +1,39 @@
-ramaze
-Remarkably
-bacon
-dalli
-erector
-erubis
-ezamar
-haml
-liquid
-locale
-maruku
-mustache
-rack-contrib
-rack-test
-redis
-moneta
-sass
-sequel
-slim
-slippers
-tagz
-tenjin
-yard
-lokar
-localmemcache
-nokogiri
-rdiscount
-sqlite3
-nagoro
+# .gems generated gem export file. Note that any env variable settings will be missing. Append these after using a ';' field separator
+
+bacon -v1.2.0
+dalli -v2.6.2
+erector -v0.9.0
+erubis -v2.7.0
+ezamar -v2009.06
+haml -v4.0.2
+hpricot -v0.8.6
+innate -v2013.02.21
+liquid -v2.5.0
+locale -v2.0.8
+localmemcache -v0.4.4
+lokar -v0.2.1
+maruku -v0.6.1
+moneta -v0.7.15
+mustache -v0.99.4
+nagoro -v2013.03
+nokogiri -v1.5.9
+polyglot -v0.3.3
+rack -v1.5.2
+rack-contrib -v1.1.0
+rack-test -v0.6.2
+ramaze -v2012.12.08
+rdiscount -v2.0.7.2
+redis -v3.0.3
+Remarkably -v0.6.1
+sass -v3.2.7
+sequel -v3.46.0
+slim -v1.3.8
+slippers -v0.0.14
+sqlite3 -v1.3.7
+syntax -v1.0.0
+tagz -v9.6.2
+temple -v0.6.3
+tenjin -v0.7.1
+tilt -v1.3.7
+treetop -v1.4.12
+yard -v0.8.6.1
