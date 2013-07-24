@@ -1,7 +1,11 @@
 require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_require 'localmemcache'
-spec_require 'sequel'
+
+spec_precondition 'localmemcache is usable' do
+  cache = LocalMemCache.new(:namespace => 'ramaze_spec_session')
+  cache[:precondition] = true
+end
 
 class SpecSession < Ramaze::Controller
   map '/'
