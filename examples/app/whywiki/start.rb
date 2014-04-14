@@ -2,25 +2,26 @@
 
 require 'rubygems'
 require 'ramaze'
+require 'yaml/store'
 require 'bluecloth'
 
-Db = Ramaze::YAMLStoreCache.new('wiki.yaml') unless defined?(Db)
+DB = YAML::Store.new('whywiki.yaml') unless defined?(DB)
 
 class WikiController < Ramaze::Controller
   map :/
 
   def index
-    redirect R(:show, 'Home')
+    redirect r(:show, 'Home')
   end
 
   def show page = 'Home'
     @page = url_decode(page)
-    @text = Db[page].to_s
+    @text = DB.transaction{|db| db[page] }.to_s
     @edit_link = "/edit/#{page}"
 
     @text.gsub!(/\[\[(.*?)\]\]/) do |m|
-      exists = Db[$1] ? 'exists' : 'nonexists'
-      A($1, :href => Rs(:show, url_encode($1)), :class => exists)
+      exists = DB.transaction{|db| db[$1] } ? 'exists' : 'nonexists'
+      A($1, :href => rs(:show, url_encode($1)), :class => exists)
     end
 
     @text = BlueCloth.new(@text).to_html
@@ -28,7 +29,7 @@ class WikiController < Ramaze::Controller
 
   def edit page = 'Home'
     @page = url_decode(page)
-    @text = Db[page]
+    @text = DB.transaction{|db| db[page] }
   end
 
   def save
@@ -37,10 +38,10 @@ class WikiController < Ramaze::Controller
     page = request['page'].to_s
     text = request['text'].to_s
 
-    Db[page] = text
+    DB.transaction{|db| db[page] = text }
 
-    redirect Rs(:show, url_encode(page))
+    redirect rs(:show, url_encode(page))
   end
 end
 
-Ramaze.start :adapter => :mongrel
+Ramaze.start host: '0.0.0.0'
