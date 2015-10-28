@@ -203,7 +203,7 @@ module Ramaze
       #  specified key.
       # @return [Mixed]
       #
-      def cache_store(key, value, ttl = nil, options = {})
+      def cache_store(key, value, options = {})
         ttl = options.delete(:ttl) || @options[:expires_in]
 
         if ttl > MAX_TTL

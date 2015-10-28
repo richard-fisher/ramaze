@@ -150,7 +150,7 @@ module Ramaze
       # @param  [Hash] options A hash containing key specific options.
       # @option options :expires_in The time after which the key should expire.
       #
-      def cache_store(key, value, ttl = nil, options = {})
+      def cache_store(key, value, options = {})
         ttl = options[:ttl] || @options[:expires_in]
 
         @client.setex(namespaced_key(key), ttl, ::Marshal.dump(value))
