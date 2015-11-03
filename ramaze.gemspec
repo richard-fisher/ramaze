@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.has_rdoc                  = 'yard'
   s.executables               = ['ramaze']
 
-  s.add_dependency 'innate', '>= 2012.12'
+  s.add_dependency 'innate', '2013.02.21'
   s.add_dependency 'rake'
 
   s.add_development_dependency 'bacon'
